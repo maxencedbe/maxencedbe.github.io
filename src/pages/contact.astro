@@ -1,5 +1,5 @@
 ---
-import Layout from '../components/layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 
 const links = [
     { name: 'CV', url: '/cv.pdf' },
@@ -8,14 +8,5 @@ const links = [
 ];
 ---
 
-<Layout>
-    <h1>Contact Me</h1>
-    <p>Feel free to connect with me through the following links:</p>
-    <ul>
-        {links.map(link => (
-            <li>
-                <a href={link.url} target="_blank" rel="noopener noreferrer">{link.name}</a>
-            </li>
-        ))}
-    </ul>
+<Layout title="Contact">
 </Layout>

@@ -1,0 +1,5 @@
+:root {
+  --font-sans: 'Poppins', ui-sans-serif, system-ui;
+}
+
+@import "tailwindcss";
