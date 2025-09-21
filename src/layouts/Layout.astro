@@ -1,7 +1,11 @@
 ---
-import Navbar from "../components/Navbar.astro";
+import Navbar from "../components/Navbar.jsx";
+import Footer from "../components/Footer.jsx";
+import AnimatedBackground from "../components/AnimatedBackground.jsx";
+import { ViewTransitions } from "astro:transitions";
 import "../styles/global.css";
-const { title } = Astro.props;
+
+const { title, showNavbar = true } = Astro.props;
 ---
 
 <html lang="fr">
@@ -9,14 +13,40 @@ const { title } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <link rel="icon" href="/neural-network-black-icon.svg" type="image/svg" />
+    <ViewTransitions />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        background-color: #1e1e2f;
+        background-image: radial-gradient(circle, rgba(255,255,255,0.05) 1.5px, transparent 1px);
+        background-size: 40px 40px;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        font-size: 15px;
+        min-height: 100vh;
+        margin: 0;
+      }
+
+      main {
+        position: relative;
+        z-index: 2;
+      }
+
+      nav {
+        position: relative;
+        z-index: 3;
+      }
+    </style>
   </head>
-  <body class="font-sans bg-gradient-to-br from-gray-100 via-gray-200 to-gray-800 text-gray-900 min-h-screen">
-    <Navbar />
-    <main class="p-8">
+   <body class="flex flex-col min-h-screen">
+    <AnimatedBackground client:load />
+    {showNavbar && <Navbar client:load />}
+    <main class="flex-1 flex flex-col">
       <slot />
     </main>
+    <Footer client:load />
   </body>
 </html>

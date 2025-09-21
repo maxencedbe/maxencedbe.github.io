@@ -2,11 +2,23 @@
 import Layout from "../layouts/Layout.astro"
 ---
 
-<Layout title="Accueil">
-  <section class="text-center mt-20">
-    <h1 class="text-4xl font-bold text-white-900">Maxence DEBES</h1>
-    <p class="mt-4 text-lg text-white-600">
-      Student passioned about AI and data science
-    </p>
+<Layout title="Maxence DEBES - Portfolio">
+  <section class="flex flex-col md:flex-row w-full max-w-6xl mx-auto my-auto items-center">
+
+  <div class="text-left flex flex-col justify-center">
+      <h1 class="text-4xl font-sans text-white mb-4">Maxence DEBES</h1>
+      <p class="text-xl text-white-600">
+        Student passionate about <span class="text-pink-400">AI</span> and <span class="text-pink-400">Data Science</span>
+      </p>
+    </div>
+
+  <div class="w-full flex justify-center md:justify-end items-center">
+      <img
+        src="/me.jpg"
+        alt="Photo de Maxence DEBES"
+        class="w-40 h-40 md:w-70 md:h-70 rounded-full object-cover border-2 border-white"
+      />
+    </div>
+
   </section>
 </Layout>
