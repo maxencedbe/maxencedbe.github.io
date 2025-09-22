@@ -13,34 +13,8 @@ export default function Navbar() {
   const linkRefs = useRef([]);
   const ulRef = useRef(null);
 
-  useEffect(() => {
-    const index = links.findIndex(link => link.href === window.location.pathname);
-    const newIndex = index >= 0 ? index : 0;
-    setActiveIndex(newIndex);
-
-    function updateSlider(index) {
-      const activeLink = linkRefs.current[index];
-      const ul = ulRef.current;
-      if (activeLink && ul) {
-        const linkRect = activeLink.getBoundingClientRect();
-        const ulRect = ul.getBoundingClientRect();
-        setSliderStyle({
-          width: linkRect.width,
-          left: linkRect.left - ulRect.left,
-        });
-      }
-    }
-
-    updateSlider(newIndex);
-
-    const handleResize = () => updateSlider(activeIndex);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const handleClick = (i) => {
-    setActiveIndex(i);
-    const activeLink = linkRefs.current[i];
+  function updateSlider(index) {
+    const activeLink = linkRefs.current[index];
     const ul = ulRef.current;
     if (activeLink && ul) {
       const linkRect = activeLink.getBoundingClientRect();
@@ -50,21 +24,40 @@ export default function Navbar() {
         left: linkRect.left - ulRect.left,
       });
     }
-  };
+  }
+
+  function refreshActive() {
+    const index = links.findIndex((link) => link.href === window.location.pathname);
+    const newIndex = index >= 0 ? index : 0;
+    setActiveIndex(newIndex);
+    updateSlider(newIndex);
+  }
+
+  useEffect(() => {
+    refreshActive();
+
+    window.addEventListener("resize", () => updateSlider(activeIndex));
+    window.addEventListener("astro:after-swap", refreshActive);
+
+    return () => {
+      window.removeEventListener("resize", () => updateSlider(activeIndex));
+      window.removeEventListener("astro:after-swap", refreshActive);
+    };
+  }, []);
 
   return (
     <nav className="relative px-6 py-4 z-10">
-      <ul ref={ulRef} className="flex justify-right gap-8 pl-100 pt-4 relative">
+      <ul ref={ulRef} className="flex gap-8 relative">
         {links.map((link, i) => (
           <li key={i} className="relative flex flex-col items-center">
             <a
-                href={link.href}
-                ref={el => (linkRefs.current[i] = el)}
-                className={`font-sans transition-colors duration-400 ease-in-out
-                    ${activeIndex === i ? "text-white opacity-100" : "text-white/50 hover:text-pink-400"}`}
-                onClick={e => handleClick(e, i)}
+              href={link.href}
+              ref={(el) => (linkRefs.current[i] = el)}
+              className={`font-sans transition-colors duration-400 ease-in-out
+                ${activeIndex === i ? "text-white opacity-100" : "text-white/50 hover:text-pink-400"}`}
+              onClick={() => setActiveIndex(i)}
             >
-                {link.name}
+              {link.name}
             </a>
           </li>
         ))}
