@@ -16,9 +16,8 @@ function normalize(p) {
 export default function Navbar() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
-  const [isOpen, setIsOpen] = useState(false); // menu burger mobile
+  const [isOpen, setIsOpen] = useState(false);
   const linkRefs = useRef([]);
-  const ulRef = useRef(null);
   const navRef = useRef(null);
 
   const resolveHref = (href) => {
@@ -38,8 +37,7 @@ export default function Navbar() {
   };
 
   const updateSlider = (index) => {
-    if (window.innerWidth < 768) return; // slider uniquement desktop
-
+    if (window.innerWidth < 768) return;
     requestAnimationFrame(() => {
       const activeLink = linkRefs.current[index];
       const nav = navRef.current;
@@ -62,14 +60,11 @@ export default function Navbar() {
       setActiveIndex(idx);
       updateSlider(idx);
     };
-
     const handleResize = () => updateSlider(activeIndex);
 
     handleNavigation();
-
     window.addEventListener("astro:after-swap", handleNavigation);
     window.addEventListener("resize", handleResize);
-
     return () => {
       window.removeEventListener("astro:after-swap", handleNavigation);
       window.removeEventListener("resize", handleResize);
@@ -79,14 +74,14 @@ export default function Navbar() {
   const handleClick = (i) => {
     setActiveIndex(i);
     updateSlider(i);
-    setIsOpen(false); // ferme le menu burger après clic sur mobile
+    setIsOpen(false);
   };
 
   return (
-    <nav ref={navRef} className="relative px-6 py-4 z-10">
+    <nav ref={navRef} className="relative px-6 py-4 z-50">
       {/* Bouton hamburger mobile */}
       <button
-        className="md:hidden fixed top-4 left-4 z-30 flex flex-col gap-1 p-2"
+        className="md:hidden fixed top-4 left-4 z-50 flex flex-col gap-1 p-2"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span
@@ -103,14 +98,21 @@ export default function Navbar() {
         />
       </button>
 
+      {/* Overlay mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm md:hidden z-40"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+
       {/* Menu */}
       <ul
-        ref={ulRef}
-        className={`
-          flex gap-8 relative
-          md:flex-row md:static md:bg-transparent
-          ${isOpen ? "flex flex-col fixed top-0 left-0 w-64 h-full p-6 bg-black bg-opacity-90 z-20" : "hidden md:flex"}
-        `}
+        className={`${
+          isOpen
+            ? "flex flex-col fixed inset-0 p-6 bg-black bg-opacity-60 backdrop-blur-md z-45 justify-center items-center gap-6 md:hidden"
+            : "hidden md:flex md:flex-row md:gap-x-8 md:static md:bg-transparent"
+        }`}
       >
         {links.map((link, i) => (
           <li key={link.href} className="relative flex flex-col items-center md:items-start">
@@ -133,18 +135,10 @@ export default function Navbar() {
           style={{
             left: sliderStyle.left,
             width: sliderStyle.width,
-            top: sliderStyle.top - 10,
+            top: sliderStyle.top - 12,
           }}
         />
       </ul>
-
-      {/* Overlay mobile */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-10 md:hidden"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
     </nav>
   );
 }
