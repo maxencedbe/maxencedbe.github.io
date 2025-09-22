@@ -14,6 +14,10 @@ export default function Navbar() {
   const ulRef = useRef(null);
 
   useEffect(() => {
+    const index = links.findIndex(link => link.href === window.location.pathname);
+    const newIndex = index >= 0 ? index : 0;
+    setActiveIndex(newIndex);
+
     function updateSlider(index) {
       const activeLink = linkRefs.current[index];
       const ul = ulRef.current;
@@ -27,15 +31,12 @@ export default function Navbar() {
       }
     }
 
-    const index = links.findIndex(link => link.href === window.location.pathname);
-    const newIndex = index >= 0 ? index : 0;
-    setActiveIndex(newIndex);
     updateSlider(newIndex);
 
     const handleResize = () => updateSlider(activeIndex);
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, [activeIndex]);
+  }, []);
 
   const handleClick = (i) => {
     setActiveIndex(i);
