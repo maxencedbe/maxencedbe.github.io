@@ -28,6 +28,7 @@ const { title, showNavbar = true } = Astro.props;
         background-size: 40px 40px;
         color: #fff;
         overflow-x: hidden;
+        height: 100%;
       }
 
       body {
@@ -60,6 +61,21 @@ const { title, showNavbar = true } = Astro.props;
 
       html::view-transition {
         background-color: #000000;
+      }
+
+      /* --- Responsive --- */
+      @media (max-width: 768px) {
+        #navbar-wrapper {
+          width: 100%;
+          height: 60px;
+          flex-direction: row;
+          padding: 0 20px;
+        }
+
+        main.transition-container {
+          margin-left: 0;
+          margin-top: 60px; /* espace pour navbar mobile */
+        }
       }
     </style>
   </head>
