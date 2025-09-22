@@ -17,11 +17,13 @@ export default function AnimatedBackground() {
     let points = [];
     let target = { x: width / 2, y: height / 2 };
     let animateHeader = true;
+    let animationFrameId;
 
     largeHeader.style.height = height + "px";
     canvas.width = width;
     canvas.height = height;
 
+    // Génération des points
     for (let x = 0; x < width; x += width / 20) {
       for (let y = 0; y < height; y += height / 20) {
         const px = x + Math.random() * (width / 20);
@@ -30,6 +32,7 @@ export default function AnimatedBackground() {
       }
     }
 
+    // Définir les points proches
     points.forEach((p1) => {
       const closest = [];
       points.forEach((p2) => {
@@ -42,7 +45,10 @@ export default function AnimatedBackground() {
             }
           }
           for (let k = 0; k < 5; k++) {
-            if (!placed && getDistance(p1, p2) < getDistance(p1, closest[k])) {
+            if (
+              !placed &&
+              getDistance(p1, p2) < getDistance(p1, closest[k])
+            ) {
               closest[k] = p2;
               placed = true;
             }
@@ -52,11 +58,16 @@ export default function AnimatedBackground() {
       p1.closest = closest;
     });
 
+    // Créer les cercles
     points.forEach((p) => {
-      p.circle = new circle(p, 2 + Math.random() * 2, "rgba(156,217,249,0.3)");
+      p.circle = new circle(
+        p,
+        2 + Math.random() * 2,
+        "rgba(156,217,249,0.3)"
+      );
     });
 
-
+    // Listeners
     const scrollCheck = () => {
       animateHeader = document.body.scrollTop <= height;
     };
@@ -72,9 +83,10 @@ export default function AnimatedBackground() {
     window.addEventListener("scroll", scrollCheck);
     window.addEventListener("resize", resize);
 
+    // Animation GSAP
     points.forEach(shiftPoint);
-    animate();
 
+    // Boucle d’animation
     function animate() {
       if (animateHeader) {
         ctx.clearRect(0, 0, width, height);
@@ -96,12 +108,14 @@ export default function AnimatedBackground() {
           p.circle.draw();
         });
       }
-      requestAnimationFrame(animate);
+      animationFrameId = requestAnimationFrame(animate);
     }
+
+    animate();
 
     function shiftPoint(p) {
       gsap.to(p, {
-        duration: 2 + Math.random()*2,
+        duration: 2 + Math.random() * 2,
         x: p.originX - 50 + Math.random() * 100,
         y: p.originY - 50 + Math.random() * 100,
         ease: Circ.easeInOut,
@@ -110,7 +124,7 @@ export default function AnimatedBackground() {
     }
 
     function drawLines(p) {
-    if (!p.active) return;
+      if (!p.active) return;
       p.closest.forEach((c) => {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
@@ -143,11 +157,12 @@ export default function AnimatedBackground() {
       return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
     }
 
-    // Cleanup
+    // 🧹 Cleanup
     return () => {
-      window.removeEventListener("mousemove", mouseMove);
       window.removeEventListener("scroll", scrollCheck);
       window.removeEventListener("resize", resize);
+      cancelAnimationFrame(animationFrameId);
+      gsap.killTweensOf(points);
     };
   }, []);
 

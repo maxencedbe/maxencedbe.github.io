@@ -42,7 +42,7 @@ const { title, showNavbar = true } = Astro.props;
     </style>
   </head>
    <body class="flex flex-col min-h-screen">
-    <AnimatedBackground client:load />
+    <AnimatedBackground client:only="react" />
     {showNavbar && <Navbar client:load />}
     <main class="flex-1 flex flex-col">
       <slot />
