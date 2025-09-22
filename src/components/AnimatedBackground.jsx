@@ -23,7 +23,6 @@ export default function AnimatedBackground() {
     canvas.width = width;
     canvas.height = height;
 
-    // Génération des points
     for (let x = 0; x < width; x += width / 20) {
       for (let y = 0; y < height; y += height / 20) {
         const px = x + Math.random() * (width / 20);
@@ -32,7 +31,6 @@ export default function AnimatedBackground() {
       }
     }
 
-    // Définir les points proches
     points.forEach((p1) => {
       const closest = [];
       points.forEach((p2) => {
@@ -58,7 +56,6 @@ export default function AnimatedBackground() {
       p1.closest = closest;
     });
 
-    // Créer les cercles
     points.forEach((p) => {
       p.circle = new circle(
         p,
@@ -67,7 +64,6 @@ export default function AnimatedBackground() {
       );
     });
 
-    // Listeners
     const scrollCheck = () => {
       animateHeader = document.body.scrollTop <= height;
     };
@@ -83,10 +79,8 @@ export default function AnimatedBackground() {
     window.addEventListener("scroll", scrollCheck);
     window.addEventListener("resize", resize);
 
-    // Animation GSAP
     points.forEach(shiftPoint);
 
-    // Boucle d’animation
     function animate() {
       if (animateHeader) {
         ctx.clearRect(0, 0, width, height);
@@ -157,7 +151,6 @@ export default function AnimatedBackground() {
       return Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2);
     }
 
-    // 🧹 Cleanup
     return () => {
       window.removeEventListener("scroll", scrollCheck);
       window.removeEventListener("resize", resize);

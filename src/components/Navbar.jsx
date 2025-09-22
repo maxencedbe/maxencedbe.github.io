@@ -29,10 +29,8 @@ export default function Navbar() {
 
   const findIndexFromPath = (path) => {
     const n = normalize(path);
-    // exact match
     let idx = links.findIndex((l) => resolveHref(l.href) === n);
     if (idx !== -1) return idx;
-    // nested (ex: /projects/123 should match /projects)
     idx = links.findIndex((l) => l.href !== "/" && n.startsWith(resolveHref(l.href)));
     return idx !== -1 ? idx : 0;
   };
@@ -58,7 +56,6 @@ export default function Navbar() {
       const idx = findIndexFromPath(window.location.pathname);
       setActiveIndex(idx);
       updateSlider(idx);
-      // console.debug("[navbar] navigation ->", window.location.pathname, "idx=", idx);
     };
 
     const handleResize = () => {
@@ -66,10 +63,8 @@ export default function Navbar() {
       updateSlider(idx);
     };
 
-    // initial mount
     handleNavigation();
 
-    // listeners (named so we can remove them)
     window.addEventListener("astro:after-swap", handleNavigation);
     window.addEventListener("resize", handleResize);
 
@@ -77,10 +72,9 @@ export default function Navbar() {
       window.removeEventListener("astro:after-swap", handleNavigation);
       window.removeEventListener("resize", handleResize);
     };
-  }, []); // run once
+  }, []);
 
   const handleClick = (i) => {
-    // immediate feedback; actual path will be updated by astro and trigger astro:after-swap
     setActiveIndex(i);
     updateSlider(i);
   };

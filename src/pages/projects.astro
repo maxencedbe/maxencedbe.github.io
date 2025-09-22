@@ -1,9 +1,48 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
+import ProjectCard from "../components/ProjectCard.jsx";
+import "../styles/projectCard.scss";
 ---
 
-<Layout title="About me">
-    <section class="flex flex-1 items-center justify-center text-center">
-        <h1 class="text-4xl font-sans text-white">Coming soon...</h1>
-    </section>
+<Layout title="Projects">
+  <main class="flex flex-col items-center gap-10">
+    <h1 class="text-4xl font-bold text-white mb-10">My projects</h1>
+
+    <div class="flex flex-col items-center w-full max-w-xl">
+      <ProjectCard
+        client:load
+        title="My portfolio"
+        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
+        imageUrl={"astro-icon-light-gradient.png"}
+      />
+    </div>
+
+    <div class="flex flex-col items-center gap-16 w-full max-w-xl">
+      <ProjectCard
+        client:load
+        title="My portfolio"
+        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
+        imageUrl={"neural-network-black-icon.svg"}
+      />
+    </div>
+
+    <div class="flex flex-col items-center gap-16 w-full max-w-xl">
+      <ProjectCard
+        client:load
+        title="My portfolio"
+        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
+        imageUrl={"me.jpg"}
+      />
+    </div>
+
+    <div class="flex flex-col items-center w-full max-w-xl">
+      <ProjectCard
+        client:load
+        title="My portfolio"
+        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
+        imageUrl={"astro-icon-light-gradient.png"}
+      />
+    </div>
+    
+  </main>
 </Layout>
