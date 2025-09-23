@@ -34,12 +34,11 @@ const { title, showNavbar = true } = Astro.props;
       body {
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
+        min-height: 100%;
       }
 
       #navbar-wrapper {
         width: 100%;
-        padding-left: 300px;
         pointer-events: auto;
       }
 
@@ -52,10 +51,10 @@ const { title, showNavbar = true } = Astro.props;
         flex: 1;
         display : flex;
         flex-direction: column;
-        margin-top: 70px;
+        padding-top: 70px;
         position: relative;
         z-index: 10;
-        justify-content: center;
+        justify-content: flex-start !important;
         box-sizing: border-box;
       }
 
@@ -73,8 +72,7 @@ const { title, showNavbar = true } = Astro.props;
         }
 
         main.transition-container {
-          margin-left: 0;
-          margin-top: 60px; /* espace pour navbar mobile */
+          padding-top: 60px; /* espace pour navbar mobile */
         }
       }
     </style>

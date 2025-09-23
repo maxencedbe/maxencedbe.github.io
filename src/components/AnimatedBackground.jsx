@@ -23,10 +23,19 @@ export default function AnimatedBackground() {
     canvas.width = width;
     canvas.height = height;
 
-    for (let x = 0; x < width; x += width / 20) {
-      for (let y = 0; y < height; y += height / 20) {
-        const px = x + Math.random() * (width / 20);
-        const py = y + Math.random() * (height / 20);
+    let spacing;
+    if (width < 768) {
+      spacing = 80;
+    } else if (width < 1200) {
+      spacing = 70;
+    } else {
+      spacing = 60;
+    }
+
+    for (let x = 0; x < width; x += spacing) {
+      for (let y = 0; y < height; y += spacing) {
+        const px = x + Math.random() * spacing;
+        const py = y + Math.random() * spacing;
         points.push({ x: px, originX: px, y: py, originY: py });
       }
     }

@@ -71,6 +71,23 @@ export default function Navbar() {
     };
   }, [activeIndex]);
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
+  }, [isOpen]);
+
   const handleClick = (i) => {
     setActiveIndex(i);
     updateSlider(i);
@@ -98,22 +115,39 @@ export default function Navbar() {
         />
       </button>
 
-      {/* Overlay mobile */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm md:hidden z-40"
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      {/* Overlay mobile animé */}
+      <div
+        className={`fixed inset-0 bg-transparent bg-opacity-30 backdrop-blur-sm md:hidden z-40 transition-opacity duration-300 ${
+          isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
+        onClick={() => setIsOpen(false)}
+      />
 
-      {/* Menu */}
+      {/* Menu mobile slide-in/out */}
       <ul
-        className={`${
-          isOpen
-            ? "flex flex-col fixed inset-0 p-6 bg-black bg-opacity-60 backdrop-blur-md z-45 justify-center items-center gap-6 md:hidden"
-            : "hidden md:flex md:flex-row md:gap-x-8 md:static md:bg-transparent"
+        className={`fixed top-0 left-0 w-full h-screen bg-black/20 backdrop-blur-sm backdrop-brightness-75 z-45 flex flex-col justify-center items-center gap-8 p-8 transform transition-transform duration-300 md:hidden ${
+          isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
+      {links.map((link, i) => (
+        <li key={link.href} className="w-full flex justify-center">
+          <a
+            href={link.href}
+            ref={(el) => (linkRefs.current[i] = el)}
+            className={`font-sans text-lg tracking-wide text-white transition-colors duration-300 ease-in-out text-center ${
+              activeIndex === i ? "opacity-100" : "opacity-70 hover:text-pink-400"
+            }`}
+            onClick={() => handleClick(i)}
+          >
+            {link.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+
+
+      {/* Menu desktop */}
+      <ul className="hidden md:flex md:flex-row md:gap-x-8 md:static md:bg-transparent">
         {links.map((link, i) => (
           <li key={link.href} className="relative flex flex-col items-center md:items-start">
             <a
@@ -129,7 +163,7 @@ export default function Navbar() {
           </li>
         ))}
 
-        {/* Slider desktop uniquement */}
+        {/* Slider desktop */}
         <span
           className="absolute bottom-0 h-[0.7px] bg-white rounded transition-all duration-200 hidden md:block"
           style={{

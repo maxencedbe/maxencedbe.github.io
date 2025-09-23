@@ -1,33 +1,130 @@
----
+--- 
 import Layout from "../layouts/Layout.astro";
 
 const links = [
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/maxence-debes' },
-    { name: 'GitHub', url: 'https://github.com/maxencedbe' },
+  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/maxence-debes', icon: 'icons/linkedin.svg' },
+  { name: 'GitHub', url: 'https://github.com/maxencedbe', icon: 'icons/github.svg' },
+  { name: 'Mail', url: 'mailto:maxence.debes@polytechnique.edu', icon: 'icons/mail.svg' },
 ];
 ---
 
-<Layout title="Contact">
-  <main class="flex flex-col items-start gap-6">
-    <h2 class="text-xl font-bold mb-6 pl-40 pt-30">Contact me</h2>
-    <p class="text-lg mb-6 pl-40">Feel free to reach out to me through any of the following platforms :</p>
-    <ul class="list-disc list-inside marker:text-[10px] mb-6 pl-50">
-      {links.map(link => (
-        <li class="mb-2">
-          <a
-            href={link.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="relative text-white text-base font-sans
-                  after:absolute after:left-0 after:-bottom-0.25
-                  after:h-[0.7px] after:w-0 after:bg-pink-400
-                  after:transition-all after:duration-300
-                  hover:after:w-full"
-          >
-            {link.name}
+<Layout title="Contact" showNavbar={true}>
+  <div class="contact-wrapper">
+    <div class="contact-container">
+      <h1 class="text-4xl font-bold text-white text-center">Contact me</h1>
+      <p class="text-center text-white mb-6">Feel free to reach out to me through any of the following platforms :</p>
+      <div class="contact-buttons">
+        {links.map(link => (
+          <a href={link.url} target="_blank" rel="noopener noreferrer" class="contact-button">
+            <img src={link.icon} alt={link.name} />
           </a>
-        </li>
-      ))}
-    </ul>
-  </main>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    .contact-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+
+    .contact-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    h1 {
+    font-size: 4rem; /* plus grand sur desktop */
+    }
+
+    p {
+      font-size: 1.75rem; /* plus grand sur desktop */
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.5rem; /* taille mobile */
+      }
+
+      p {
+        font-size: 1.25rem; /* taille mobile */
+      }
+    }
+
+    .contact-buttons {
+      display: flex;
+      gap: 3rem;
+      margin-top: 2.5rem;
+    }
+
+    .contact-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+
+      border: 1px solid rgba(255, 255, 255, 0.12);
+
+      background-color: transparent;
+
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+
+      box-shadow: 
+        0px 3px 6px rgba(0, 0, 0, 0.05),
+        0px 8px 15px rgba(0, 0, 0, 0.1);
+
+      cursor: pointer;
+      transition:  background-color 0.5s;
+    }
+
+    .contact-button:hover {
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+
+    .contact-button img {
+      width: 35px;
+      height: 35px;
+      filter: invert(1);
+    }
+
+    .contact-button:hover {
+      background-color: #ffffff;
+    }
+
+    .contact-button:hover img {
+      filter: invert(0);
+    }
+
+    @media (max-width: 768px) {
+      .contact-buttons {
+        gap: 1.5rem;
+      }
+
+      .contact-button {
+        width: 60px;
+        height: 60px;
+      }
+
+      .contact-button img {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  </style>
 </Layout>

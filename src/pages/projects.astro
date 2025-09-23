@@ -5,10 +5,10 @@ import "../styles/projectCard.scss";
 ---
 
 <Layout title="Projects">
-  <main class="flex flex-col items-center gap-10">
-    <h1 class="text-4xl font-bold text-white mb-10">My projects</h1>
+  <main class="flex flex-col items-center gap-10 px-4 w-full">
+    <h1 class="text-4xl font-bold text-white mb-10 text-center">My projects</h1>
 
-    <div class="flex flex-col items-center w-full max-w-xl">
+    <div class="flex flex-col items-center w-full md:max-w-xl">
       <ProjectCard
         client:load
         title="My portfolio"
@@ -17,16 +17,16 @@ import "../styles/projectCard.scss";
       />
     </div>
 
-    <div class="flex flex-col items-center gap-16 w-full max-w-xl">
+    <div class="flex flex-col items-center gap-16 w-full md:max-w-xl">
       <ProjectCard
         client:load
         title="My portfolio"
         description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
-        imageUrl={"neural-network-black-icon.svg"}
+        imageUrl={"neural-network-icon.svg"}
       />
     </div>
 
-    <div class="flex flex-col items-center gap-16 w-full max-w-xl">
+    <div class="flex flex-col items-center gap-16 w-full md:max-w-xl">
       <ProjectCard
         client:load
         title="My portfolio"
@@ -35,14 +35,13 @@ import "../styles/projectCard.scss";
       />
     </div>
 
-    <div class="flex flex-col items-center w-full max-w-xl">
+    <div class="flex flex-col items-center w-full md:max-w-xl">
       <ProjectCard
         client:load
         title="My portfolio"
-        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
+        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for ceux intéressés.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
         imageUrl={"astro-icon-light-gradient.png"}
       />
     </div>
-    
   </main>
 </Layout>

@@ -1,56 +1,50 @@
 ---
-import Layout from "../layouts/Layout.astro"
----
+import Layout from "../layouts/Layout.astro";
+--- 
 
 <Layout title="404 | Page not found" showNavbar={false}>
-  <div id="main">
-    <div class="fof">
-      <h1>404 | Page not found</h1>
-      <a href="/" class="back-button">Back to home page</a>
-    </div>
-  </div>
+  <main class="flex flex-col items-center text-center px-4 mt-20 md:mt-32">
+    <h1 class="animate-type text-white text-5xl md:text-6xl">
+      404 | Page not found
+    </h1>
+    <a href="/" class="back-button">Back to home page</a>
+  </main>
+
   <style>
-    * {
-      transition: all 0.6s;
-    }
-
-    html {
-      height: 100%;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      color: #ffffff;
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: #fff;
+      overflow: hidden; /* Empêche le scroll */
+      display: flex;
+      flex-direction: column;
     }
 
-    #main {
+    main {
       display: flex;
-      justify-content: center;
-      align-items: center;
       flex-direction: column;
-      width: 100%;
-      height: 80vh;
+      align-items: center;
       text-align: center;
     }
 
-    .fof h1 {
-      font-size: 70px;
-      margin-bottom: 30px;
-      padding-right: 15px;
+    .animate-type {
+      font-weight: bold;
+      margin-bottom: 40px; /* Espace entre texte et bouton */
       animation: type 0.7s alternate infinite;
     }
 
     .back-button {
       display: inline-block;
       padding: 12px 24px;
-      background-color: transparent;
-      color: #ffffff;
+      font-size: 1rem;
       font-weight: 500;
+      color: #fff;
+      border: 1px solid #fff;
       border-radius: 8px;
       text-decoration: none;
-      transition: background-color 0.3s, color 0.3s;
-      border: 1px solid #ffffff;
       transition: transform 0.2s ease;
     }
 
@@ -58,12 +52,26 @@ import Layout from "../layouts/Layout.astro"
       transform: scale(1.02);
     }
 
+    footer {
+      flex-shrink: 0;
+    }
+
     @keyframes type {
-      from {
-        box-shadow: inset -3px 0px 0px #ffffff;
+      from { box-shadow: inset -3px 0 0 #fff; }
+      to { box-shadow: inset -3px 0 0 transparent; }
+    }
+
+    @media (max-width: 768px) {
+      .animate-type {
+        font-size: 2rem;
+        margin-bottom: 30px;
       }
-      to {
-        box-shadow: inset -3px 0px 0px transparent;
+      .back-button {
+        padding: 10px 20px;
+        font-size: 0.875rem;
+      }
+      main {
+        mt: 16; /* ajuste le top sur mobile si nécessaire */
       }
     }
   </style>
