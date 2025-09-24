@@ -18,7 +18,7 @@ import Layout from "../layouts/Layout.astro";
       font-family: 'Poppins', sans-serif;
       background-color: #000;
       color: #fff;
-      overflow: hidden; /* Empêche le scroll */
+      overflow: hidden;
       display: flex;
       flex-direction: column;
     }
@@ -32,7 +32,7 @@ import Layout from "../layouts/Layout.astro";
 
     .animate-type {
       font-weight: bold;
-      margin-bottom: 40px; /* Espace entre texte et bouton */
+      margin-bottom: 80px;
       animation: type 0.7s alternate infinite;
     }
 
@@ -42,7 +42,9 @@ import Layout from "../layouts/Layout.astro";
       font-size: 1rem;
       font-weight: 500;
       color: #fff;
-      border: 1px solid #fff;
+      background-color: transparent;
+      backdrop-filter: blur(3px);
+      border: 1px solid #18181B;
       border-radius: 8px;
       text-decoration: none;
       transition: transform 0.2s ease;
@@ -50,10 +52,6 @@ import Layout from "../layouts/Layout.astro";
 
     .back-button:hover {
       transform: scale(1.02);
-    }
-
-    footer {
-      flex-shrink: 0;
     }
 
     @keyframes type {
@@ -71,7 +69,7 @@ import Layout from "../layouts/Layout.astro";
         font-size: 0.875rem;
       }
       main {
-        mt: 16; /* ajuste le top sur mobile si nécessaire */
+        mt: 16;
       }
     }
   </style>

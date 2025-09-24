@@ -11,8 +11,8 @@ const links = [
 <Layout title="Contact" showNavbar={true}>
   <div class="contact-wrapper">
     <div class="contact-container">
-      <h1 class="text-4xl font-bold text-white text-center">Contact me</h1>
-      <p class="text-center text-white mb-6">Feel free to reach out to me through any of the following platforms :</p>
+      <h1 class="text-3xl font-bold text-white text-center">Contact me</h1>
+      <p class="text-center text-white">Feel free to reach out to me through any of the following platforms:</p>
       <div class="contact-buttons">
         {links.map(link => (
           <a href={link.url} target="_blank" rel="noopener noreferrer" class="contact-button">
@@ -47,20 +47,20 @@ const links = [
     }
 
     h1 {
-    font-size: 4rem; /* plus grand sur desktop */
+    font-size: 2.5rem;
     }
 
     p {
-      font-size: 1.75rem; /* plus grand sur desktop */
+      font-size: 1.25rem;
     }
 
     @media (max-width: 768px) {
       h1 {
-        font-size: 2.5rem; /* taille mobile */
+        font-size: 1.75rem;
       }
 
       p {
-        font-size: 1.25rem; /* taille mobile */
+        font-size: 1rem;
       }
     }
 
@@ -74,8 +74,8 @@ const links = [
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
       border-radius: 50%;
 
       border: 1px solid rgba(255, 255, 255, 0.12);
