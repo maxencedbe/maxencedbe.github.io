@@ -3,7 +3,8 @@ import Layout from "../layouts/Layout.astro";
 --- 
 
 <Layout title="404 | Page not found" showNavbar={false}>
-  <main class="flex flex-col items-center text-center px-4 mt-20 md:mt-32">
+  <main class="flex flex-1 flex-col items-center justify-center text-center px-4"
+        style="padding-top:150px;">
     <h1 class="animate-type text-white text-5xl md:text-6xl">
       404 | Page not found
     </h1>
@@ -11,29 +12,30 @@ import Layout from "../layouts/Layout.astro";
   </main>
 
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: 'Poppins', sans-serif;
-      background-color: #000;
-      color: #fff;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-    }
-
     .animate-type {
       font-weight: bold;
-      margin-bottom: 80px;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .animate-type::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: -8px;
+      width: 3px;
+      height: 100%;
+      background: #fff;
       animation: type 0.7s alternate infinite;
+    }
+
+    @keyframes type {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    @keyframes blink {
+      to { visibility: hidden; }
     }
 
     .back-button {
@@ -54,11 +56,6 @@ import Layout from "../layouts/Layout.astro";
       transform: scale(1.02);
     }
 
-    @keyframes type {
-      from { box-shadow: inset -3px 0 0 #fff; }
-      to { box-shadow: inset -3px 0 0 transparent; }
-    }
-
     @media (max-width: 768px) {
       .animate-type {
         font-size: 2rem;
@@ -67,9 +64,6 @@ import Layout from "../layouts/Layout.astro";
       .back-button {
         padding: 10px 20px;
         font-size: 0.875rem;
-      }
-      main {
-        mt: 16;
       }
     }
   </style>

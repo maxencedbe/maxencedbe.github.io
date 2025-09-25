@@ -1,9 +1,104 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="About me">
-    <section class="flex flex-1 items-center justify-center text-center">
-        <h1 class="text-4xl font-sans text-white">Coming soon...</h1>
+  <main class="px-6 md:px-12 text-white">
+    <h1 class="text-4xl font-bold text-white mb-10 text-center">About me</h1>
+    <div class="flex justify-center mb-16">
+      <a href="/cv.pdf" download class="back-button">Download resume</a>
+    </div>
+
+    <!-- Work Experience -->
+    <section class="mb-20">
+      <h2 class="text-2xl font-semibold mb-8 md:pl-40">Work Experience</h2>
+      <div class="flex flex-col gap-8 items-center">
+
+        <div class="about-card">
+          <img src="/Batigère.png" alt="Company Logo" class="w-16 h-16 object-contain" />
+          <div>
+            <h3 class="font-semibold text-lg">Batigère Maison Familiale</h3>
+            <p class="text-sm text-gray-300 mb-1">Jan 2022 – Dec 2023</p>
+            <p class="text-sm text-gray-200"></p>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <img src="/Atos.png" alt="Company Logo" class="w-16 h-16 object-contain" />
+          <div>
+            <h3 class="font-semibold text-lg">Atos</h3>
+            <p class="text-sm text-gray-300 mb-1">Jan 2022 – Dec 2023</p>
+            <p class="text-sm text-gray-200"></p></p>
+          </div>
+        </div>
+
+      </div>
     </section>
+
+    <!-- Education -->
+    <section>
+      <h2 class="text-2xl font-semibold mb-8 md:pl-40">Education</h2>
+      <div class="flex flex-col gap-8 items-center">
+
+        <div class="about-card">
+          <img src="/X.png" alt="School Logo" class="w-16 h-16 object-contain" />
+          <div>
+            <h3 class="font-semibold text-lg">École Polytechnique - Polytechnic Institute of Paris</h3>
+            <p class="text-sm text-gray-300 mb-1">Sept 2019 – Juin 2022</p>
+            <p class="text-sm text-gray-200">MSc Data Science.</p>
+          </div>
+        </div>
+
+        <div class="about-card">
+          <img src="/TSP.png" alt="School Logo" class="w-16 h-16 object-contain" />
+          <div>
+            <h3 class="font-semibold text-lg">Télécom SudParis - Polytechnic Institute of Paris</h3>
+            <p class="text-sm text-gray-300 mb-1">Sept 2019 – Juin 2022</p>
+            <p class="text-sm text-gray-200">Master's degree in Computer Science.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    
+  </main>
+
+  <style>
+    .back-button {
+      display: inline-block;
+      padding: 12px 24px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #fff;
+      background-color: transparent;
+      backdrop-filter: blur(3px);
+      border: 1px solid #18181B;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+    .back-button:hover {
+      transform: scale(1.02);
+    }
+
+    .about-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 32px;
+      width: 100%;
+      max-width: 800px;
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(4px);
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1), 0 8px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .about-card:hover {
+      transform: translateY(-2px);
+      cursor: pointer;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.15), 0 15px 25px rgba(0,0,0,0.3);
+    }
+  </style>
 </Layout>
