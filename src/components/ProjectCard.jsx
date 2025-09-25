@@ -1,26 +1,51 @@
 import React from "react";
 import "../styles/projectCard.scss";
 
-export default function ProjectCard({ title, description, imageUrl }) {
+export default function ProjectCard({ title, description, imageUrl, githubUrl = null }) {
   return (
     <div className="card">
+      {/* Bouton GitHub affiché seulement si githubUrl est fourni */}
+      {githubUrl && (
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="card-github"
+        >
+          <img src="/icons/github.svg" alt="GitHub" />
+        </a>
+      )}
+
+      {/* Image */}
       <div className="card-image">
         <img src={imageUrl} alt={title} />
       </div>
+
+      {/* Contenu texte */}
       <div className="card-content">
         <h4>{title}</h4>
         <p>{description}</p>
       </div>
 
+      {/* Effets */}
       <div className="shine"></div>
+
       <div className="background">
         <div className="tiles">
-          {[...Array(10)].map((_, i) => (
+          {[...Array(16)].map((_, i) => (
             <div key={i} className={`tile tile-${i + 1}`}></div>
           ))}
         </div>
         <div className="line line-1"></div>
       </div>
+
+      <svg
+        className="about-border"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
+      >
+        <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15" />
+      </svg>
     </div>
   );
 }

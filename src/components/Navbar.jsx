@@ -88,6 +88,16 @@ export default function Navbar() {
     };
   }, [isOpen]);
 
+  // ✅ Fix iOS/Safari viewport height
+  useEffect(() => {
+    const setVh = () => {
+      document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
+    };
+    setVh();
+    window.addEventListener("resize", setVh);
+    return () => window.removeEventListener("resize", setVh);
+  }, []);
+
   const handleClick = (i) => {
     setActiveIndex(i);
     updateSlider(i);
@@ -125,26 +135,28 @@ export default function Navbar() {
 
       {/* Menu mobile slide-in/out */}
       <ul
-        className={`fixed top-0 left-0 w-full h-screen bg-black/20 backdrop-blur-sm backdrop-brightness-75 z-45 flex flex-col justify-center items-center gap-8 p-8 transform transition-transform duration-300 md:hidden ${
+        className={`fixed top-0 left-0 w-full h-[100dvh] md:h-screen bg-black/40 backdrop-blur-sm backdrop-brightness-75 z-45 flex flex-col justify-center items-center gap-8 p-8 transform transition-transform duration-300 md:hidden ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ height: "calc(var(--vh, 1vh) * 100)" }}
       >
-      {links.map((link, i) => (
-        <li key={link.href} className="w-full flex justify-center">
-          <a
-            href={link.href}
-            ref={(el) => (linkRefs.current[i] = el)}
-            className={`font-sans text-lg tracking-wide text-white transition-colors duration-300 ease-in-out text-center ${
-              activeIndex === i ? "opacity-100" : "opacity-70 hover:text-pink-400"
-            }`}
-            onClick={() => handleClick(i)}
-          >
-            {link.name}
-          </a>
-        </li>
-      ))}
-    </ul>
-
+        {links.map((link, i) => (
+          <li key={link.href} className="w-full flex justify-center">
+            <a
+              href={link.href}
+              ref={(el) => (linkRefs.current[i] = el)}
+              className={`font-sans text-lg tracking-wide transition-colors duration-300 ease-in-out text-center ${
+                activeIndex === i
+                  ? "text-pink-400 font-semibold underline underline-offset-4 decoration-pink-400"
+                  : "text-white hover:text-pink-400"
+              }`}
+              onClick={() => handleClick(i)}
+            >
+              {link.name}
+            </a>
+          </li>
+        ))}
+      </ul>
 
       {/* Menu desktop */}
       <ul className="hidden md:flex md:flex-row md:gap-x-8 md:static md:bg-transparent">

@@ -5,43 +5,75 @@ import "../styles/projectCard.scss";
 ---
 
 <Layout title="Projects">
-  <main class="flex flex-col items-center gap-10 px-4 w-full">
-    <h1 class="text-4xl font-bold text-white mb-10 text-center">My projects</h1>
 
-    <div class="flex flex-col items-center w-full md:max-w-xl">
+  <main class="flex flex-col items-center px-4 w-full max-w-[1100px] mx-auto">
+
+    <h1 class="text-4xl font-bold text-white mb-4 text-center md:mb-20 mb-8 na">
+      My Projects
+    </h1>
+
+    <p class="text-base sm:text-lg leading-relaxed  text-justify desktop-indent mobile-narrow md:mb-16 mb-12">
+        Here you’ll find a selection of projects I’ve worked on, ranging from academic research to personal and professional experiences. Each one reflects my interest in data, AI, and software development. Whenever possible, I’ve included links to repositories or demos so you can explore the work in more detail. Some projects are still under development, as I’m continuously improving them.
+    </p>
+
+    <div class="flex flex-col items-center w-full md:max-w-xl md:mb-16 mb-8">
       <ProjectCard
         client:load
-        title="Project n°1"
-        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
-        imageUrl="/astro-icon.svg"
-      />
-    </div>
-
-    <div class="flex flex-col items-center gap-16 w-full md:max-w-xl">
-      <ProjectCard
-        client:load
-        title="Project n°2"
-        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
+        title="ScratchNet"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi."
         imageUrl="/neural-network-icon.svg"
       />
     </div>
 
-    <div class="flex flex-col items-center gap-16 w-full md:max-w-xl">
+    <div class="flex flex-col items-center w-full md:max-w-xl md:mb-16 mb-8">
       <ProjectCard
         client:load
-        title="Project n°3"
-        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
-        imageUrl="/astro-icon.svg"
+        title="Personal Portfolio Website"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi."
+        imageUrl="/astro-icon-light-gradient.png"
+        githubUrl="https://github.com/tonprofil/scratchnet"
+      />
+    </div>
+
+    <div class="flex flex-col items-center w-full md:max-w-xl md:mb-16 mb-8">
+      <ProjectCard
+        client:load
+        title="Data Privacy & Anonymization — Project Cassiopée"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi."
+        imageUrl="/Data.png"
+        githubUrl="https://github.com/tonprofil/scratchnet"
       />
     </div>
 
     <div class="flex flex-col items-center w-full md:max-w-xl">
       <ProjectCard
         client:load
-        title="Project n°4"
-        description="Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested. Standard chunk of Lorem Ipsum used since the 1500s is showed below for ceux intéressés.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested.Standard chunk of Lorem Ipsum used since the 1500s is showed below for those interested."
-        imageUrl="/neural-network-icon.svg"
+        title="Automated Parking Optimization"
+        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor. Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi."
+        imageUrl="/Parking3.png"
+        githubUrl="https://github.com/tonprofil/scratchnet"
       />
     </div>
   </main>
+
+  <style>
+  @media (max-width: 768px) {
+      .desktop-indent {
+        text-indent: 2em;
+      }
+
+      .mobile-narrow {
+        max-width: 91%;
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.7;
+      }
+    }
+
+  @media (min-width: 1024px) {
+    .desktop-indent {
+      text-indent: 4em;
+    }
+  }
+  </style>
 </Layout>

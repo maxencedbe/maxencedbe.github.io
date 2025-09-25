@@ -1,5 +1,5 @@
 body {
-  --background-color: #18181B;
+  --background-color: rgba(255, 255, 255, 0.002);
   --text-color: #ffffff;
 
   --card-background-color: rgba(255, 255, 255, .015);
@@ -15,7 +15,7 @@ body {
   --card-icon-background-color: rgba(255, 255, 255, 0.08);
   --card-icon-border-color: rgba(255, 255, 255, 0.12);
   --card-shine-opacity: .1;
-  --card-line-color: rgba(244, 114, 181, 0.264);
+  --card-line-color: rgba(244, 114, 181, 0.50);
   --card-tile-color: rgba(244, 114, 182, 0.15);
 
   --card-hover-border-color: rgba(255, 255, 255, 0.1);
@@ -36,23 +36,24 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 32px;
   width: 100%;
 }
 
 .card {
   display: flex;
+  align-items: center;
   width: 1000px;
   max-width: 1000px;
   min-width: 300px;
-  background-color: transparent;
-  box-shadow: 0px var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0px var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2), 0 0 0 1px var(--card-border-color);
-  padding: 16px;
+  background-color: rgba(255, 255, 255, 0.002);
+  backdrop-filter: blur(3px);
+  padding: 28px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 15px;
-  cursor: pointer;
   gap: 16px;
   position: relative;
   transition: box-shadow .25s;
+  overflow: hidden;
 
   &::before {
     content: '';
@@ -60,17 +61,50 @@ body {
     inset: 0;
     border-radius: 15px;
     background-color: transparent;
+  }
+
+  .card-github {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    transition: background-color 0.3s, transform 0.2s;
+
+    img {
+      width: 20px;
+      height: 20px;
+      filter: invert(1);
+    }
+
+    &:hover {
+      background-color: #fff;
+      color: #000;
+
+      img {
+        filter: invert(0);
+      }
+    }
   }
 
   .card-image {
-    flex: 0 0 200px;
-    width: 200px;
-    height: 200px;
+    flex: 0 0 140px;
+    width: 140px;
+    height: 140px;
     border-radius: 12px;
     overflow: hidden;
     position: relative;
     z-index: 2;
+    background-color: transparent;
 
     img {
       width: 100%;
@@ -83,10 +117,13 @@ body {
   .card-content {
     flex: 1;
     z-index: 2;
+    padding-top: 20px;
+    padding-bottom: 20px;
 
     h4 {
       margin: 0 0 8px 0;
       font-size: 28px;
+      line-height: 1.2;
       padding-left: 14px;
       color: var(--card-label-color);
     }
@@ -95,7 +132,6 @@ body {
       margin: 0;
       font-size: 14px;
       padding-left: 14px;
-      line-height: 1.6;
       color: var(--text-color);
       text-align: justify;
     }
@@ -136,8 +172,6 @@ body {
     margin: 12px 0 4px 0;
     font-family: inherit;
     font-weight: 600;
-    font-size: 14px;
-    line-height: 2;
     color: var(--card-label-color);
   }
 
@@ -146,7 +180,6 @@ body {
     position: relative;
     margin: 0;
     font-size: 14px;
-    line-height: 1.7;
     color: var(--text-color);
   }
 
@@ -179,47 +212,39 @@ body {
     position: absolute;
     inset: 0;
     overflow: hidden;
-    -webkit-mask-image: radial-gradient(circle at 60% 5%, black 0%, black 15%, transparent 60%);
-    mask-image: radial-gradient(circle at 60% 5%, black 0%, black 15%, transparent 60%);
 
     .tiles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      width: 100%;
+      height: 100%;
       opacity: 0;
-      transition: opacity .25s;
+      transition: opacity 2s ease;
 
       .tile {
-        position: absolute;
+        width: 100%;
+        height: 100%;
         background-color: var(--card-tile-color);
-        animation-duration: 8s;
-        animation-iteration-count: infinite;
+        animation: tile 12s infinite;
         opacity: 0;
 
-        &.tile-4,
-        &.tile-6,
-        &.tile-10 {
-          animation-delay: -2s;
-        }
-
-        &.tile-3,
-        &.tile-5,
-        &.tile-8 {
-          animation-delay: -4s;
-        }
-
-        &.tile-2,
-        &.tile-9 {
-          animation-delay: -6s;
-        }
-
-        &.tile-1 { top: 0; left: 0; height: 10%; width: 22.5%; }
-        &.tile-2 { top: 0; left: 22.5%; height: 10%; width: 27.5%; }
-        &.tile-3 { top: 0; left: 50%; height: 10%; width: 27.5%; }
-        &.tile-4 { top: 0; left: 77.5%; height: 10%; width: 22.5%; }
-        &.tile-5 { top: 10%; left: 0; height: 22.5%; width: 22.5%; }
-        &.tile-6 { top: 10%; left: 22.5%; height: 22.5%; width: 27.5%; }
-        &.tile-7 { top: 10%; left: 50%; height: 22.5%; width: 27.5%; }
-        &.tile-8 { top: 10%; left: 77.5%; height: 22.5%; width: 22.5%; }
-        &.tile-9 { top: 32.5%; left: 50%; height: 22.5%; width: 27.5%; }
-        &.tile-10 { top: 32.5%; left: 77.5%; height: 22.5%; width: 22.5%; }
+        &:nth-child(1)  { animation-delay: -6s; }
+        &:nth-child(2)  { animation-delay: -3.5s; }
+        &:nth-child(3)  { animation-delay: -8s; }
+        &:nth-child(4)  { animation-delay: -2.5s; }
+        &:nth-child(5)  { animation-delay: -5s; }
+        &:nth-child(6)  { animation-delay: -9.5s; }
+        &:nth-child(7)  { animation-delay: -4s; }
+        &:nth-child(8)  { animation-delay: -7s; }
+        &:nth-child(9)  { animation-delay: -2s; }
+        &:nth-child(10) { animation-delay: -8.5s; }
+        &:nth-child(11) { animation-delay: -4.5s; }
+        &:nth-child(12) { animation-delay: -9s; }
+        &:nth-child(13) { animation-delay: -5.5s; }
+        &:nth-child(14) { animation-delay: -3s; }
+        &:nth-child(15) { animation-delay: -7.5s; }
+        &:nth-child(16) { animation-delay: -6.5s; }
       }
     }
 
@@ -227,33 +252,26 @@ body {
       0%, 12.5%, 100% { opacity: 1; }
       25%, 82.5% { opacity: 0; }
     }
+  }
 
-    .line {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity .35s;
+  .about-border {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
 
-      &:before,
-      &:after {
-        content: '';
-        position: absolute;
-        background-color: var(--card-line-color);
-        transition: transform .35s;
-      }
-
-      &:before { left: 0; right: 0; height: 1px; transform-origin: 0 50%; transform: scaleX(0); }
-      &:after { top: 0; bottom: 0; width: 1px; transform-origin: 50% 0; transform: scaleY(0); }
-
-      &.line-1 { &:before { top: 10%; } &:after { left: 22.5%; } &:before, &:after { transition-delay: .3s; } }
-      &.line-2 { &:before { top: 12.5%; } &:after { left: 20%; } &:before, &:after { transition-delay: .15s; } }
-      &.line-3 { &:before { top: 55%; } &:after { right: 22.5%; } }
+    rect {
+      fill: none;
+      stroke: #f472b6;
+      stroke-width: 1.25px;
+      stroke-dasharray: 4000;
+      stroke-dashoffset: 4000;
+      transition: stroke-dashoffset 1.5s ease-out;
     }
   }
 
   &:hover {
-    box-shadow: 0px 3px 6px var(--card-hover-box-shadow-1), 0px var(--card-hover-box-shadow-2-y) var(--card-hover-box-shadow-2-blur) var(--card-hover-box-shadow-2), 0 0 0 1px var(--card-hover-border-color);
-
     .icon {
       &::after { background-color: var(--card-hover-icon-background-color); border-color: var(--card-hover-icon-border-color); }
       svg { color: var(--card-hover-icon-color); }
@@ -262,29 +280,51 @@ body {
     .shine { opacity: 1; transition-duration: .5s; transition-delay: 0s; }
 
     .background {
-      .tiles { opacity: 1; transition-delay: .25s; .tile { animation-name: tile; } }
-      .line { opacity: 1; transition-duration: .15s; &:before { transform: scaleX(1); } &:after { transform: scaleY(1); } }
+      .tiles { opacity: 1; .tile { animation-play-state: running; } }
     }
+
+    .about-border rect { stroke-dashoffset: 0; }
   }
 }
 
-// --- Responsive Mobile ---
 @media (max-width: 1100px) {
   .card {
     flex-direction: column;
     width: 90%;
     max-width: 100%;
-    padding: 12px;
+    padding: 24px;
+
+    .card-github {
+      top: 8px;
+      right: 8px;
+      width: 32px;
+      height: 32px;
+
+      img {
+        width: 18px;
+        height: 18px;
+      }
+    }
 
     .card-image {
       width: 100%;
-      height: auto;
-      max-height: 250px;
-      margin-bottom: 12px;
+      max-width: 300px;
+      height: 220px;
+      margin: 0 auto 12px auto;
     }
 
     .card-content {
       h4, p { padding-left: 0; text-align: center; }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    .card-content {
+      h4 {
+        margin-bottom: 16px;
+      }
     }
   }
 }

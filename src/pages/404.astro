@@ -4,16 +4,17 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="404 | Page not found" showNavbar={false}>
   <main class="flex flex-1 flex-col items-center justify-center text-center px-4"
-        style="padding-top:150px;">
-    <h1 class="animate-type text-white text-5xl md:text-6xl">
+        style="padding-top:110px;">
+    <h1 class="animate-type text-white md:text-6xl md:pb-6">
       404 | Page not found
     </h1>
-    <a href="/" class="back-button">Back to home page</a>
+    <a href="/" class="back-button">
+      Back to home page
+    </a>
   </main>
 
   <style>
     .animate-type {
-      font-weight: bold;
       margin-bottom: 40px;
       position: relative;
     }
@@ -22,12 +23,18 @@ import Layout from "../layouts/Layout.astro";
       content: "";
       position: absolute;
       top: 0;
-      right: -8px;
-      width: 3px;
-      height: 100%;
+      right: -12px;
+      width: 4px;
+      height: 1em;
       background: #fff;
       animation: type 0.7s alternate infinite;
     }
+
+    .animate-type::after {
+      top: 0em;
+      height: 1em;
+    }
+
 
     @keyframes type {
       from { opacity: 1; }
@@ -39,27 +46,47 @@ import Layout from "../layouts/Layout.astro";
     }
 
     .back-button {
-      display: inline-block;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
       padding: 12px 24px;
-      font-size: 1rem;
+      font-size: 1.25rem;
       font-weight: 500;
       color: #fff;
       background-color: transparent;
-      backdrop-filter: blur(3px);
-      border: 1px solid #18181B;
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 8px;
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
       text-decoration: none;
-      transition: transform 0.2s ease;
+      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+      box-shadow: 
+        0px 3px 6px rgba(0, 0, 0, 0.05),
+        0px 8px 15px rgba(0, 0, 0, 0.1);
     }
 
     .back-button:hover {
-      transform: scale(1.02);
+      background-color: #fff;
+      color: #000;
     }
 
     @media (max-width: 768px) {
       .animate-type {
         font-size: 2rem;
         margin-bottom: 30px;
+      }
+      .animate-type::after {
+        content: "";
+        position: absolute;
+        right: -8px;
+        width: 2px;
+        height: 1em;
+        background: #fff;
+        animation: type 0.7s alternate infinite;
+
+        top: 50%;
+        transform: translateY(-50%);
       }
       .back-button {
         padding: 10px 20px;
