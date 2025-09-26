@@ -15,6 +15,10 @@
   animation-name: fade-in;
 }
 
+.no-transition * {
+  transition: none !important;
+}
+
 @keyframes fade-in {
   from { opacity: 0 }
   to   { opacity: 1 }

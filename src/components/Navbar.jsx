@@ -102,7 +102,12 @@ export default function Navbar() {
     setActiveIndex(i);
     updateSlider(i);
     setIsOpen(false);
-  };
+
+  document.body.classList.add("no-transition");
+  setTimeout(() => {
+    document.body.classList.remove("no-transition");
+  }, 300);
+};
 
   return (
     <nav ref={navRef} className="relative px-6 py-4 z-50">
