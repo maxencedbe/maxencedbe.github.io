@@ -1,10 +1,10 @@
 import React from "react";
 import "../styles/projectCard.scss";
 
-export default function ProjectCard({ title, description, imageUrl, githubUrl = null }) {
+export default function ProjectCard({ title, description, imageUrl, githubUrl }) {
   return (
     <div className="card">
-      {/* Bouton GitHub affiché seulement si githubUrl est fourni */}
+
       {githubUrl && (
         <a
           href={githubUrl}

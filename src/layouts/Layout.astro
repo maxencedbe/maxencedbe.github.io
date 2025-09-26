@@ -42,7 +42,7 @@ const { title, showNavbar = true } = Astro.props;
 
       #navbar-wrapper {
         width: 100%;
-        pointer-events: auto;
+        pointer-events: auto;width: 100%;
       }
 
       #footer-wrapper {
@@ -72,6 +72,10 @@ const { title, showNavbar = true } = Astro.props;
       @media (max-width: 768px) {
         #navbar-wrapper {
           height: var(--nav-h);
+        }
+
+        #footer-wrapper {
+          padding-top: 10px;
         }
 
         main.transition-container {
