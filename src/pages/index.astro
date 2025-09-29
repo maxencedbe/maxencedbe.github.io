@@ -1,26 +1,100 @@
 ---
-import Layout from "../layouts/Layout.astro"
+import Layout from "../layouts/Layout.astro";
+
+const links = [
+  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/maxence-debes', icon: '/icons/linkedin.svg' },
+  { name: 'GitHub', url: 'https://github.com/maxencedbe', icon: '/icons/github.svg' },
+  { name: 'Mail', url: 'mailto:maxence.debes@polytechnique.edu', icon: '/icons/mail.svg' },
+];
 ---
 
 <Layout title="Maxence DEBES · Portfolio">
-  <div class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 flex-1 gap-6 md:gap-20">
 
-    <div class="flex flex-col items-center lg:items-start text-center lg:text-left lg:gap-0">
-      <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 text-white">
-        Maxence DEBES
-      </h1>
-      <p class="text-xl sm:text-2xl md:text-3xl text-white">
-        Student passionate about <span class="text-pink-400">AI</span> and <span class="text-pink-400">Data Science</span>
-      </p>
+  <div class="flex flex-col items-center justify-center flex-1 w-full px-4 gap-6 sm:px-6 md:px-8 lg:px-12">
+    
+    <div class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-6 md:gap-16 lg:gap-40 xl:gap-60">
+      <div class="flex flex-col items-center lg:items-start text-center lg:text-left">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white">
+          Maxence DEBES
+        </h1>
+        <p class="mt-2 text-xl sm:text-2xl md:text-3xl text-white">
+          Student passionate about <span class="text-pink-400">AI</span>
+          <span class="hidden lg:block"></span>
+          and <span class="text-pink-400">Data Science</span>
+        </p>
+      </div>
+
+      <div class="flex justify-center items-center mt-4 lg:mt-0">
+        <img
+          src="/me.jpg"
+          alt="Photo de Maxence DEBES"
+          class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full object-cover border-2 border-white"
+        />
+      </div>
     </div>
 
-    <div class="flex justify-center items-center mt-4 lg:mt-0">
-      <img
-        src="/me.jpg"
-        alt="Photo de Maxence DEBES"
-        class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full object-cover border-2 border-white"
-      />
+    <div class="flex justify-center mt-6">
+      <div class="contact-buttons">
+        {links.map(link => (
+          <a href={link.url} target="_blank" rel="noopener noreferrer" class="contact-button">
+            <img src={link.icon} alt={link.name} />
+          </a>
+        ))}
+      </div>
     </div>
 
   </div>
+
+  <style>
+    .contact-buttons {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .contact-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background-color: rgba(255, 255, 255, 0.002);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      box-shadow: 
+        0px 3px 6px rgba(0, 0, 0, 0.05),
+        0px 8px 15px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: background-color 0.5s;
+    }
+
+    .contact-button:hover {
+      background-color: #ffffff;
+    }
+
+    .contact-button img {
+      width: 30px;
+      height: 30px;
+      filter: invert(1);
+    }
+
+    .contact-button:hover img {
+      filter: invert(0);
+    }
+
+    @media (max-width: 768px) {
+      .contact-buttons {
+        gap: 1.5rem;
+      }
+      .contact-button {
+        width: 60px;
+        height: 60px;
+      }
+      .contact-button img {
+        width: 25px;
+        height: 25px;
+      }
+    }
+  </style>
 </Layout>

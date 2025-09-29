@@ -4,7 +4,6 @@ const links = [
   { name: "Home", href: "/" },
   { name: "About me", href: "/about" },
   { name: "Projects", href: "/projects" },
-  { name: "Contact", href: "/contact" },
 ];
 
 function normalize(p) {
@@ -171,7 +170,7 @@ export default function Navbar() {
               href={link.href}
               ref={(el) => (linkRefs.current[i] = el)}
               className={`font-sans transition-colors duration-400 ease-in-out ${
-                activeIndex === i ? "text-white opacity-100" : "text-white/50 hover:text-pink-400"
+                activeIndex === i ? "text-white" : "text-white/50 hover:text-pink-400"
               }`}
               onClick={() => handleClick(i)}
             >
@@ -182,7 +181,7 @@ export default function Navbar() {
 
         {/* Slider desktop */}
         <span
-          className="absolute bottom-0 h-[0.7px] bg-white rounded transition-all duration-200 hidden md:block"
+          className="absolute bottom-0 h-[0.7px] bg-pink-400 rounded transition-all duration-200 hidden md:block"
           style={{
             left: sliderStyle.left,
             width: sliderStyle.width,
