@@ -1,7 +1,5 @@
 # 🌐 Portfolio - maxencedbe
 
-[![License: CC BY-NC-ND](https://img.shields.io/badge/License-CC_BY--NC--ND-blue.svg)](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-
 This repository contains the source code for my personal website: [maxencedbe.github.io](https://maxencedbe.github.io).  
 The website is built with **Astro**, **TailwindCSS**, and **JavaScript**, and deployed via **GitHub Pages**.
 
