@@ -74,7 +74,11 @@ const { title, showNavbar = true } = Astro.props;
       }
 
       html::view-transition {
-        @apply bg-white dark:bg-black;
+        background-color: #ffffff;
+      }
+
+      :global(.dark) html::view-transition {
+        background-color: #000000;
       }
 
       main.transition-container.no-navbar {
