@@ -18,6 +18,17 @@ export default function AnimatedBackground() {
     let target = { x: width / 2, y: height / 2 };
     let animateHeader = true;
     let animationFrameId;
+    let isDark = document.documentElement.classList.contains("dark");
+
+    // Watch for theme changes
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === "class") {
+          isDark = document.documentElement.classList.contains("dark");
+        }
+      });
+    });
+    observer.observe(document.documentElement, { attributes: true });
 
     largeHeader.style.height = height + "px";
     canvas.width = width;
@@ -69,7 +80,7 @@ export default function AnimatedBackground() {
       p.circle = new circle(
         p,
         2 + Math.random() * 2,
-        "rgba(156,217,249,0.3)"
+        undefined // Color will be determined in draw
       );
     });
 
@@ -132,26 +143,49 @@ export default function AnimatedBackground() {
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(c.x, c.y);
-        const r = 156 + Math.sin(Date.now() * 0.001) * 50;
-        const g = 217;
-        const b = 249 + Math.cos(Date.now() * 0.001) * 50;
+
+        let r, g, b;
+        if (isDark) {
+          // White/Pale Blue for dark mode
+          r = 245 + Math.sin(Date.now() * 0.001) * 10;
+          g = 245 + Math.cos(Date.now() * 0.001) * 10;
+          b = 255;
+        } else {
+          // Darker for better visibility in light mode
+          r = 30 + Math.sin(Date.now() * 0.001) * 15;
+          g = 30;
+          b = 60 + Math.cos(Date.now() * 0.001) * 15;
+        }
+
         ctx.strokeStyle = `rgba(${r},${g},${b},${p.active})`;
-        ctx.shadowColor = `rgba(${r},${g},${b},0.6)`;
-        ctx.shadowBlur = 6;
+        // Shadow for better visibility
+        if (isDark) {
+          ctx.shadowColor = `rgba(${r},${g},${b},0.6)`;
+          ctx.shadowBlur = 6;
+        } else {
+          // Add subtle shadow in light mode for better visibility
+          ctx.shadowColor = `rgba(${r},${g},${b},0.3)`;
+          ctx.shadowBlur = 2;
+        }
         ctx.stroke();
       });
     }
 
-    function circle(pos, rad, color) {
+    function circle(pos, rad) {
       this.pos = pos;
       this.radius = rad;
-      this.color = color;
       this.active = 0;
       this.draw = function () {
         if (!this.active) return;
         ctx.beginPath();
         ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, false);
-        ctx.fillStyle = "rgba(156,217,249," + this.active + ")";
+
+        if (isDark) {
+          ctx.fillStyle = "rgba(255,255,255," + this.active + ")";
+        } else {
+          ctx.fillStyle = "rgba(30,30,60," + this.active + ")";
+        }
+
         ctx.fill();
       };
     }
@@ -165,6 +199,7 @@ export default function AnimatedBackground() {
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
       gsap.killTweensOf(points);
+      observer.disconnect();
     };
   }, []);
 

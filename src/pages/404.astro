@@ -1,16 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
---- 
+---
 
 <Layout title="Page not found" showNavbar={false}>
-  <main class="flex flex-1 flex-col items-center justify-center text-center px-4"
-        style="padding-top:110px;">
-    <h1 class="animate-type text-white md:text-6xl md:pb-6">
+  <main
+    class="flex flex-1 flex-col items-center justify-center text-center px-4"
+    style="padding-top:110px;"
+  >
+    <h1 class="animate-type text-black dark:text-white md:text-6xl md:pb-6">
       404 | Page not found
     </h1>
-    <a href="/" class="back-button">
-      Back to home page
-    </a>
+    <a href="/" class="back-button"> Back to home page </a>
   </main>
 
   <style>
@@ -26,8 +26,12 @@ import Layout from "../layouts/Layout.astro";
       right: -12px;
       width: 4px;
       height: 1em;
-      background: #fff;
+      background: #000;
       animation: type 0.7s alternate infinite;
+    }
+
+    :global(.dark) .animate-type::after {
+      background: #fff;
     }
 
     .animate-type::after {
@@ -35,14 +39,19 @@ import Layout from "../layouts/Layout.astro";
       height: 1em;
     }
 
-
     @keyframes type {
-      from { opacity: 1; }
-      to { opacity: 0; }
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
     }
 
     @keyframes blink {
-      to { visibility: hidden; }
+      to {
+        visibility: hidden;
+      }
     }
 
     .back-button {
@@ -52,21 +61,35 @@ import Layout from "../layouts/Layout.astro";
       padding: 12px 24px;
       font-size: 1.25rem;
       font-weight: 500;
-      color: #fff;
-      background-color: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #000;
+      background-color: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 8px;
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
       text-decoration: none;
-      transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+      transition:
+        background-color 0.3s ease,
+        color 0.3s ease,
+        transform 0.2s ease;
       cursor: pointer;
-      box-shadow: 
+      box-shadow:
         0px 3px 6px rgba(0, 0, 0, 0.05),
         0px 8px 15px rgba(0, 0, 0, 0.1);
     }
 
+    :global(.dark) .back-button {
+      color: #fff;
+      background-color: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
     .back-button:hover {
+      background-color: #000;
+      color: #fff;
+    }
+
+    :global(.dark) .back-button:hover {
       background-color: #fff;
       color: #000;
     }

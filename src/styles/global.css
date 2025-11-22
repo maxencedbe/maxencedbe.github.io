@@ -11,24 +11,58 @@
 ::view-transition-old(root) {
   animation-name: fade-out;
 }
+
 ::view-transition-new(root) {
   animation-name: fade-in;
 }
 
-.no-transition *, 
-.no-transition *::before, 
+.no-transition *,
+.no-transition *::before,
 .no-transition *::after {
   transition: none !important;
 }
 
 @keyframes fade-in {
-  from { opacity: 0 }
-  to   { opacity: 1 }
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
 }
 
 @keyframes fade-out {
-  from { opacity: 1 }
-  to   { opacity: 0 }
+  from {
+    opacity: 1
+  }
+
+  to {
+    opacity: 0
+  }
 }
 
 @import "tailwindcss";
+
+/* stylelint-disable-next-line */
+@variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  body {
+    background-color: #ffffff;
+    color: #000000;
+    transition: background-color 0.3s, color 0.3s;
+    background-image: radial-gradient(circle,
+        rgba(0, 0, 0, 0.3) 1px,
+        transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  html.dark body {
+    background-color: #000000;
+    color: #ffffff;
+    background-image: radial-gradient(circle,
+        rgba(255, 255, 255, 0.15) 1px,
+        transparent 1px);
+  }
+}

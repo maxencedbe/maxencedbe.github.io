@@ -2,22 +2,42 @@
 import Layout from "../layouts/Layout.astro";
 
 const links = [
-  { name: 'LinkedIn', url: 'https://www.linkedin.com/in/maxence-debes', icon: '/icons/linkedin.svg' },
-  { name: 'GitHub', url: 'https://github.com/maxencedbe', icon: '/icons/github.svg' },
-  { name: 'Mail', url: 'mailto:maxence.debes@polytechnique.edu', icon: '/icons/mail.svg' },
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/maxence-debes",
+    icon: "/icons/linkedin.svg",
+  },
+  {
+    name: "GitHub",
+    url: "https://github.com/maxencedbe",
+    icon: "/icons/github.svg",
+  },
+  {
+    name: "Mail",
+    url: "mailto:maxence.debes@polytechnique.edu",
+    icon: "/icons/mail.svg",
+  },
 ];
 ---
 
 <Layout title="Maxence Debes · Portfolio">
-
-  <div class="flex flex-col items-center justify-center flex-1 w-full px-4 gap-6 sm:px-6 md:px-8 lg:px-12">
-    
-    <div class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-6 md:gap-16 lg:gap-40 xl:gap-60">
-      <div class="flex flex-col items-center lg:items-start text-center lg:text-left">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white">
+  <div
+    class="flex flex-col items-center justify-center flex-1 w-full px-4 gap-6 sm:px-6 md:px-8 lg:px-12"
+  >
+    <div
+      class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-6 md:gap-16 lg:gap-40 xl:gap-60"
+    >
+      <div
+        class="flex flex-col items-center lg:items-start text-center lg:text-left"
+      >
+        <h1
+          class="text-4xl sm:text-5xl md:text-6xl font-bold text-black dark:text-white"
+        >
           Maxence Debes
         </h1>
-        <p class="mt-5 text-xl sm:text-2xl md:text-3xl text-white">
+        <p
+          class="mt-5 text-xl sm:text-2xl md:text-3xl text-black dark:text-white"
+        >
           Aspiring <span class="text-pink-400">AI</span> and
           <span class="hidden lg:block"></span>
           <span class="text-pink-400">data science</span> professional
@@ -25,7 +45,9 @@ const links = [
       </div>
 
       <div class="flex justify-center items-center mt-4 lg:mt-0">
-        <div class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border-2 border-white overflow-hidden">
+        <div
+          class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border-2 border-black dark:border-white overflow-hidden"
+        >
           <img
             src="/Profile_picture.jpg"
             alt="Photo"
@@ -37,14 +59,20 @@ const links = [
 
     <div class="flex justify-center mt-6">
       <div class="contact-buttons">
-        {links.map(link => (
-          <a href={link.url} target="_blank" rel="noopener noreferrer" class="contact-button">
-            <img src={link.icon} alt={link.name} />
-          </a>
-        ))}
+        {
+          links.map((link) => (
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="contact-button"
+            >
+              <img src={link.icon} alt={link.name} />
+            </a>
+          ))
+        }
       </div>
     </div>
-
   </div>
 
   <style>
@@ -60,28 +88,46 @@ const links = [
       width: 65px;
       height: 65px;
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background-color: rgba(255, 255, 255, 0.002);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-      box-shadow: 
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(0.5px);
+      -webkit-backdrop-filter: blur(0.5px);
+      box-shadow:
         0px 3px 6px rgba(0, 0, 0, 0.05),
         0px 8px 15px rgba(0, 0, 0, 0.1);
       cursor: pointer;
-      transition: background-color 0.5s;
+      transition: all 0.3s ease;
+    }
+
+    :global(.dark) .contact-button {
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background-color: rgba(255, 255, 255, 0.002);
     }
 
     .contact-button:hover {
+      background-color: #000000;
+    }
+
+    :global(.dark) .contact-button:hover {
       background-color: #ffffff;
     }
 
     .contact-button img {
       width: 30px;
       height: 30px;
+      filter: invert(0);
+      transition: filter 0.3s ease;
+    }
+
+    :global(.dark) .contact-button img {
       filter: invert(1);
     }
 
     .contact-button:hover img {
+      filter: invert(1);
+    }
+
+    :global(.dark) .contact-button:hover img {
       filter: invert(0);
     }
 

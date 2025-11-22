@@ -1,35 +1,50 @@
-body {
+:root {
   --background-color: rgba(255, 255, 255, 0.002);
-  --text-color: #ffffff;
-
-  --card-background-color: rgba(255, 255, 255, .015);
-  --card-border-color: rgba(255, 255, 255, 0.25);
+  --text-color: #000000;
+  --card-background-color: rgba(255, 255, 255, 0.5);
+  --card-border-color: rgba(0, 0, 0, 0.2);
   --card-box-shadow-1: rgba(0, 0, 0, 0.05);
   --card-box-shadow-1-y: 3px;
   --card-box-shadow-1-blur: 6px;
   --card-box-shadow-2: rgba(0, 0, 0, 0.1);
   --card-box-shadow-2-y: 8px;
   --card-box-shadow-2-blur: 15px;
+  --card-label-color: #000000;
+  --card-icon-color: #333333;
+  --card-icon-background-color: rgba(0, 0, 0, 0.05);
+  --card-icon-border-color: rgba(0, 0, 0, 0.1);
+  --card-shine-opacity: .1;
+  --card-line-color: rgba(244, 114, 181, 0.50);
+  --card-tile-color: rgba(244, 114, 182, 0.15);
+  --card-hover-border-color: rgba(0, 0, 0, 0.2);
+  --card-hover-box-shadow-1: rgba(0, 0, 0, 0.04);
+  --card-hover-box-shadow-1-y: 5px;
+  --card-hover-box-shadow-1-blur: 10px;
+  --card-hover-box-shadow-2: rgba(0, 0, 0, 0.15);
+  --card-hover-box-shadow-2-y: 15px;
+  --card-hover-box-shadow-2-blur: 25px;
+  --card-hover-icon-color: #000000;
+  --card-hover-icon-background-color: rgba(0, 0, 0, 0.1);
+  --card-hover-icon-border-color: rgba(0, 0, 0, 0.2);
+  --blur-opacity: .0;
+}
+
+html.dark {
+  --text-color: #ffffff;
+  --card-background-color: rgba(0, 0, 0, 0.5);
+  --card-border-color: rgba(255, 255, 255, 0.25);
+  --card-box-shadow-1: rgba(0, 0, 0, 0.1);
+  --card-box-shadow-2: rgba(0, 0, 0, 0.2);
   --card-label-color: #FFFFFF;
   --card-icon-color: #D4D4D8;
   --card-icon-background-color: rgba(255, 255, 255, 0.08);
   --card-icon-border-color: rgba(255, 255, 255, 0.12);
-  --card-shine-opacity: .1;
-  --card-line-color: rgba(244, 114, 181, 0.50);
-  --card-tile-color: rgba(244, 114, 182, 0.15);
-
   --card-hover-border-color: rgba(255, 255, 255, 0.1);
   --card-hover-box-shadow-1: rgba(0, 0, 0, 0.04);
-  --card-hover-box-shadow-1-y: 5px;
-  --card-hover-box-shadow-1-blur: 10px;
-  --card-hover-box-shadow-2: rgba(0, 0, 0, 0.3);
-  --card-hover-box-shadow-2-y: 15px;
-  --card-hover-box-shadow-2-blur: 25px;
+  --card-hover-box-shadow-2: rgba(0, 0, 0, 0.2);
   --card-hover-icon-color: #ffffff;
   --card-hover-icon-background-color: rgba(255, 255, 255, 0.08);
   --card-hover-icon-border-color: rgba(255, 255, 255, 0.12);
-
-  --blur-opacity: .0;
 }
 
 .grid {
@@ -42,17 +57,18 @@ body {
 .card {
   display: flex;
   align-items: center;
-  width: 100%;        /* prend toute la largeur dispo du parent */
-  max-width: none;    /* supprime la limite rigide */
+  width: 100%;
+  max-width: none;
   min-width: 300px;
-  background-color: rgba(255, 255, 255, 0.002);
-  backdrop-filter: blur(3px);
+  background-color: var(--card-background-color);
+  backdrop-filter: blur(4px);
   padding: 28px 28px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid var(--card-border-color);
   border-radius: 15px;
   gap: 16px;
   position: relative;
   transition: box-shadow .25s;
+  box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2);
   overflow: hidden;
 
   &::before {
@@ -75,23 +91,25 @@ body {
     height: 36px;
     border-radius: 50%;
     background-color: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     transition: background-color 0.3s, transform 0.2s;
 
     img {
       width: 20px;
       height: 20px;
-      filter: invert(1);
+      filter: brightness(0) !important;
+      /* Force black in light mode */
+      transition: filter 0.3s;
     }
 
     &:hover {
-      background-color: #fff;
-      color: #000;
+      background-color: #000;
+      color: #fff;
 
       img {
-        filter: invert(0);
+        filter: brightness(0) invert(1) !important;
       }
     }
   }
@@ -111,6 +129,9 @@ body {
       height: 100%;
       object-fit: contain;
       border-radius: inherit;
+      filter: brightness(0) !important;
+      /* Force black in light mode */
+      transition: filter 0.3s;
     }
   }
 
@@ -163,6 +184,8 @@ body {
       transform: translateZ(0);
       color: var(--card-icon-color);
       transition: color .25s;
+      filter: brightness(0) !important;
+      /* Force black in light mode */
     }
   }
 
@@ -192,7 +215,7 @@ body {
     opacity: 0;
     transition: opacity .5s;
 
-    &:before {
+    &::before {
       content: '';
       width: 150%;
       padding-bottom: 150%;
@@ -229,61 +252,136 @@ body {
         animation: tile 12s infinite;
         opacity: 0;
 
-        &:nth-child(1)  { animation-delay: -6s; }
-        &:nth-child(2)  { animation-delay: -3.5s; }
-        &:nth-child(3)  { animation-delay: -8s; }
-        &:nth-child(4)  { animation-delay: -2.5s; }
-        &:nth-child(5)  { animation-delay: -5s; }
-        &:nth-child(6)  { animation-delay: -9.5s; }
-        &:nth-child(7)  { animation-delay: -4s; }
-        &:nth-child(8)  { animation-delay: -7s; }
-        &:nth-child(9)  { animation-delay: -2s; }
-        &:nth-child(10) { animation-delay: -8.5s; }
-        &:nth-child(11) { animation-delay: -4.5s; }
-        &:nth-child(12) { animation-delay: -9s; }
-        &:nth-child(13) { animation-delay: -5.5s; }
-        &:nth-child(14) { animation-delay: -3s; }
-        &:nth-child(15) { animation-delay: -7.5s; }
-        &:nth-child(16) { animation-delay: -6.5s; }
+        &:nth-child(1) {
+          animation-delay: -6s;
+        }
+
+        &:nth-child(2) {
+          animation-delay: -3.5s;
+        }
+
+        &:nth-child(3) {
+          animation-delay: -8s;
+        }
+
+        &:nth-child(4) {
+          animation-delay: -2.5s;
+        }
+
+        &:nth-child(5) {
+          animation-delay: -5s;
+        }
+
+        &:nth-child(6) {
+          animation-delay: -9.5s;
+        }
+
+        &:nth-child(7) {
+          animation-delay: -4s;
+        }
+
+        &:nth-child(8) {
+          animation-delay: -7s;
+        }
+
+        &:nth-child(9) {
+          animation-delay: -2s;
+        }
+
+        &:nth-child(10) {
+          animation-delay: -8.5s;
+        }
+
+        &:nth-child(11) {
+          animation-delay: -4.5s;
+        }
+
+        &:nth-child(12) {
+          animation-delay: -9s;
+        }
+
+        &:nth-child(13) {
+          animation-delay: -5.5s;
+        }
+
+        &:nth-child(14) {
+          animation-delay: -3s;
+        }
+
+        &:nth-child(15) {
+          animation-delay: -7.5s;
+        }
+
+        &:nth-child(16) {
+          animation-delay: -6.5s;
+        }
       }
     }
 
     @keyframes tile {
-      0%, 12.5%, 100% { opacity: 1; }
-      25%, 82.5% { opacity: 0; }
+
+      0%,
+      12.5%,
+      100% {
+        opacity: 1;
+      }
+
+      25%,
+      82.5% {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+/* Hover effects for the card */
+.card:hover {
+  box-shadow: 0 var(--card-hover-box-shadow-1-y) var(--card-hover-box-shadow-1-blur) var(--card-hover-box-shadow-1), 0 var(--card-hover-box-shadow-2-y) var(--card-hover-box-shadow-2-blur) var(--card-hover-box-shadow-2);
+
+  .icon {
+    &::after {
+      background-color: var(--card-hover-icon-background-color);
+      border-color: var(--card-hover-icon-border-color);
+    }
+
+    svg {
+      color: var(--card-hover-icon-color);
     }
   }
 
-  .about-border {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+  .shine {
+    opacity: 1;
+    transition-duration: .5s;
+  }
 
-    rect {
-      fill: none;
-      stroke: #f472b6;
-      stroke-width: 1.25px;
-      stroke-dasharray: 4000;
-      stroke-dashoffset: 4000;
-      transition: stroke-dashoffset 1.5s ease-out;
+  .background .tiles {
+    opacity: 1;
+
+    .tile {
+      animation-play-state: running;
     }
   }
 
-  &:hover {
-    .icon {
-      &::after { background-color: var(--card-hover-icon-background-color); border-color: var(--card-hover-icon-border-color); }
-      svg { color: var(--card-hover-icon-color); }
-    }
+  .about-border rect {
+    stroke-dashoffset: 0;
+  }
+}
 
-    .shine { opacity: 1; transition-duration: .5s; transition-delay: 0s; }
+.about-border {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 
-    .background {
-      .tiles { opacity: 1; .tile { animation-play-state: running; } }
-    }
-
-    .about-border rect { stroke-dashoffset: 0; }
+  rect {
+    fill: none;
+    stroke: #f472b6;
+    stroke-width: 1.25px;
+    stroke-dasharray: 4000;
+    stroke-dashoffset: 4000;
+    transition: stroke-dashoffset 1.5s ease-out;
   }
 }
 
@@ -313,7 +411,12 @@ body {
     }
 
     .card-content {
-      h4, p { padding-left: 0; text-align: center; }
+
+      h4,
+      p {
+        padding-left: 0;
+        text-align: center;
+      }
     }
   }
 }
@@ -343,5 +446,34 @@ body {
   }
 }
 
-html { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-*, *::before, *::after { box-sizing: inherit; }
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Dark Mode Overrides - Flat Selectors to avoid nesting issues */
+html.dark .card .card-github {
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+html.dark .card .card-github img {
+  filter: brightness(0) invert(1) !important;
+}
+
+html.dark .card .card-github:hover img {
+  filter: brightness(0) !important;
+}
+
+html.dark .card .card-image img {
+  filter: brightness(0) invert(1) !important;
+}
+
+html.dark .card .icon svg {
+  filter: brightness(0) invert(1) !important;
+}

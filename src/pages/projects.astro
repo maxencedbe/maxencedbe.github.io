@@ -5,21 +5,31 @@ import "../styles/projectCard.scss";
 ---
 
 <Layout title="Projects">
-
   <main class="flex flex-col items-center px-4 w-full mx-auto">
-    <section aria-labelledby="about-me" class="max-w-[1280px] lg:max-w-[1162px] mx-auto pb-6 px-4 sm:px-6 md:px-8">
-
-      <h1 class="text-4xl font-bold text-white text-center md:mb-20 mb-8">
+    <section
+      aria-labelledby="about-me"
+      class="max-w-[1280px] lg:max-w-[1162px] mx-auto pb-6 px-4 sm:px-6 md:px-8"
+    >
+      <h1
+        class="text-4xl font-bold text-black dark:text-white text-center md:mb-20 mb-8"
+      >
         My projects
       </h1>
 
-      <p class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-12 md:mb-16">
-          Here you will find a selection of projects I have worked on, ranging from academic research to personal and professional experiences. Each one reflects my interest in AI, data, and software development. Whenever possible, I have included links to repositories or demos so you can explore the work in more detail. Some projects are still under development, as I am continuously improving them.
+      <p
+        class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-12 md:mb-16 text-black dark:text-white"
+      >
+        Here you will find a selection of projects I have worked on, ranging
+        from academic research to personal and professional experiences. Each
+        one reflects my interest in AI, data, and software development. Whenever
+        possible, I have included links to repositories or demos so you can
+        explore the work in more detail. Some projects are still under
+        development, as I am continuously improving them.
       </p>
-
     </section>
-    <section class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8">
-
+    <section
+      class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8"
+    >
       <div class="flex flex-col items-center w-full md:mb-16 mb-8">
         <ProjectCard
           client:load
@@ -59,27 +69,25 @@ import "../styles/projectCard.scss";
           githubUrl="https://github.com/maxencedbe/parking-optimization"
         />
       </div>
-
     </section>
   </main>
 
   <style>
-  @media (max-width: 1024px) {
-    .desktop-indent {
-      text-indent: 2em;
-    }
+    @media (max-width: 1024px) {
+      .desktop-indent {
+        text-indent: 2em;
+      }
 
-    .mobile-narrow {
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.7;
+      .mobile-narrow {
+        margin-left: auto;
+        margin-right: auto;
+        line-height: 1.7;
+      }
     }
-  }
-
-  @media (min-width: 1025px) {
-    .desktop-indent {
-      text-indent: 4em;
+    @media (min-width: 1025px) {
+      .desktop-indent {
+        text-indent: 4em;
+      }
     }
-  }
   </style>
 </Layout>

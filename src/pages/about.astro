@@ -3,22 +3,34 @@ import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="About me">
-  <main class="px-6 md:px-12 text-white">
-
+  <main class="px-6 md:px-12 text-black dark:text-white">
     <section aria-labelledby="about-me" class="max-w-[1100px] mx-auto pb-6">
-      <h1 class="text-4xl font-bold text-white mb-20 text-center">
+      <h1
+        class="text-4xl font-bold text-black dark:text-white mb-20 text-center"
+      >
         About me
       </h1>
 
-      <p class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow">
-        I am Maxence Debes, an MSc data science student with a strong background in mathematics and computer science. 
-        I am passionate about machine learning, software development, and how technology can drive digital transformation. 
-        I am currently looking for a 6-month end-of-studies internship in AI/ML for spring–summer 2026.
+      <p
+        class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white"
+      >
+        I am Maxence Debes, an MSc data science student with a strong background
+        in mathematics and computer science. I am passionate about machine
+        learning, software development, and how technology can drive digital
+        transformation. I am currently looking for a 6-month end-of-studies
+        internship in AI/ML for spring–summer 2026.
       </p>
     </section>
 
-    <div class="max-w-[1100px] mx-auto resume-buttons flex gap-4 md:gap-10 mb-16">
-      <a href="/Maxence_Debes_Resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-button">
+    <div
+      class="max-w-[1100px] mx-auto resume-buttons flex gap-4 md:gap-10 mb-16"
+    >
+      <a
+        href="/Maxence_Debes_Resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="resume-button"
+      >
         View Resume
       </a>
       <a href="/Maxence_Debes_Resume.pdf" download class="resume-button">
@@ -27,59 +39,84 @@ import Layout from "../layouts/Layout.astro";
     </div>
 
     <section class="max-w-[1100px] mx-auto mb-20">
-      <h2 class="text-2xl font-semibold mb-8 section-title">
+      <h2
+        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white"
+      >
         Work experience
       </h2>
 
       <div class="flex flex-col gap-8 items-center">
-
         <div class="about-card relative flex items-center min-h-32">
-          <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"/>
+          <svg
+            class="about-border"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
           <div class="w-32 h-32 flex items-center justify-center">
-            <a href="https://www.batigere-maison-familiale.fr" target="_blank" rel="noopener noreferrer">
-              <img 
-                src="/Batigere.png" 
+            <a
+              href="https://www.batigere-maison-familiale.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/Batigere.png"
                 alt="Company Logo"
-                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102"
+                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
           <div class="flex flex-col self-center">
-            <h3 class="font-semibold text-lg mb-0 leading-tight">
+            <h3
+              class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
+            >
               Batigere Maison Familiale
             </h3>
-            <p class="text-sm text-gray-300 mb-2 mt-0 leading-snug">
+            <p
+              class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
+            >
               Jul 2025 – Aug 2025
             </p>
-            <p class="text-sm text-gray-200 mt-0 leading-snug">
+            <p class="text-sm text-black dark:text-white mt-0 leading-snug">
               IT Intern
             </p>
           </div>
         </div>
 
         <div class="about-card relative flex items-center min-h-32">
-          <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"/>
+          <svg
+            class="about-border"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
           <div class="w-32 h-32 flex items-center justify-center">
-            <a href="#" target="_blank" rel="noopener noreferrer">
-              <img 
-                src="/Atos.png" 
-                alt="Company Logo" 
-                class="max-w-20 max-h-20 sm:max-w-22 sm:max-h-22 object-contain transition-transform duration-200 hover:scale-102" 
+            <a
+              href="https://atos.net/fr/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/Atos.png"
+                alt="Company Logo"
+                class="max-w-20 max-h-20 sm:max-w-22 sm:max-h-22 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
           <div class="flex flex-col self-center">
-            <h3 class="font-semibold text-lg mb-0 leading-tight">
+            <h3
+              class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
+            >
               Atos
             </h3>
-            <p class="text-sm text-gray-300 mb-2 mt-0 leading-snug">
+            <p
+              class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
+            >
               Jul 2024 – Aug 2024
             </p>
-            <p class="text-sm text-gray-200 mt-0 leading-snug">
+            <p class="text-sm text-black dark:text-white mt-0 leading-snug">
               Java Programmer Intern
             </p>
           </div>
@@ -88,64 +125,88 @@ import Layout from "../layouts/Layout.astro";
     </section>
 
     <section class="max-w-[1100px] mx-auto">
-      <h2 class="text-2xl font-semibold mb-8 section-title">
+      <h2
+        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white"
+      >
         Education
       </h2>
 
       <div class="flex flex-col gap-8 items-center">
-
         <div class="about-card relative flex items-center gap-6 min-h-32">
-          <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"/>
+          <svg
+            class="about-border"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
           <div class="w-32 h-32 flex items-center justify-center">
-            <a href="https://www.ip-paris.fr/education/masters/mention-mathematiques-appliquees-statistique/master-year-2-data-science" target="_blank" rel="noopener noreferrer">
-              <img 
-                src="/X.png" 
-                alt="School Logo" 
-                class="max-w-24 max-h-24 object-contain transition-transform duration-200 hover:scale-102" 
+            <a
+              href="https://www.ip-paris.fr/education/masters/mention-mathematiques-appliquees-statistique/master-year-2-data-science"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/X.png"
+                alt="School Logo"
+                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
           <div class="flex flex-col self-center">
-            <h3 class="font-semibold text-lg mb-0 leading-tight">
+            <h3
+              class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
+            >
               Ecole Polytechnique - Polytechnic Institute of Paris
             </h3>
-            <p class="text-sm text-gray-300 mb-2 mt-0 leading-snug">
+            <p
+              class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
+            >
               Sep 2025 – Now
             </p>
-            <p class="text-sm text-gray-200 mt-0 leading-snug">
+            <p class="text-sm text-black dark:text-white mt-0 leading-snug">
               MSc data science
             </p>
           </div>
         </div>
 
         <div class="about-card relative flex items-center min-h-32">
-          <svg class="about-border absolute inset-0 pointer-events-none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"/>
+          <svg
+            class="about-border absolute inset-0 pointer-events-none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
           <div class="w-32 h-32 flex items-center justify-center shrink-0">
-            <a href="https://www.telecom-sudparis.eu/formation/modelisations-statistiques-et-applications" target="_blank" rel="noopener noreferrer">
-              <img 
-                src="/TSP.png" 
-                alt="School Logo" 
-                class="w-24 h-24 sm:w-32 sm:h-32 object-contain transition-transform duration-200 hover:scale-102" 
+            <a
+              href="https://www.telecom-sudparis.eu/formation/modelisations-statistiques-et-applications"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src="/TSP.png"
+                alt="School Logo"
+                class="w-24 h-24 sm:w-32 sm:h-32 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
           <div class="flex flex-col self-center">
-            <h3 class="font-semibold text-lg mb-0 leading-tight">
+            <h3
+              class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
+            >
               Telecom SudParis - Polytechnic Institute of Paris
             </h3>
-            <p class="text-sm text-gray-300 mb-2 mt-0 leading-snug">
+            <p
+              class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
+            >
               Sep 2023 – Present
             </p>
-            <p class="text-sm text-gray-200 mt-0 leading-snug">
+            <p class="text-sm text-black dark:text-white mt-0 leading-snug">
               Master's degree in computer science and applied mathematics
             </p>
           </div>
         </div>
-
       </div>
     </section>
   </main>
@@ -159,17 +220,31 @@ import Layout from "../layouts/Layout.astro";
       width: 100%;
       max-width: 1100px;
       padding: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 15px;
-      background: rgba(255, 255, 255, 0.002);
-      backdrop-filter: blur(4px);
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1), 0 8px 15px rgba(0,0,0,0.2);
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(1px);
+      box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.05),
+        0 8px 15px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    :global(.dark) .about-card {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+      box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.05),
+        0 8px 15px rgba(0, 0, 0, 0.1);
     }
 
     .about-border {
       position: absolute;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       pointer-events: none;
@@ -195,18 +270,40 @@ import Layout from "../layouts/Layout.astro";
       align-items: center;
       padding: 12px 28px;
       border-radius: 15px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background-color: rgba(255, 255, 255, 0.002);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background-color: rgba(255, 255, 255, 0.003);
+      backdrop-filter: blur(0.5px);
+      -webkit-backdrop-filter: blur(0.5px);
+      box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.05),
+        0 8px 15px rgba(0, 0, 0, 0.1);
       font-size: 18px;
       font-weight: 500;
-      color: #fff;
+      color: #000;
       cursor: pointer;
-      transition: background-color 0.5s, color 0.5s;
+      transition:
+        background-color 0.5s,
+        color 0.5s;
       text-align: left;
     }
+
+    :global(.dark) .resume-button {
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      color: #fff;
+      box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.05),
+        0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
     .resume-button:hover {
+      background-color: #000;
+      color: #fff;
+    }
+
+    :global(.dark) .resume-button:hover {
       background-color: #fff;
       color: #000;
     }

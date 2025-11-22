@@ -2,7 +2,7 @@
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AnimatedBackground from "../components/AnimatedBackground.jsx";
-import { ViewTransitions } from "astro:transitions";
+import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 
 const { title, showNavbar = true } = Astro.props;
@@ -14,35 +14,52 @@ const { title, showNavbar = true } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <link rel="icon" href="/Neural_network_black.svg" type="image/svg" />
-    <ViewTransitions />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+    <ClientRouter />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      const getTheme = () => {
+        if (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("theme")
+        ) {
+          return localStorage.getItem("theme");
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return "dark";
+        }
+        return "light";
+      };
+      const theme = getTheme();
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      window.localStorage.setItem("theme", theme);
+
+      document.addEventListener("astro:after-swap", () => {
+        const theme = getTheme();
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      });
+    </script>
+
     <style>
-      :root { --nav-h: 70px; }
-      
-      html, body {
-        margin: 0;
-        padding: 0;
-        font-family: 'Poppins', sans-serif;
-        background-color: #000000;
-        background-image: radial-gradient(circle, rgb(0, 0, 0) 1.5px, transparent 1px);
-        background-size: 40px 40px;
-        color: #fff;
+      :root {
+        --nav-h: 70px;
+      }
+
+      html {
+        font-family: "Poppins", sans-serif;
         overflow-x: hidden;
-        min-height: 100dvh;
-        height:auto;
-      }
-
-      body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100dvh;
-      }
-
-      #navbar-wrapper {
-        width: 100%;
-        pointer-events: auto;width: 100%;
       }
 
       #footer-wrapper {
@@ -51,18 +68,13 @@ const { title, showNavbar = true } = Astro.props;
       }
 
       main.transition-container {
-        flex: 1;
-        display : flex;
-        flex-direction: column;
-        padding-top: 70px;
         position: relative;
         z-index: 10;
-        justify-content: flex-start !important;
         box-sizing: border-box;
       }
 
       html::view-transition {
-        background-color: #000000;
+        @apply bg-white dark:bg-black;
       }
 
       main.transition-container.no-navbar {
@@ -77,17 +89,22 @@ const { title, showNavbar = true } = Astro.props;
         #footer-wrapper {
           padding-top: 10px;
         }
-
-        main.transition-container {
-          padding-top: 30px;
-        }
       }
     </style>
   </head>
-  <body>
+  <body class="flex flex-col min-h-screen">
     <AnimatedBackground client:only="react" />
-    {showNavbar && <div id="navbar-wrapper"><Navbar client:load /></div>}
-    <main class={`transition-container ${!showNavbar ? "no-navbar" : ""}`}>
+    {
+      showNavbar && (
+        <div id="navbar-wrapper">
+          <Navbar client:load />
+        </div>
+      )
+    }
+    <div class="h-[58px] w-full"></div>
+    <main
+      class={`transition-container flex-1 flex flex-col ${!showNavbar ? "no-navbar" : ""}`}
+    >
       <slot />
     </main>
     <div id="footer-wrapper"><Footer client:load /></div>
