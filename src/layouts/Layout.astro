@@ -18,7 +18,7 @@ const { title, showNavbar = true } = Astro.props;
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <script is:inline>
@@ -29,9 +29,6 @@ const { title, showNavbar = true } = Astro.props;
         ) {
           return localStorage.getItem("theme");
         }
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          return "dark";
-        }
         return "light";
       };
       const theme = getTheme();
@@ -41,6 +38,15 @@ const { title, showNavbar = true } = Astro.props;
         document.documentElement.classList.remove("dark");
       }
       window.localStorage.setItem("theme", theme);
+
+      document.addEventListener("astro:before-swap", (ev) => {
+        const theme = getTheme();
+        if (theme === "dark") {
+          ev.newDocument.documentElement.classList.add("dark");
+        } else {
+          ev.newDocument.documentElement.classList.remove("dark");
+        }
+      });
 
       document.addEventListener("astro:after-swap", () => {
         const theme = getTheme();
@@ -73,12 +79,7 @@ const { title, showNavbar = true } = Astro.props;
         box-sizing: border-box;
       }
 
-      html::view-transition {
-        background-color: #ffffff;
-      }
-
-      :global(.dark) html::view-transition {
-        background-color: #000000;
+      main.transition-container.no-navbar {
       }
 
       main.transition-container.no-navbar {

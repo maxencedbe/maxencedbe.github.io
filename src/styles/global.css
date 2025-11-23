@@ -1,13 +1,13 @@
-:root {
-  --font-sans: 'Poppins', ui-sans-serif, system-ui;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.4s;
-  animation-timing-function: ease-in-out;
-}
+/* stylelint-disable-next-line */
+@variant dark (&:where(.dark, .dark *));
 
+/* View Transitions */
 ::view-transition-old(root) {
   animation-name: fade-out;
 }
@@ -42,13 +42,19 @@
   }
 }
 
-@import "tailwindcss";
-
-/* stylelint-disable-next-line */
-@variant dark (&:where(.dark, .dark *));
-
+/* Base Styles */
 @layer base {
+  html {
+    font-family: "Poppins", sans-serif;
+    background-color: #ffffff;
+  }
+
+  html.dark {
+    background-color: #000000;
+  }
+
   body {
+    font-family: "Poppins", sans-serif;
     background-color: #ffffff;
     color: #000000;
     transition: background-color 0.3s, color 0.3s;
@@ -56,6 +62,7 @@
         rgba(0, 0, 0, 0.3) 1px,
         transparent 1px);
     background-size: 40px 40px;
+    background-attachment: fixed;
   }
 
   html.dark body {
@@ -64,5 +71,6 @@
     background-image: radial-gradient(circle,
         rgba(255, 255, 255, 0.15) 1px,
         transparent 1px);
+    background-attachment: fixed;
   }
 }

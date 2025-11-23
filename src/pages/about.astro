@@ -228,7 +228,9 @@ import Layout from "../layouts/Layout.astro";
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
       overflow: hidden;
-      transition: all 0.3s ease;
+      transition:
+        all 0.3s ease,
+        transform 0.3s ease-in-out;
     }
 
     :global(.dark) .about-card {
@@ -236,9 +238,7 @@ import Layout from "../layouts/Layout.astro";
       background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(3px);
       -webkit-backdrop-filter: blur(3px);
-      box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.05),
-        0 8px 15px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 3px 6px rgba(255, 255, 255, 0.25);
     }
 
     .about-border {
@@ -264,6 +264,20 @@ import Layout from "../layouts/Layout.astro";
       stroke-dashoffset: 0;
     }
 
+    .about-card:hover {
+      box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.04),
+        0 15px 25px rgba(0, 0, 0, 0.15);
+      transform: translateY(-2px);
+    }
+
+    :global(.dark) .about-card:hover {
+      box-shadow:
+        0 5px 15px rgba(255, 255, 255, 0.04),
+        0 15px 25px rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
     .resume-button {
       display: flex;
       justify-content: flex-start;
@@ -271,9 +285,9 @@ import Layout from "../layouts/Layout.astro";
       padding: 12px 28px;
       border-radius: 15px;
       border: 1px solid rgba(0, 0, 0, 0.1);
-      background-color: rgba(255, 255, 255, 0.003);
-      backdrop-filter: blur(0.5px);
-      -webkit-backdrop-filter: blur(0.5px);
+      background-color: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(1px);
+      -webkit-backdrop-filter: blur(1px);
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
@@ -290,8 +304,8 @@ import Layout from "../layouts/Layout.astro";
     :global(.dark) .resume-button {
       border: 1px solid rgba(255, 255, 255, 0.25);
       background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
       color: #fff;
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
@@ -301,6 +315,9 @@ import Layout from "../layouts/Layout.astro";
     .resume-button:hover {
       background-color: #000;
       color: #fff;
+      box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.04),
+        0 15px 25px rgba(0, 0, 0, 0.15);
     }
 
     :global(.dark) .resume-button:hover {

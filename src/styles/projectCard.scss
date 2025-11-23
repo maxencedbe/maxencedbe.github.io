@@ -42,8 +42,8 @@ html.dark {
   --card-hover-border-color: rgba(255, 255, 255, 0.1);
   --card-hover-box-shadow-1: rgba(0, 0, 0, 0.04);
   --card-hover-box-shadow-2: rgba(0, 0, 0, 0.2);
-  --card-hover-icon-color: #ffffff;
-  --card-hover-icon-background-color: rgba(255, 255, 255, 0.08);
+  --card-hover-icon-color: #000000;
+  --card-hover-icon-background-color: #ffffff;
   --card-hover-icon-border-color: rgba(255, 255, 255, 0.12);
 }
 
@@ -67,7 +67,7 @@ html.dark {
   border-radius: 15px;
   gap: 16px;
   position: relative;
-  transition: box-shadow .25s;
+  transition: box-shadow .25s, transform .25s ease-in-out;
   box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2);
   overflow: hidden;
 
@@ -90,7 +90,7 @@ html.dark {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.02);
+    background-color: rgba(0, 0, 0, 0.01);
     border: 1px solid rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(3px);
     -webkit-backdrop-filter: blur(3px);
@@ -99,7 +99,7 @@ html.dark {
     img {
       width: 20px;
       height: 20px;
-      filter: brightness(0) !important;
+      filter: brightness(0);
       /* Force black in light mode */
       transition: filter 0.3s;
     }
@@ -109,7 +109,8 @@ html.dark {
       color: #fff;
 
       img {
-        filter: brightness(0) invert(1) !important;
+        filter: brightness(0) invert(1);
+        /* Force white on hover */
       }
     }
   }
@@ -118,10 +119,12 @@ html.dark {
     flex: 0 0 140px;
     width: 140px;
     height: 140px;
+    z-index: 2;
+    padding-top: 20px;
+    padding-bottom: 20px;
     border-radius: 12px;
     overflow: hidden;
     position: relative;
-    z-index: 2;
     background-color: transparent;
 
     img {
@@ -129,9 +132,9 @@ html.dark {
       height: 100%;
       object-fit: contain;
       border-radius: inherit;
-      filter: brightness(0) !important;
-      /* Force black in light mode */
       transition: filter 0.3s;
+      filter: brightness(0);
+      /* Force black in light mode */
     }
   }
 
@@ -184,26 +187,9 @@ html.dark {
       transform: translateZ(0);
       color: var(--card-icon-color);
       transition: color .25s;
-      filter: brightness(0) !important;
+      filter: brightness(0);
       /* Force black in light mode */
     }
-  }
-
-  h4 {
-    z-index: 2;
-    position: relative;
-    margin: 12px 0 4px 0;
-    font-family: inherit;
-    font-weight: 600;
-    color: var(--card-label-color);
-  }
-
-  p {
-    z-index: 2;
-    position: relative;
-    margin: 0;
-    font-size: 14px;
-    color: var(--text-color);
   }
 
   .shine {
@@ -332,11 +318,39 @@ html.dark {
       }
     }
   }
+
+  .about-border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 4;
+
+    rect {
+      fill: none;
+      stroke: var(--card-line-color);
+      stroke-width: 1.3px;
+      stroke-dasharray: 4000;
+      stroke-dashoffset: 4000;
+      transition: stroke-dashoffset 1.5s ease-out;
+    }
+  }
+
+  &:hover .about-border rect {
+    stroke-dashoffset: 0;
+  }
+
+  &:hover .background .line-1 {
+    opacity: 1;
+  }
 }
 
 /* Hover effects for the card */
 .card:hover {
   box-shadow: 0 var(--card-hover-box-shadow-1-y) var(--card-hover-box-shadow-1-blur) var(--card-hover-box-shadow-1), 0 var(--card-hover-box-shadow-2-y) var(--card-hover-box-shadow-2-blur) var(--card-hover-box-shadow-2);
+  transform: translateY(-2px);
 
   .icon {
     &::after {
@@ -356,39 +370,19 @@ html.dark {
 
   .background .tiles {
     opacity: 1;
+    transition-duration: .25s;
 
     .tile {
-      animation-play-state: running;
+      animation-duration: 8s;
     }
   }
-
-  .about-border rect {
-    stroke-dashoffset: 0;
-  }
 }
 
-.about-border {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-
-  rect {
-    fill: none;
-    stroke: #f472b6;
-    stroke-width: 1.25px;
-    stroke-dasharray: 4000;
-    stroke-dashoffset: 4000;
-    transition: stroke-dashoffset 1.5s ease-out;
-  }
-}
-
-@media (max-width: 1100px) {
+@media (max-width: 768px) {
   .card {
     flex-direction: column;
-    max-width: 100%;
+    align-items: center;
+    text-align: center;
     padding: 24px;
 
     .card-github {
@@ -457,23 +451,32 @@ html {
   box-sizing: inherit;
 }
 
-/* Dark Mode Overrides - Flat Selectors to avoid nesting issues */
+/* Dark Mode Overrides */
 html.dark .card .card-github {
   border-color: rgba(255, 255, 255, 0.25);
 }
 
 html.dark .card .card-github img {
   filter: brightness(0) invert(1) !important;
-}
-
-html.dark .card .card-github:hover img {
-  filter: brightness(0) !important;
+  /* Force white in dark mode */
 }
 
 html.dark .card .card-image img {
   filter: brightness(0) invert(1) !important;
+  /* Force white in dark mode */
+}
+
+html.dark .card .card-github:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+html.dark .card .card-github:hover img {
+  filter: brightness(0) !important;
+  /* Force black on hover */
 }
 
 html.dark .card .icon svg {
   filter: brightness(0) invert(1) !important;
+  /* Force white in dark mode */
 }

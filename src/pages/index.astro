@@ -46,7 +46,7 @@ const links = [
 
       <div class="flex justify-center items-center mt-4 lg:mt-0">
         <div
-          class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border-2 border-black dark:border-white overflow-hidden"
+          class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border-1 border-black dark:border-white overflow-hidden"
         >
           <img
             src="/Profile_picture.jpg"
@@ -101,7 +101,9 @@ const links = [
 
     :global(.dark) .contact-button {
       border: 1px solid rgba(255, 255, 255, 0.25);
-      background-color: rgba(255, 255, 255, 0.002);
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
     }
 
     .contact-button:hover {
