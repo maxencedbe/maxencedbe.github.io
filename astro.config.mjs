@@ -8,7 +8,7 @@ export default defineConfig({
   site: 'https://maxencedbe.github.io',
 
   build: {
-      format: 'directory',
+    format: 'directory',
   },
 
   vite: {
@@ -16,4 +16,12 @@ export default defineConfig({
   },
 
   integrations: [react()],
+
+  i18n: {
+    defaultLocale: "en",
+    locales: ["en", "fr"],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
 });

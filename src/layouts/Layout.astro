@@ -8,9 +8,11 @@ import "../styles/global.css";
 const { title, showNavbar = true } = Astro.props;
 ---
 
-<html lang="fr">
+<!doctype html>
+<html lang={Astro.currentLocale ?? "en"}>
   <head>
     <meta charset="UTF-8" />
+    <meta name="description" content="Maxence Debes Portfolio" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <link rel="icon" href="/Neural_network_black.svg" type="image/svg" />
@@ -22,6 +24,39 @@ const { title, showNavbar = true } = Astro.props;
       rel="stylesheet"
     />
     <script is:inline>
+      (function () {
+        const getTheme = () => {
+          if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+            return localStorage.getItem("theme");
+          }
+          return "light";
+        };
+        const theme = getTheme();
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+      })();
+    </script>
+    <script>
+      import Lenis from "lenis";
+
+      const initLenis = () => {
+        const lenis = new Lenis();
+
+        function raf(time) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+      };
+
+      initLenis();
+
+      document.addEventListener("astro:after-swap", initLenis);
+
       const getTheme = () => {
         if (
           typeof localStorage !== "undefined" &&
@@ -31,13 +66,6 @@ const { title, showNavbar = true } = Astro.props;
         }
         return "light";
       };
-      const theme = getTheme();
-      if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-      window.localStorage.setItem("theme", theme);
 
       document.addEventListener("astro:before-swap", (ev) => {
         const theme = getTheme();
@@ -45,15 +73,6 @@ const { title, showNavbar = true } = Astro.props;
           ev.newDocument.documentElement.classList.add("dark");
         } else {
           ev.newDocument.documentElement.classList.remove("dark");
-        }
-      });
-
-      document.addEventListener("astro:after-swap", () => {
-        const theme = getTheme();
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
         }
       });
     </script>
@@ -102,11 +121,11 @@ const { title, showNavbar = true } = Astro.props;
     {
       showNavbar && (
         <div id="navbar-wrapper">
-          <Navbar client:load />
+          <Navbar client:load currentPath={Astro.url.pathname} currentLocale={Astro.currentLocale} />
         </div>
       )
     }
-    <div class="h-[58px] w-full"></div>
+    <div class="h-[120px] w-full"></div>
     <main
       class={`transition-container flex-1 flex flex-col ${!showNavbar ? "no-navbar" : ""}`}
     >

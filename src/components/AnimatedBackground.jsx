@@ -36,11 +36,11 @@ export default function AnimatedBackground() {
 
     let spacing;
     if (width < 768) {
-      spacing = 80;
+      spacing = 100;
     } else if (width < 1200) {
-      spacing = 70;
+      spacing = 90;
     } else {
-      spacing = 60;
+      spacing = 80;
     }
 
     for (let x = 0; x < width; x += spacing) {
@@ -158,15 +158,6 @@ export default function AnimatedBackground() {
         }
 
         ctx.strokeStyle = `rgba(${r},${g},${b},${p.active})`;
-        // Shadow for better visibility
-        if (isDark) {
-          ctx.shadowColor = `rgba(${r},${g},${b},0.6)`;
-          ctx.shadowBlur = 6;
-        } else {
-          // Add subtle shadow in light mode for better visibility
-          ctx.shadowColor = `rgba(${r},${g},${b},0.3)`;
-          ctx.shadowBlur = 2;
-        }
         ctx.stroke();
       });
     }

@@ -6,11 +6,48 @@ const links = [
   { name: "Projects", href: "/projects" },
 ];
 
+const linksFr = [
+  { name: "Accueil", href: "/" },
+  { name: "À propos", href: "/about" },
+  { name: "Projets", href: "/projects" },
+];
+
+const languages = [
+  { code: "en", label: "ANG" },
+  { code: "fr", label: "FRA" },
+];
+
 function normalize(p) {
   if (!p) return "/";
   if (p.length > 1 && p.endsWith("/")) return p.slice(0, -1);
   return p;
 }
+
+const resolveHref = (href) => {
+  if (typeof window === "undefined") return normalize(href);
+  try {
+    return normalize(new URL(href, window.location.origin).pathname);
+  } catch {
+    return normalize(href);
+  }
+};
+
+const findIndexFromPath = (path, locale) => {
+  const n = normalize(path);
+  const currentLinks = locale === "fr" ? linksFr : links;
+
+  // Remove /fr prefix for matching if in French
+  let pathToCheck = n;
+  if (locale === "fr" && pathToCheck.startsWith("/fr")) {
+    pathToCheck = pathToCheck.replace("/fr", "") || "/";
+  }
+
+  let idx = currentLinks.findIndex((l) => resolveHref(l.href) === pathToCheck);
+  if (idx !== -1) return idx;
+
+  idx = currentLinks.findIndex((l) => l.href !== "/" && pathToCheck.startsWith(resolveHref(l.href)));
+  return idx !== -1 ? idx : 0;
+};
 
 const SunIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -32,20 +69,66 @@ const MoonIcon = () => (
   </svg>
 );
 
-export default function Navbar() {
-  const [activeIndex, setActiveIndex] = useState(0);
+const ChevronDownIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="6 9 12 15 18 9"></polyline>
+  </svg>
+);
+
+export default function Navbar({ currentPath, currentLocale = "en" }) {
+  const [activeIndex, setActiveIndex] = useState(() => findIndexFromPath(currentPath || "/", currentLocale));
   const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
   const [isOpen, setIsOpen] = useState(false);
+  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
   const linkRefs = useRef([]);
   const navRef = useRef(null);
   const ulRef = useRef(null);
+  const langMenuRef = useRef(null);
+
+  const navLinks = currentLocale === "fr" ? linksFr : links;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const isDark = document.documentElement.classList.contains("dark");
       setTheme(isDark ? "dark" : "light");
     }
+  }, []);
+
+  // Scroll logic for smart navbar
+  useEffect(() => {
+    const controlNavbar = () => {
+      if (typeof window !== "undefined") {
+        const currentScrollY = window.scrollY;
+
+        if (currentScrollY > lastScrollY && currentScrollY > 50) {
+          // Scrolling down & past threshold -> Hide
+          setIsVisible(false);
+        } else {
+          // Scrolling up -> Show
+          setIsVisible(true);
+        }
+
+        setLastScrollY(currentScrollY);
+      }
+    };
+
+    window.addEventListener("scroll", controlNavbar);
+    return () => window.removeEventListener("scroll", controlNavbar);
+  }, [lastScrollY]);
+
+  // Close language menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target)) {
+        setIsLangMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const toggleTheme = () => {
@@ -59,20 +142,24 @@ export default function Navbar() {
     localStorage.setItem("theme", newTheme);
   };
 
-  const resolveHref = (href) => {
-    try {
-      return normalize(new URL(href, window.location.origin).pathname);
-    } catch {
-      return normalize(href);
+  const changeLanguage = (newLocale) => {
+    if (newLocale === currentLocale) {
+      setIsLangMenuOpen(false);
+      return;
     }
-  };
 
-  const findIndexFromPath = (path) => {
-    const n = normalize(path);
-    let idx = links.findIndex((l) => resolveHref(l.href) === n);
-    if (idx !== -1) return idx;
-    idx = links.findIndex((l) => l.href !== "/" && n.startsWith(resolveHref(l.href)));
-    return idx !== -1 ? idx : 0;
+    let newPath = currentPath;
+
+    if (newLocale === "fr") {
+      if (!newPath.startsWith("/fr")) {
+        newPath = "/fr" + (newPath === "/" ? "" : newPath);
+      }
+    } else {
+      if (newPath.startsWith("/fr")) {
+        newPath = newPath.replace("/fr", "") || "/";
+      }
+    }
+    window.location.href = newPath;
   };
 
   const updateSlider = (index) => {
@@ -94,7 +181,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const handleNavigation = () => {
-      const idx = findIndexFromPath(window.location.pathname);
+      const idx = findIndexFromPath(window.location.pathname, currentLocale);
       setActiveIndex(idx);
       updateSlider(idx);
     };
@@ -107,7 +194,7 @@ export default function Navbar() {
       window.removeEventListener("astro:after-swap", handleNavigation);
       window.removeEventListener("resize", handleResize);
     };
-  }, [activeIndex]);
+  }, [activeIndex, currentLocale]);
 
   useEffect(() => {
     if (isOpen) {
@@ -147,8 +234,19 @@ export default function Navbar() {
     }, 300);
   };
 
+  const getLinkHref = (href) => {
+    if (currentLocale === "fr") {
+      return "/fr" + (href === "/" ? "" : href);
+    }
+    return href;
+  };
+
   return (
-    <nav ref={navRef} className="relative px-6 py-4 z-50 flex justify-between md:block">
+    <nav
+      ref={navRef}
+      className={`fixed top-0 left-0 w-full px-6 py-4 z-50 flex justify-between md:block transition-transform duration-300 bg-white/5 dark:bg-black/5 backdrop-blur-sm border-b-[0.5px] border-black/5 dark:border-white/10 ${isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+    >
       {/* Bouton hamburger mobile */}
       <button
         className="md:hidden fixed top-4 left-4 z-50 flex flex-col gap-1 p-2"
@@ -168,14 +266,44 @@ export default function Navbar() {
         />
       </button>
 
-      {/* Theme Toggle Mobile (Right side) */}
-      <button
-        onClick={toggleTheme}
-        className="md:hidden fixed top-4 right-4 z-50 p-2 bg-white/20 dark:bg-black/20 backdrop-blur-sm rounded-full text-black dark:text-white cursor-pointer"
-        aria-label="Toggle theme"
-      >
-        {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-      </button>
+      {/* Theme & Language Toggle Mobile (Right side) */}
+      <div className="md:hidden fixed top-4 right-4 z-50 flex gap-2 items-center">
+        <div className="relative" ref={langMenuRef}>
+          <button
+            onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+            className="p-2 bg-white/20 dark:bg-black/20 backdrop-blur-sm rounded-full text-black dark:text-white cursor-pointer font-bold text-xs flex items-center gap-1"
+            aria-label="Toggle language menu"
+          >
+            {currentLocale === "en" ? "ANG" : "FRA"}
+            <ChevronDownIcon />
+          </button>
+
+          {isLangMenuOpen && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center gap-1">
+              {languages
+                .filter((lang) => lang.code !== currentLocale)
+                .map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => changeLanguage(lang.code)}
+                    className="text-xs font-bold text-black/50 dark:text-white/50 hover:text-pink-400 transition-colors"
+                  >
+                    {lang.label}
+                  </button>
+                ))}
+            </div>
+          )}
+        </div>
+
+        <button
+          onClick={toggleTheme}
+          className="p-2 bg-white/20 dark:bg-black/20 backdrop-blur-sm rounded-full text-black dark:text-white cursor-pointer"
+          aria-label="Toggle theme"
+        >
+          <span className="hidden dark:block"><SunIcon /></span>
+          <span className="block dark:hidden"><MoonIcon /></span>
+        </button>
+      </div>
 
       {/* Overlay mobile animé */}
       <div
@@ -190,13 +318,13 @@ export default function Navbar() {
           }`}
         style={{ height: "calc(var(--vh, 1vh) * 100)" }}
       >
-        {links.map((link, i) => (
+        {navLinks.map((link, i) => (
           <li key={link.href} className="w-full flex justify-center">
             <a
-              href={link.href}
+              href={getLinkHref(link.href)}
               ref={(el) => (linkRefs.current[i] = el)}
               className={`font-sans text-lg tracking-wide transition-colors duration-300 ease-in-out text-center ${activeIndex === i
-                ? "text-pink-400 font-semibold underline underline-offset-4 decoration-pink-400"
+                ? "text-pink-400 font-semibold underline underline-offset-4 decoration-pink-400 transition-none"
                 : "text-black dark:text-white hover:text-pink-400"
                 }`}
               onClick={() => handleClick(i)}
@@ -210,13 +338,13 @@ export default function Navbar() {
       {/* Menu desktop */}
       <div className="hidden md:flex md:flex-row md:items-center md:justify-between">
         <ul ref={ulRef} className="flex flex-row gap-x-8 relative">
-          {links.map((link, i) => (
+          {navLinks.map((link, i) => (
             <li key={link.href} className="relative flex flex-col items-center md:items-start">
               <a
-                href={link.href}
+                href={getLinkHref(link.href)}
                 ref={(el) => (linkRefs.current[i] = el)}
-                className={`font-sans pb-0.5 transition-colors duration-400 ease-in-out ${activeIndex === i
-                  ? "text-black dark:text-white"
+                className={`font-sans font-bold pb-0.5 transition-colors duration-400 ease-in-out ${activeIndex === i
+                  ? "text-black dark:text-white transition-none"
                   : "text-black/50 dark:text-white/50 hover:text-pink-400"
                   }`}
                 onClick={() => handleClick(i)}
@@ -227,7 +355,7 @@ export default function Navbar() {
           ))}
           {/* Slider desktop */}
           <span
-            className="absolute bottom-0 h-[0.7px] bg-pink-400 rounded transition-all duration-200 hidden md:block"
+            className="absolute bottom-0 h-[2px] bg-pink-400 rounded transition-all duration-200 hidden md:block"
             style={{
               left: sliderStyle.left,
               width: sliderStyle.width,
@@ -235,14 +363,47 @@ export default function Navbar() {
           />
         </ul>
 
-        {/* Theme Toggle Desktop */}
-        <button
-          onClick={toggleTheme}
-          className="p-2 rounded-full text-black dark:text-white cursor-pointer"
-          aria-label="Toggle theme"
-        >
-          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-        </button>
+        {/* Theme & Language Toggle Desktop */}
+        <div className="flex gap-4 items-center">
+          <div className="relative" ref={langMenuRef}>
+            <button
+              onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+              className="text-black dark:text-white cursor-pointer font-bold transition-colors flex items-center gap-1"
+              aria-label="Toggle language menu"
+            >
+              {currentLocale === "en" ? "ANG" : "FRA"}
+              <ChevronDownIcon />
+            </button>
+
+            <div
+              className={`absolute top-full left-0 mt-2 flex flex-col items-start gap-1 transition-all duration-200 ease-in-out ${isLangMenuOpen
+                ? "opacity-100 translate-y-0 pointer-events-auto"
+                : "opacity-0 -translate-y-2 pointer-events-none"
+                }`}
+            >
+              {languages
+                .filter((lang) => lang.code !== currentLocale)
+                .map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => changeLanguage(lang.code)}
+                    className="font-bold text-black/50 dark:text-white/50 hover:text-pink-400 transition-colors cursor-pointer"
+                  >
+                    {lang.label}
+                  </button>
+                ))}
+            </div>
+          </div>
+
+          <button
+            onClick={toggleTheme}
+            className="p-2 rounded-full text-black dark:text-white cursor-pointer"
+            aria-label="Toggle theme"
+          >
+            <span className="hidden dark:block"><SunIcon /></span>
+            <span className="block dark:hidden"><MoonIcon /></span>
+          </button>
+        </div>
       </div>
     </nav>
   );
