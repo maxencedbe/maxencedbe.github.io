@@ -116,7 +116,7 @@ const { title, showNavbar = true } = Astro.props;
       }
     </style>
   </head>
-  <body class="flex flex-col min-h-screen">
+  <body class={`flex flex-col min-h-screen ${(Astro.url.pathname === "/" || Astro.url.pathname === "/fr" || Astro.url.pathname === "/fr/") ? "overflow-hidden" : ""}`}>
     <AnimatedBackground client:only="react" />
     {
       showNavbar && (
@@ -125,7 +125,7 @@ const { title, showNavbar = true } = Astro.props;
         </div>
       )
     }
-    <div class="h-[120px] w-full"></div>
+    <div class="h-[30px] md:h-[120px] w-full"></div>
     <main
       class={`transition-container flex-1 flex flex-col ${!showNavbar ? "no-navbar" : ""}`}
     >

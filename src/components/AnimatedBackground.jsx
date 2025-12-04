@@ -195,7 +195,7 @@ export default function AnimatedBackground() {
   }, []);
 
   return (
-    <div id="large-header" ref={headerRef} className="large-header demo-1">
+    <div id="large-header" ref={headerRef} className="large-header demo-1" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
       <canvas id="demo-canvas" ref={canvasRef}></canvas>
     </div>
   );

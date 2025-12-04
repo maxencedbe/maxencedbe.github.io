@@ -249,25 +249,25 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     >
       {/* Bouton hamburger mobile */}
       <button
-        className="md:hidden fixed top-4 left-4 z-50 flex flex-col gap-1 p-2"
+        className="md:hidden flex flex-col gap-1 p-2 z-50"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span
-          className={`block w-6 h-0.5 transition-transform duration-300 ${isOpen || theme === 'dark' ? 'bg-white' : 'bg-black'}`}
+          className={`block w-6 h-0.5 transition-transform duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
           style={{ transform: isOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }}
         />
         <span
-          className={`block w-6 h-0.5 transition-opacity duration-300 ${isOpen || theme === 'dark' ? 'bg-white' : 'bg-black'}`}
+          className={`block w-6 h-0.5 transition-opacity duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
           style={{ opacity: isOpen ? 0 : 1 }}
         />
         <span
-          className={`block w-6 h-0.5 transition-transform duration-300 ${isOpen || theme === 'dark' ? 'bg-white' : 'bg-black'}`}
+          className={`block w-6 h-0.5 transition-transform duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
           style={{ transform: isOpen ? "rotate(-45deg) translate(5px, -5px)" : "none" }}
         />
       </button>
 
       {/* Theme & Language Toggle Mobile (Right side) */}
-      <div className="md:hidden fixed top-4 right-4 z-50 flex gap-2 items-center">
+      <div className="md:hidden flex gap-2 items-center z-50">
         <div className="relative" ref={langMenuRef}>
           <button
             onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
@@ -307,14 +307,14 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
 
       {/* Overlay mobile animé */}
       <div
-        className={`fixed inset-0 bg-transparent bg-opacity-30 backdrop-blur-sm md:hidden z-40 transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        className={`fixed inset-0 bg-transparent bg-opacity-30 backdrop-blur-md md:hidden z-40 transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
         onClick={() => setIsOpen(false)}
       />
 
       {/* Menu mobile slide-in/out */}
       <ul
-        className={`fixed top-0 left-0 w-full h-[100dvh] md:h-screen bg-white/90 dark:bg-black/90 backdrop-blur-sm z-45 flex flex-col justify-center items-center gap-8 p-8 transform transition-transform duration-300 md:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`fixed top-0 left-0 w-full h-[100dvh] md:h-screen bg-white/90 dark:bg-black/90 backdrop-blur-md z-45 flex flex-col justify-center items-center gap-8 p-8 transform transition-transform duration-300 md:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         style={{ height: "calc(var(--vh, 1vh) * 100)" }}
       >
