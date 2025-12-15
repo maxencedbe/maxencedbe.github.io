@@ -26,7 +26,10 @@ const { title, showNavbar = true } = Astro.props;
     <script is:inline>
       (function () {
         const getTheme = () => {
-          if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          if (
+            typeof localStorage !== "undefined" &&
+            localStorage.getItem("theme")
+          ) {
             return localStorage.getItem("theme");
           }
           return "light";
@@ -45,7 +48,7 @@ const { title, showNavbar = true } = Astro.props;
       const initLenis = () => {
         const lenis = new Lenis();
 
-        function raf(time) {
+        function raf(time: number) {
           lenis.raf(time);
           requestAnimationFrame(raf);
         }
@@ -116,12 +119,18 @@ const { title, showNavbar = true } = Astro.props;
       }
     </style>
   </head>
-  <body class={`flex flex-col min-h-screen ${(Astro.url.pathname === "/" || Astro.url.pathname === "/fr" || Astro.url.pathname === "/fr/") ? "overflow-hidden" : ""}`}>
+  <body
+    class={`flex flex-col min-h-screen ${Astro.url.pathname === "/" || Astro.url.pathname === "/fr" || Astro.url.pathname === "/fr/" ? "overflow-hidden" : ""}`}
+  >
     <AnimatedBackground client:only="react" />
     {
       showNavbar && (
         <div id="navbar-wrapper">
-          <Navbar client:load currentPath={Astro.url.pathname} currentLocale={Astro.currentLocale} />
+          <Navbar
+            client:load
+            currentPath={Astro.url.pathname}
+            currentLocale={Astro.currentLocale}
+          />
         </div>
       )
     }

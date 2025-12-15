@@ -2,23 +2,24 @@
 import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout title="À propos de moi">
+<Layout title="À propos">
   <main class="px-6 md:px-12 text-black dark:text-white">
-    <section aria-labelledby="about-me" class="max-w-[1100px] mx-auto pb-6">
+    <section aria-labelledby="about-me" class="max-w-[1100px] mx-auto pt-10">
       <h1
         class="text-4xl font-bold text-black dark:text-white mb-20 text-center animate-fade-in-down"
       >
-        À propos de moi
+        À propos
       </h1>
 
       <p
         class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white animate-fade-in animate-delay-200"
       >
-        Je suis Maxence Debes, étudiant en Master de science des données avec de solides bases
-        en mathématiques et en informatique. Je suis passionné par l'apprentissage
-        automatique, le développement logiciel et la manière dont la technologie peut conduire
-        la transformation numérique. Je suis actuellement à la recherche d'un stage de fin
-        d'études de 6 mois en IA/ML pour le printemps-été 2026.
+        Je suis Maxence Debes, étudiant en Master de science des données avec de
+        solides bases en mathématiques et en informatique. Je suis passionné par
+        l'apprentissage automatique, le développement logiciel et la manière
+        dont la technologie peut conduire la transformation numérique. Je suis
+        actuellement à la recherche d'un stage de fin d'études de 6 mois en
+        IA/ML pour le printemps-été 2026.
       </p>
     </section>
 
@@ -46,7 +47,9 @@ import Layout from "../../layouts/Layout.astro";
       </h2>
 
       <div class="flex flex-col gap-8 items-center">
-        <div class="about-card relative flex items-center min-h-32 animate-fade-in-left animate-delay-500">
+        <div
+          class="about-card relative flex items-center min-h-32 animate-fade-in-left animate-delay-500"
+        >
           <svg
             class="about-border"
             xmlns="http://www.w3.org/2000/svg"
@@ -54,7 +57,7 @@ import Layout from "../../layouts/Layout.astro";
           >
             <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
-          <div class="w-32 h-32 flex items-center justify-center">
+          <div class="w-32 h-20 md:h-32 flex items-center justify-center">
             <a
               href="https://www.batigere-maison-familiale.fr"
               target="_blank"
@@ -84,7 +87,9 @@ import Layout from "../../layouts/Layout.astro";
           </div>
         </div>
 
-        <div class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-600">
+        <div
+          class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-600"
+        >
           <svg
             class="about-border"
             xmlns="http://www.w3.org/2000/svg"
@@ -92,7 +97,7 @@ import Layout from "../../layouts/Layout.astro";
           >
             <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
-          <div class="w-32 h-32 flex items-center justify-center">
+          <div class="w-32 h-20 md:h-32 flex items-center justify-center">
             <a
               href="https://atos.net/fr/"
               target="_blank"
@@ -101,7 +106,7 @@ import Layout from "../../layouts/Layout.astro";
               <img
                 src="/Atos.png"
                 alt="Company Logo"
-                class="max-w-20 max-h-20 sm:max-w-22 sm:max-h-22 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
@@ -132,7 +137,9 @@ import Layout from "../../layouts/Layout.astro";
       </h2>
 
       <div class="flex flex-col gap-8 items-center">
-        <div class="about-card relative flex items-center gap-6 min-h-32 animate-fade-in-left animate-delay-800">
+        <div
+          class="about-card relative flex items-center gap-6 min-h-32 animate-fade-in-left animate-delay-800"
+        >
           <svg
             class="about-border"
             xmlns="http://www.w3.org/2000/svg"
@@ -140,7 +147,7 @@ import Layout from "../../layouts/Layout.astro";
           >
             <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
-          <div class="w-32 h-32 flex items-center justify-center">
+          <div class="w-32 h-20 md:h-32 flex items-center justify-center">
             <a
               href="https://www.ip-paris.fr/education/masters/mention-mathematiques-appliquees-statistique/master-year-2-data-science"
               target="_blank"
@@ -149,7 +156,7 @@ import Layout from "../../layouts/Layout.astro";
               <img
                 src="/X.png"
                 alt="School Logo"
-                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                class="w-20 h-20 md:w-28 md:h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
@@ -170,7 +177,9 @@ import Layout from "../../layouts/Layout.astro";
           </div>
         </div>
 
-        <div class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-800">
+        <div
+          class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-800"
+        >
           <svg
             class="about-border absolute inset-0 pointer-events-none"
             xmlns="http://www.w3.org/2000/svg"
@@ -187,7 +196,7 @@ import Layout from "../../layouts/Layout.astro";
               <img
                 src="/TSP.png"
                 alt="School Logo"
-                class="w-24 h-24 sm:w-32 sm:h-32 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                class="w-32 h-32 sm:w-32 sm:h-32 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
@@ -220,10 +229,10 @@ import Layout from "../../layouts/Layout.astro";
       width: 100%;
       max-width: 1100px;
       padding: 12px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 15px;
       background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(1px);
+      backdrop-filter: blur(2px);
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
@@ -234,11 +243,10 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     :global(.dark) .about-card {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-      box-shadow: 0 3px 6px rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
     }
 
     .about-border {
@@ -272,9 +280,6 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     :global(.dark) .about-card:hover {
-      box-shadow:
-        0 5px 15px rgba(255, 255, 255, 0.04),
-        0 15px 25px rgba(255, 255, 255, 0.15);
       transform: translateY(-2px);
     }
 
@@ -284,10 +289,8 @@ import Layout from "../../layouts/Layout.astro";
       align-items: center;
       padding: 12px 28px;
       border-radius: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      background-color: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(1px);
-      -webkit-backdrop-filter: blur(1px);
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.5);
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
@@ -295,34 +298,59 @@ import Layout from "../../layouts/Layout.astro";
       font-weight: 500;
       color: #000;
       cursor: pointer;
-      transition:
-        background-color 0.5s,
-        color 0.5s;
+      transition: color 0.5s;
       text-align: left;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .resume-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-color: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      transition: background-color 0.5s;
     }
 
     :global(.dark) .resume-button {
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
+      background-color: rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
       color: #fff;
       box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.05),
-        0 8px 15px rgba(0, 0, 0, 0.1);
+        0 3px 6px rgba(0, 0, 0, 0.2),
+        0 8px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    :global(.dark) .resume-button::before {
+      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
     }
 
     .resume-button:hover {
-      background-color: #000;
       color: #fff;
       box-shadow:
         0 5px 15px rgba(0, 0, 0, 0.04),
         0 15px 25px rgba(0, 0, 0, 0.15);
     }
 
+    .resume-button:hover::before {
+      background-color: #000;
+    }
+
     :global(.dark) .resume-button:hover {
-      background-color: #fff;
       color: #000;
+      background-color: #fff;
+    }
+
+    :global(.dark) .resume-button:hover::before {
+      background-color: #fff;
     }
 
     .section-title {
@@ -337,6 +365,7 @@ import Layout from "../../layouts/Layout.astro";
         max-width: 95%;
         margin-left: auto;
         margin-right: auto;
+        gap: 8px;
       }
 
       .resume-buttons {

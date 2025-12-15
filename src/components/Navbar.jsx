@@ -250,7 +250,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 w-full px-6 py-4 z-50 flex justify-between md:block transition-transform duration-300 bg-white/5 dark:bg-black/5 backdrop-blur-sm border-b-[0.5px] border-black/5 dark:border-white/10 ${isVisible ? "translate-y-0" : "-translate-y-full"
+      className={`fixed top-0 left-0 w-full px-6 py-4 z-50 flex justify-between md:block transition-transform duration-300 bg-white/5 dark:bg-black/5 backdrop-blur-sm border-b-[0.5px] border-black/10 dark:border-white/10 ${isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
     >
       {/* Bouton hamburger mobile */}
@@ -275,30 +275,50 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
       {/* Theme & Language Toggle Mobile (Right side) */}
       <div className="md:hidden flex gap-2 items-center z-50">
         <div className="relative" ref={mobileLangMenuRef}>
+          {/* Bouton visible quand le menu est fermé */}
           <button
-            onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-            className="p-2 bg-white/20 dark:bg-black/20 backdrop-blur-sm rounded-full text-black dark:text-white cursor-pointer font-semibold text-xs flex items-center gap-1"
-            aria-label="Toggle language menu"
+            onClick={() => setIsLangMenuOpen(true)}
+            className={`text-black dark:text-white cursor-pointer font-semibold text-xs transition-opacity duration-200 flex items-center justify-center gap-1 p-2 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            aria-label="Open language menu"
           >
             {currentLocale === "en" ? "ANG" : "FRA"}
-            <ChevronDownIcon />
+            <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
+              <ChevronDownIcon />
+            </div>
           </button>
 
-          {isLangMenuOpen && (
-            <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 flex flex-col items-center gap-1 z-[60]">
-              {languages
-                .filter((lang) => lang.code !== currentLocale)
-                .map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => changeLanguage(lang.code)}
-                    className="text-xs font-medium text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors"
-                  >
-                    {lang.label}
-                  </button>
-                ))}
-            </div>
-          )}
+          {/* Menu unifié type "pillule" qui overlay le bouton */}
+          <div
+            className={`absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-200 ease-in-out bg-white/50 dark:bg-black/90 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-[60] ${isLangMenuOpen
+              ? "opacity-100 pointer-events-auto"
+              : "opacity-0 pointer-events-none"
+              }`}
+          >
+            {/* Header du menu: Langue actuelle (agit comme bouton de fermeture) */}
+            <button
+              onClick={() => setIsLangMenuOpen(false)}
+              className="font-semibold text-xs text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
+              aria-label="Close language menu"
+            >
+              {currentLocale === "en" ? "ANG" : "FRA"}
+              <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
+                <ChevronDownIcon />
+              </div>
+            </button>
+
+            {/* Options de langue */}
+            {languages
+              .filter((lang) => lang.code !== currentLocale)
+              .map((lang) => (
+                <button
+                  key={lang.code}
+                  onClick={() => changeLanguage(lang.code)}
+                  className="font-medium text-xs text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center"
+                >
+                  {lang.label}
+                </button>
+              ))}
+          </div>
         </div>
 
         <button
@@ -372,7 +392,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               <a
                 href={getLinkHref(link.href)}
                 ref={(el) => (linkRefs.current[i] = el)}
-                className={`font-sans font-medium pb-0.5 transition-colors duration-400 ease-in-out ${activeIndex === i
+                className={`font-sans font-normal pb-0.5 transition-colors duration-400 ease-in-out ${activeIndex === i
                   ? "text-pink-400 transition-none"
                   : "text-black dark:text-white hover:text-pink-400"
                   }`}
@@ -384,7 +404,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
           ))}
           {/* Slider desktop */}
           <span
-            className="absolute bottom-0 h-[1.5px] bg-pink-400 rounded transition-all duration-200 hidden md:block"
+            className="absolute bottom-0 h-[1px] bg-pink-400 rounded transition-all duration-200 hidden md:block"
             style={{
               left: sliderStyle.left,
               width: sliderStyle.width,
@@ -395,28 +415,45 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
         {/* Theme & Language Toggle Desktop */}
         <div className="flex gap-4 items-center">
           <div className="relative" ref={desktopLangMenuRef}>
+            {/* Bouton visible quand le menu est fermé */}
             <button
-              onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-              className="text-black dark:text-white cursor-pointer font-medium transition-colors flex items-center gap-1"
-              aria-label="Toggle language menu"
+              onClick={() => setIsLangMenuOpen(true)}
+              className={`text-black dark:text-white cursor-pointer font-medium transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+              aria-label="Open language menu"
             >
               {currentLocale === "en" ? "ANG" : "FRA"}
-              <ChevronDownIcon />
+              <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
+                <ChevronDownIcon />
+              </div>
             </button>
 
+            {/* Menu unifié type "pillule" qui overlay le bouton */}
             <div
-              className={`absolute top-full left-0 mt-2 flex flex-col items-start gap-1 transition-all duration-200 ease-in-out ${isLangMenuOpen
-                ? "opacity-100 translate-y-0 pointer-events-auto"
-                : "opacity-0 -translate-y-2 pointer-events-none"
+              className={`absolute -top-[9px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-white/50 dark:bg-black/90 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-50 ${isLangMenuOpen
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
                 }`}
             >
+              {/* Header du menu: Langue actuelle (agit comme bouton de fermeture) */}
+              <button
+                onClick={() => setIsLangMenuOpen(false)}
+                className="font-medium text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
+                aria-label="Close language menu"
+              >
+                {currentLocale === "en" ? "ANG" : "FRA"}
+                <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
+                  <ChevronDownIcon />
+                </div>
+              </button>
+
+              {/* Options de langue */}
               {languages
                 .filter((lang) => lang.code !== currentLocale)
                 .map((lang) => (
                   <button
                     key={lang.code}
                     onClick={() => changeLanguage(lang.code)}
-                    className="font-medium text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer"
+                    className="font-medium text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center"
                   >
                     {lang.label}
                   </button>

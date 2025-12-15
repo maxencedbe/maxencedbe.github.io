@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 
 <Layout title="About me">
   <main class="px-6 md:px-12 text-black dark:text-white">
-    <section aria-labelledby="about-me" class="max-w-[1100px] mx-auto pb-6">
+    <section aria-labelledby="about-me" class="max-w-[1100px] mx-auto pt-10">
       <h1
         class="text-4xl font-bold text-black dark:text-white mb-20 text-center animate-fade-in-down"
       >
@@ -56,7 +56,7 @@ import Layout from "../layouts/Layout.astro";
           >
             <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
-          <div class="w-32 h-32 flex items-center justify-center">
+          <div class="w-32 h-20 md:h-32 flex items-center justify-center">
             <a
               href="https://www.batigere-maison-familiale.fr"
               target="_blank"
@@ -96,7 +96,7 @@ import Layout from "../layouts/Layout.astro";
           >
             <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
           </svg>
-          <div class="w-32 h-32 flex items-center justify-center">
+          <div class="w-32 h-20 md:h-32 flex items-center justify-center">
             <a
               href="https://atos.net/fr/"
               target="_blank"
@@ -105,7 +105,7 @@ import Layout from "../layouts/Layout.astro";
               <img
                 src="/Atos.png"
                 alt="Company Logo"
-                class="max-w-20 max-h-20 sm:max-w-22 sm:max-h-22 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
@@ -155,7 +155,7 @@ import Layout from "../layouts/Layout.astro";
               <img
                 src="/X.png"
                 alt="School Logo"
-                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                class="w-28 h-28 sm:w-28 sm:h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
@@ -163,12 +163,12 @@ import Layout from "../layouts/Layout.astro";
             <h3
               class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
             >
-              Ecole Polytechnique - Polytechnic Institute of Paris
+              École Polytechnique - Polytechnic Institute of Paris
             </h3>
             <p
               class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
             >
-              Sep 2025 – Now
+              Sep 2025 – Present
             </p>
             <p class="text-sm text-black dark:text-white mt-0 leading-snug">
               MSc data science
@@ -195,7 +195,7 @@ import Layout from "../layouts/Layout.astro";
               <img
                 src="/TSP.png"
                 alt="School Logo"
-                class="w-24 h-24 sm:w-32 sm:h-32 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                class="w-32 h-32 sm:w-32 sm:h-32 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
               />
             </a>
           </div>
@@ -203,7 +203,7 @@ import Layout from "../layouts/Layout.astro";
             <h3
               class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
             >
-              Telecom SudParis - Polytechnic Institute of Paris
+              Télécom SudParis - Polytechnic Institute of Paris
             </h3>
             <p
               class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
@@ -228,7 +228,7 @@ import Layout from "../layouts/Layout.astro";
       width: 100%;
       max-width: 1100px;
       padding: 12px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(0, 0, 0, 0.2);
       border-radius: 15px;
       background: rgba(255, 255, 255, 0.5);
       backdrop-filter: blur(2px);
@@ -242,11 +242,10 @@ import Layout from "../layouts/Layout.astro";
     }
 
     :global(.dark) .about-card {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
-      box-shadow: 0 3px 6px rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
     }
 
     .about-border {
@@ -280,9 +279,6 @@ import Layout from "../layouts/Layout.astro";
     }
 
     :global(.dark) .about-card:hover {
-      box-shadow:
-        0 5px 15px rgba(255, 255, 255, 0.04),
-        0 15px 25px rgba(255, 255, 255, 0.15);
       transform: translateY(-2px);
     }
 
@@ -292,9 +288,8 @@ import Layout from "../layouts/Layout.astro";
       align-items: center;
       padding: 12px 28px;
       border-radius: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      /* Background handled by ::before */
-      background-color: transparent;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      background: rgba(255, 255, 255, 0.5);
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
@@ -314,24 +309,27 @@ import Layout from "../layouts/Layout.astro";
       position: absolute;
       inset: 0;
       z-index: -1;
-      background-color: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      background-color: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       transition: background-color 0.5s;
     }
 
     :global(.dark) .resume-button {
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      background-color: rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
       color: #fff;
       box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.05),
-        0 8px 15px rgba(0, 0, 0, 0.1);
+        0 3px 6px rgba(0, 0, 0, 0.2),
+        0 8px 15px rgba(0, 0, 0, 0.4);
     }
 
     :global(.dark) .resume-button::before {
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
+      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
     }
 
     .resume-button:hover {

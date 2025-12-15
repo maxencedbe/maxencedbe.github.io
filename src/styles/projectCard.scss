@@ -1,7 +1,7 @@
 :root {
   --background-color: rgba(255, 255, 255, 0.002);
-  --text-color: #000000;
-  --card-background-color: rgba(255, 255, 255, 0.5);
+  --text-color: #333;
+  --card-background-color: rgba(255, 255, 255, 0.9);
   --card-border-color: rgba(0, 0, 0, 0.2);
   --card-box-shadow-1: rgba(0, 0, 0, 0.05);
   --card-box-shadow-1-y: 3px;
@@ -26,25 +26,26 @@
   --card-hover-icon-color: #000000;
   --card-hover-icon-background-color: rgba(0, 0, 0, 0.1);
   --card-hover-icon-border-color: rgba(0, 0, 0, 0.2);
-  --blur-opacity: .0;
+  --blur-opacity: 2px;
 }
 
 html.dark {
   --text-color: #ffffff;
-  --card-background-color: rgba(0, 0, 0, 0.5);
-  --card-border-color: rgba(255, 255, 255, 0.25);
-  --card-box-shadow-1: rgba(0, 0, 0, 0.1);
-  --card-box-shadow-2: rgba(0, 0, 0, 0.2);
+  --card-background-color: rgba(0, 0, 0, 0.95);
+  --card-border-color: rgba(255, 255, 255, 0.35);
+  --card-box-shadow-1: rgba(0, 0, 0, 0.2);
+  --card-box-shadow-2: rgba(0, 0, 0, 0.4);
   --card-label-color: #FFFFFF;
   --card-icon-color: #D4D4D8;
   --card-icon-background-color: rgba(255, 255, 255, 0.08);
   --card-icon-border-color: rgba(255, 255, 255, 0.12);
   --card-hover-border-color: rgba(255, 255, 255, 0.1);
-  --card-hover-box-shadow-1: rgba(0, 0, 0, 0.04);
-  --card-hover-box-shadow-2: rgba(0, 0, 0, 0.2);
+  --card-hover-box-shadow-1: rgba(0, 0, 0, 0.3);
+  --card-hover-box-shadow-2: rgba(0, 0, 0, 0.5);
   --card-hover-icon-color: #000000;
   --card-hover-icon-background-color: #ffffff;
   --card-hover-icon-border-color: rgba(255, 255, 255, 0.12);
+  --blur-opacity: 2px;
 }
 
 .grid {
@@ -61,7 +62,8 @@ html.dark {
   max-width: none;
   min-width: 300px;
   background-color: var(--card-background-color);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   padding: 28px 28px;
   border: 1px solid var(--card-border-color);
   border-radius: 15px;
@@ -320,6 +322,11 @@ html.dark {
   }
 
   .about-border {
+    display: none;
+  }
+
+  /* .about-border removed
+  .about-border {
     position: absolute;
     top: 0;
     left: 0;
@@ -341,6 +348,7 @@ html.dark {
   &:hover .about-border rect {
     stroke-dashoffset: 0;
   }
+  */
 
   &:hover .background .line-1 {
     opacity: 1;
