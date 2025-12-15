@@ -46,7 +46,9 @@ import Layout from "../layouts/Layout.astro";
       </h2>
 
       <div class="flex flex-col gap-8 items-center">
-        <div class="about-card relative flex items-center min-h-32 animate-fade-in-left animate-delay-500">
+        <div
+          class="about-card relative flex items-center min-h-32 animate-fade-in-left animate-delay-500"
+        >
           <svg
             class="about-border"
             xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +86,9 @@ import Layout from "../layouts/Layout.astro";
           </div>
         </div>
 
-        <div class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-600">
+        <div
+          class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-600"
+        >
           <svg
             class="about-border"
             xmlns="http://www.w3.org/2000/svg"
@@ -132,7 +136,9 @@ import Layout from "../layouts/Layout.astro";
       </h2>
 
       <div class="flex flex-col gap-8 items-center">
-        <div class="about-card relative flex items-center gap-6 min-h-32 animate-fade-in-left animate-delay-800">
+        <div
+          class="about-card relative flex items-center gap-6 min-h-32 animate-fade-in-left animate-delay-800"
+        >
           <svg
             class="about-border"
             xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +176,9 @@ import Layout from "../layouts/Layout.astro";
           </div>
         </div>
 
-        <div class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-800">
+        <div
+          class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-800"
+        >
           <svg
             class="about-border absolute inset-0 pointer-events-none"
             xmlns="http://www.w3.org/2000/svg"
@@ -223,7 +231,7 @@ import Layout from "../layouts/Layout.astro";
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 15px;
       background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(1px);
+      backdrop-filter: blur(2px);
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
@@ -285,9 +293,8 @@ import Layout from "../layouts/Layout.astro";
       padding: 12px 28px;
       border-radius: 15px;
       border: 1px solid rgba(0, 0, 0, 0.1);
-      background-color: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(1px);
-      -webkit-backdrop-filter: blur(1px);
+      /* Background handled by ::before */
+      background-color: transparent;
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
@@ -295,34 +302,55 @@ import Layout from "../layouts/Layout.astro";
       font-weight: 500;
       color: #000;
       cursor: pointer;
-      transition:
-        background-color 0.5s,
-        color 0.5s;
+      transition: color 0.5s;
       text-align: left;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .resume-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background-color: rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      transition: background-color 0.5s;
     }
 
     :global(.dark) .resume-button {
       border: 1px solid rgba(255, 255, 255, 0.25);
-      background-color: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(3px);
-      -webkit-backdrop-filter: blur(3px);
       color: #fff;
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
     }
 
+    :global(.dark) .resume-button::before {
+      background-color: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(3px);
+      -webkit-backdrop-filter: blur(3px);
+    }
+
     .resume-button:hover {
-      background-color: #000;
       color: #fff;
       box-shadow:
         0 5px 15px rgba(0, 0, 0, 0.04),
         0 15px 25px rgba(0, 0, 0, 0.15);
     }
 
+    .resume-button:hover::before {
+      background-color: #000;
+    }
+
     :global(.dark) .resume-button:hover {
-      background-color: #fff;
       color: #000;
+    }
+
+    :global(.dark) .resume-button:hover::before {
+      background-color: #fff;
     }
 
     .section-title {
