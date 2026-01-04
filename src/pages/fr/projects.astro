@@ -1,6 +1,6 @@
 ---
 import Layout from "../../layouts/Layout.astro";
-import ProjectCard from "../../components/ProjectCard.jsx";
+import ProjectGridFr from "../../components/ProjectGridFr.jsx";
 import "../../styles/projectCard.scss";
 ---
 
@@ -11,73 +11,27 @@ import "../../styles/projectCard.scss";
       class="max-w-[1280px] lg:max-w-[1162px] mx-auto pb-6 px-4 sm:px-6 md:px-8"
     >
       <h1
-        class="text-4xl font-bold text-black dark:text-white text-center md:mb-20 mb-8 animate-fade-in-down pt-10"
+        class="text-4xl font-bold text-black dark:text-white text-center md:mb-10 mb-8 animate-fade-in-down pt-10"
       >
         Mes projets
       </h1>
 
       <p
-        class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-12 md:mb-16 text-black dark:text-white animate-fade-in animate-delay-200"
+        class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white animate-fade-in animate-delay-200"
       >
         Vous trouverez ici une sélection de projets sur lesquels j'ai travaillé,
-        allant de la recherche académique aux expériences personnelles et
-        professionnelles. Chacun reflète mon intérêt pour l'IA, les données et
-        le développement logiciel. Dans la mesure du possible, j'ai inclus des
-        liens vers des dépôts ou des démos pour que vous puissiez explorer le
+        allant de la recherche académique à mes expériences personnelles et
+        professionnelles. Chacun reflète mon intérêt pour l'IA, la data et le
+        développement logiciel. Dans la mesure du possible, j'ai inclus des
+        liens vers des repositories pour que vous puissiez explorer mon
         travail plus en détail. Certains projets sont encore en développement,
         car je les améliore continuellement.
       </p>
     </section>
     <section
-      class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8"
+      class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8 w-full"
     >
-      <div
-        class="flex flex-col items-center w-full md:mb-16 mb-8 animate-fade-in-up animate-delay-300"
-      >
-        <ProjectCard
-          client:load
-          title="ScratchNet"
-          description="Réimplémentation d'un Perceptron Multi-Couches (MLP) à partir de zéro avec NumPy."
-          imageUrl="/Neural_network.png"
-          githubUrl="https://github.com/maxencedbe/scratchnet"
-        />
-      </div>
-
-      <div
-        class="flex flex-col items-center w-full md:mb-16 mb-8 animate-fade-in-up animate-delay-400"
-      >
-        <ProjectCard
-          client:load
-          title="Site Web Portfolio Personnel"
-          description="Développement et déploiement d'un site web portfolio personnel utilisant Astro."
-          imageUrl="/Astro.png"
-          githubUrl="https://github.com/maxencedbe/maxencedbe.github.io"
-        />
-      </div>
-
-      <div
-        class="flex flex-col items-center w-full md:mb-16 mb-8 animate-fade-in-up animate-delay-500"
-      >
-        <ProjectCard
-          client:load
-          title="Confidentialité des Données & Anonymisation — Projet Cassiopée"
-          description="Évaluation des risques de confidentialité dans des ensembles de données anonymisés via des études de cas OSINT et de ré-identification, et proposition de stratégies de protection des données. Projet mené à Télécom SudParis sous la supervision de Maryline Laurent et Louis-Philippe Sondeck."
-          imageUrl="/Data.png"
-          githubUrl="https://github.com/maxencedbe/Cassiopee"
-        />
-      </div>
-
-      <div
-        class="flex flex-col items-center w-full animate-fade-in-up animate-delay-600"
-      >
-        <ProjectCard
-          client:load
-          title="Optimisation Automatisée de Stationnement"
-          description="Développement d'un modèle d'optimisation en Python pour le placement de véhicules dans des systèmes de stationnement automatisés à plusieurs niveaux. Conception et évaluation d'algorithmes heuristiques (recherche A*, recuit simulé) pour minimiser les coûts de récupération et améliorer l'efficacité du système."
-          imageUrl="/Parking.png"
-          githubUrl="https://github.com/maxencedbe/parking-optimization"
-        />
-      </div>
+      <ProjectGridFr client:load />
     </section>
   </main>
 

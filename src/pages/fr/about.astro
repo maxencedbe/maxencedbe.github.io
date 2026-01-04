@@ -6,7 +6,7 @@ import Layout from "../../layouts/Layout.astro";
   <main class="px-6 md:px-12 text-black dark:text-white">
     <section aria-labelledby="about-me" class="max-w-[1100px] mx-auto pt-10">
       <h1
-        class="text-4xl font-bold text-black dark:text-white mb-20 text-center animate-fade-in-down"
+        class="text-4xl font-bold text-black dark:text-white mb-8 md:mb-10 text-center animate-fade-in-down"
       >
         À propos
       </h1>
@@ -24,196 +24,264 @@ import Layout from "../../layouts/Layout.astro";
     </section>
 
     <div
-      class="max-w-[1100px] mx-auto resume-buttons flex gap-4 md:gap-10 mb-16 animate-fade-in-up animate-delay-300"
+      class="max-w-[1100px] mx-auto resume-buttons flex gap-4 md:gap-10 mb-16 animate-fade-in-up animate-delay-200"
     >
       <a
         href="/Maxence_Debes_Resume_Fra.pdf"
         target="_blank"
         rel="noopener noreferrer"
-        class="resume-button"
+        class="resume-button gap-2"
       >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
         Voir le CV
       </a>
-      <a href="/Maxence_Debes_Resume_Fra.pdf" download class="resume-button">
+      <a href="/Maxence_Debes_Resume_Fra.pdf" download class="resume-button gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
         Télécharger le CV
       </a>
     </div>
 
     <section class="max-w-[1100px] mx-auto mb-20">
       <h2
-        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white animate-fade-in-right animate-delay-400"
+        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white animate-fade-in-right animate-delay-100"
       >
         Expérience professionnelle
       </h2>
 
       <div class="flex flex-col gap-8 items-center">
-        <div
-          class="about-card relative flex items-center min-h-32 animate-fade-in-left animate-delay-500"
-        >
-          <svg
-            class="about-border"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
-          </svg>
-          <div class="w-32 h-20 md:h-32 flex items-center justify-center">
-            <a
-              href="https://www.batigere-maison-familiale.fr"
-              target="_blank"
-              rel="noopener noreferrer"
+        <div class="w-full animate-fade-in-left animate-delay-200">
+          <div class="about-card relative flex items-center min-h-32">
+            <svg
+              class="about-border"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
-              <img
-                src="/Batigere.png"
-                alt="Company Logo"
-                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
-              />
-            </a>
-          </div>
-          <div class="flex flex-col self-center">
-            <h3
-              class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
-            >
-              Batigere Maison Familiale
-            </h3>
-            <p
-              class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
-            >
-              Juil 2025 – Août 2025
-            </p>
-            <p class="text-sm text-black dark:text-white mt-0 leading-snug">
-              Stagiaire IT
-            </p>
+              <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
+            </svg>
+            <div class="w-32 h-20 md:h-32 flex items-center justify-center">
+              <a
+                href="https://www.batigere-maison-familiale.fr"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="/Batigere.png"
+                  alt="Company Logo"
+                  class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                />
+              </a>
+            </div>
+            <div class="flex flex-col self-center">
+              <h3
+                class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
+              >
+                Batigere Maison Familiale
+              </h3>
+              <p
+                class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
+              >
+                Juil 2025 – Août 2025
+              </p>
+              <p class="text-sm text-black dark:text-white mt-0 leading-snug">
+                Stagiaire informatique
+              </p>
+            </div>
           </div>
         </div>
 
-        <div
-          class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-600"
-        >
-          <svg
-            class="about-border"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
-          </svg>
-          <div class="w-32 h-20 md:h-32 flex items-center justify-center">
-            <a
-              href="https://atos.net/fr/"
-              target="_blank"
-              rel="noopener noreferrer"
+        <div class="w-full animate-fade-in-right animate-delay-200">
+          <div class="about-card tilt-card relative flex items-center min-h-32">
+            <svg
+              class="about-border"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
-              <img
-                src="/Atos.png"
-                alt="Company Logo"
-                class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
-              />
-            </a>
-          </div>
-          <div class="flex flex-col self-center">
-            <h3
-              class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
-            >
-              Atos
-            </h3>
-            <p
-              class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
-            >
-              Juil 2024 – Août 2024
-            </p>
-            <p class="text-sm text-black dark:text-white mt-0 leading-snug">
-              Stagiaire Programmeur Java
-            </p>
+              <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
+            </svg>
+            <div class="w-32 h-20 md:h-32 flex items-center justify-center">
+              <a
+                href="https://atos.net/fr/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="/Atos.png"
+                  alt="Company Logo"
+                  class="max-w-28 max-h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                />
+              </a>
+            </div>
+            <div class="flex flex-col self-center">
+              <h3
+                class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
+              >
+                Atos
+              </h3>
+              <p
+                class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
+              >
+                Juil 2024 – Août 2024
+              </p>
+              <p class="text-sm text-black dark:text-white mt-0 leading-snug">
+                Stagiaire Programmeur Java
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="max-w-[1100px] mx-auto">
+    <section class="max-w-[1100px] mx-auto mb-20">
       <h2
-        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white animate-fade-in-right animate-delay-700"
+        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white animate-fade-in-right animate-delay-100"
+      >
+        Compétences & centres d'intérêt
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Data Science & AI -->
+        <div class="md:col-span-2 animate-fade-in-up animate-delay-200">
+          <div class="skill-card">
+            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
+            </svg>
+            <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Data science & IA</h3>
+            <div class="flex flex-wrap gap-2 relative z-10">
+              {["Python", "PyTorch", "Transformers", "Scikit-learn", "Pandas"].map((skill) => (
+                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Programming & Tools -->
+        <div class="animate-fade-in-up animate-delay-300">
+          <div class="skill-card">
+            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
+            </svg>
+            <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Ingénierie & outils</h3>
+            <div class="flex flex-wrap gap-2 relative z-10">
+              {["Java", "SQL", "Git", "Linux", "LaTeX"].map((skill) => (
+                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Languages -->
+        <div class="animate-fade-in-up animate-delay-400">
+          <div class="skill-card">
+            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
+            </svg>
+            <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Langues</h3>
+            <div class="flex flex-wrap gap-2 relative z-10">
+               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">Français (Maternel)</span>
+               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">Anglais (C1)</span>
+               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">Allemand (A2)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="max-w-[1100px] mx-auto pb-0">
+      <h2
+        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white animate-fade-in-right animate-delay-100"
       >
         Formation
       </h2>
 
       <div class="flex flex-col gap-8 items-center">
-        <div
-          class="about-card relative flex items-center gap-6 min-h-32 animate-fade-in-left animate-delay-800"
-        >
-          <svg
-            class="about-border"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
-          </svg>
-          <div class="w-32 h-20 md:h-32 flex items-center justify-center">
-            <a
-              href="https://www.ip-paris.fr/education/masters/mention-mathematiques-appliquees-statistique/master-year-2-data-science"
-              target="_blank"
-              rel="noopener noreferrer"
+        <div class="w-full animate-fade-in-left animate-delay-200">
+          <div class="about-card relative flex items-center gap-6 min-h-32">
+            <svg
+              class="about-border"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
-              <img
-                src="/X.png"
-                alt="School Logo"
-                class="w-20 h-20 md:w-28 md:h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
-              />
-            </a>
-          </div>
-          <div class="flex flex-col self-center">
-            <h3
-              class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
-            >
-              École Polytechnique - Institut Polytechnique de Paris
-            </h3>
-            <p
-              class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
-            >
-              Sep 2025 – Présent
-            </p>
-            <p class="text-sm text-black dark:text-white mt-0 leading-snug">
-              Master en science des données
-            </p>
+              <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
+            </svg>
+            <div class="w-32 h-20 md:h-32 flex items-center justify-center">
+              <a
+                href="https://www.ip-paris.fr/education/masters/mention-mathematiques-appliquees-statistique/master-year-2-data-science"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="/X.png"
+                  alt="School Logo"
+                  class="w-20 h-20 md:w-28 md:h-28 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                />
+              </a>
+            </div>
+            <div class="flex flex-col self-center">
+              <h3
+                class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
+              >
+                École Polytechnique - Institut Polytechnique de Paris
+              </h3>
+              <p
+                class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
+              >
+                Sep 2025 – Présent
+              </p>
+              <p class="text-sm text-black dark:text-white mt-0 leading-snug">
+                Master en science des données
+              </p>
+            </div>
           </div>
         </div>
 
-        <div
-          class="about-card relative flex items-center min-h-32 animate-fade-in-right animate-delay-800"
-        >
-          <svg
-            class="about-border absolute inset-0 pointer-events-none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
-          </svg>
-          <div class="w-32 h-32 flex items-center justify-center shrink-0">
-            <a
-              href="https://www.telecom-sudparis.eu/formation/modelisations-statistiques-et-applications"
-              target="_blank"
-              rel="noopener noreferrer"
+        <div class="w-full animate-fade-in-right animate-delay-200">
+          <div class="about-card relative flex items-center min-h-32">
+            <svg
+              class="about-border absolute inset-0 pointer-events-none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
             >
-              <img
-                src="/TSP.png"
-                alt="School Logo"
-                class="w-32 h-32 sm:w-32 sm:h-32 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
-              />
-            </a>
-          </div>
-          <div class="flex flex-col self-center">
-            <h3
-              class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
-            >
-              Télécom SudParis - Institut Polytechnique de Paris
-            </h3>
-            <p
-              class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
-            >
-              Sep 2023 – Présent
-            </p>
-            <p class="text-sm text-black dark:text-white mt-0 leading-snug">
-              Diplôme d'ingénieur en informatique et mathématiques appliquées
-            </p>
+              <rect x="0" y="0" width="100%" height="100%" rx="15" ry="15"></rect>
+            </svg>
+            <div class="w-32 h-32 flex items-center justify-center shrink-0">
+              <a
+                href="https://www.telecom-sudparis.eu/formation/modelisations-statistiques-et-applications"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="/TSP.png"
+                  alt="School Logo"
+                  class="w-32 h-32 sm:w-32 sm:h-32 object-contain transition-transform duration-200 hover:scale-102 invert dark:invert-0"
+                />
+              </a>
+            </div>
+            <div class="flex flex-col self-center">
+              <h3
+                class="font-semibold text-lg mb-0 leading-tight text-black dark:text-white"
+              >
+                Télécom SudParis - Institut Polytechnique de Paris
+              </h3>
+              <p
+                class="text-sm text-gray-600 dark:text-gray-300 mb-2 mt-0 leading-snug"
+              >
+                Sep 2023 – Présent
+              </p>
+              <p class="text-sm text-black dark:text-white mt-0 leading-snug">
+                Diplôme d'ingénieur en informatique et mathématiques appliquées
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -229,22 +297,27 @@ import Layout from "../../layouts/Layout.astro";
       width: 100%;
       max-width: 1100px;
       padding: 12px;
-      border: 1px solid rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 15px;
-      background: rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(2px);
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
       overflow: hidden;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+      will-change: transform;
       transition:
-        all 0.3s ease,
-        transform 0.3s ease-in-out;
+        transform 0.3s ease-in-out,
+        box-shadow 0.3s ease;
     }
 
     :global(.dark) .about-card {
       border: 1px solid rgba(255, 255, 255, 0.35);
-      background: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
     }
@@ -260,14 +333,15 @@ import Layout from "../../layouts/Layout.astro";
 
     .about-border rect {
       fill: none;
-      stroke: #f472b6;
+      stroke: #ec4899;
       stroke-width: 1.3px;
       stroke-dasharray: 4000;
       stroke-dashoffset: 4000;
       transition: stroke-dashoffset 1.5s ease-out;
     }
+    
     .about-card:hover .about-border rect {
-      stroke: #f472b6;
+      stroke: #ec4899;
       stroke-width: 1.3px;
       stroke-dashoffset: 0;
     }
@@ -276,11 +350,14 @@ import Layout from "../../layouts/Layout.astro";
       box-shadow:
         0 5px 15px rgba(0, 0, 0, 0.04),
         0 15px 25px rgba(0, 0, 0, 0.15);
-      transform: translateY(-2px);
+      transform: translateY(-2px) translate3d(0, 0, 0);
     }
 
     :global(.dark) .about-card:hover {
-      transform: translateY(-2px);
+      transform: translateY(-2px) translate3d(0, 0, 0);
+      box-shadow:
+        0 5px 10px rgba(255, 255, 255, 0.1),
+        0 15px 25px rgba(255, 255, 255, 0.05);
     }
 
     .resume-button {
@@ -289,8 +366,8 @@ import Layout from "../../layouts/Layout.astro";
       align-items: center;
       padding: 12px 28px;
       border-radius: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.2);
-      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.9);
       box-shadow:
         0 3px 6px rgba(0, 0, 0, 0.05),
         0 8px 15px rgba(0, 0, 0, 0.1);
@@ -298,11 +375,21 @@ import Layout from "../../layouts/Layout.astro";
       font-weight: 500;
       color: #000;
       cursor: pointer;
-      transition: color 0.5s;
       text-align: left;
       position: relative;
       overflow: hidden;
       z-index: 1;
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+      will-change: transform;
+      transition:
+        color 0.5s,
+        background-color 0.3s ease,
+        box-shadow 0.3s ease,
+        border-color 0.3s ease;
     }
 
     .resume-button::before {
@@ -310,14 +397,12 @@ import Layout from "../../layouts/Layout.astro";
       position: absolute;
       inset: 0;
       z-index: -1;
-      background-color: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background-color: transparent;
       transition: background-color 0.5s;
     }
 
     :global(.dark) .resume-button {
-      background-color: rgba(0, 0, 0, 0.9);
+      background-color: rgba(0, 0, 0, 0.85);
       border: 1px solid rgba(255, 255, 255, 0.35);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
@@ -328,9 +413,7 @@ import Layout from "../../layouts/Layout.astro";
     }
 
     :global(.dark) .resume-button::before {
-      background-color: rgba(0, 0, 0, 0.9);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      background-color: transparent;
     }
 
     .resume-button:hover {
@@ -362,7 +445,7 @@ import Layout from "../../layouts/Layout.astro";
         flex-direction: column;
         text-align: center;
         align-items: center;
-        max-width: 95%;
+        max-width: 100%;
         margin-left: auto;
         margin-right: auto;
         gap: 8px;
@@ -400,6 +483,52 @@ import Layout from "../../layouts/Layout.astro";
       .desktop-indent {
         text-indent: 2em;
       }
+    }
+
+
+
+
+    .skill-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      padding: 24px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 15px;
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      box-shadow:
+        0 3px 6px rgba(0, 0, 0, 0.05),
+        0 8px 15px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+      will-change: transform;
+      transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+    }
+
+    :global(.dark) .skill-card {
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      background-color: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    .skill-card:hover .about-border rect {
+      stroke: #ec4899;
+      stroke-width: 1.3px;
+      stroke-dashoffset: 0;
+    }
+
+    .skill-card:hover {
+      box-shadow:
+        0 5px 15px rgba(0, 0, 0, 0.04),
+        0 15px 25px rgba(0, 0, 0, 0.15);
     }
   </style>
 </Layout>

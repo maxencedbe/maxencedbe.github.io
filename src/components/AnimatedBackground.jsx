@@ -20,7 +20,7 @@ export default function AnimatedBackground() {
     let animationFrameId;
     let isDark = document.documentElement.classList.contains("dark");
 
-    // Watch for theme changes
+
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === "class") {
@@ -30,9 +30,17 @@ export default function AnimatedBackground() {
     });
     observer.observe(document.documentElement, { attributes: true });
 
-    largeHeader.style.height = height + "px";
-    canvas.width = width;
-    canvas.height = height;
+    const scaleCanvas = () => {
+      const dpr = window.devicePixelRatio || 1;
+      width = window.innerWidth;
+      height = window.innerHeight;
+      largeHeader.style.height = height + "px";
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    };
+
+    scaleCanvas();
 
     let spacing;
     if (width < 768) {
@@ -84,19 +92,73 @@ export default function AnimatedBackground() {
       );
     });
 
-    const scrollCheck = () => {
-      animateHeader = document.body.scrollTop <= height;
-    };
+
 
     const resize = () => {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      largeHeader.style.height = height + "px";
-      canvas.width = width;
-      canvas.height = height;
+      if (Math.abs(window.innerWidth - width) < 50) return;
+
+      scaleCanvas();
+      target = { x: width / 2, y: height / 2 };
+
+
+      points = [];
+      let spacing;
+      if (width < 768) {
+        spacing = 100;
+      } else if (width < 1200) {
+        spacing = 90;
+      } else {
+        spacing = 80;
+      }
+
+      for (let x = 0; x < width; x += spacing) {
+        for (let y = 0; y < height; y += spacing) {
+          const px = x + Math.random() * spacing;
+          const py = y + Math.random() * spacing;
+          points.push({ x: px, originX: px, y: py, originY: py });
+        }
+      }
+
+
+      points.forEach((p1) => {
+        const closest = [];
+        points.forEach((p2) => {
+          if (p1 !== p2) {
+            let placed = false;
+            for (let k = 0; k < 5; k++) {
+              if (!placed && !closest[k]) {
+                closest[k] = p2;
+                placed = true;
+              }
+            }
+            for (let k = 0; k < 5; k++) {
+              if (
+                !placed &&
+                getDistance(p1, p2) < getDistance(p1, closest[k])
+              ) {
+                closest[k] = p2;
+                placed = true;
+              }
+            }
+          }
+        });
+        p1.closest = closest;
+      });
+
+
+      points.forEach((p) => {
+        p.circle = new circle(
+          p,
+          2 + Math.random() * 2,
+          undefined
+        );
+      });
+
+
+      gsap.killTweensOf(points);
+      points.forEach(shiftPoint);
     };
 
-    window.addEventListener("scroll", scrollCheck);
     window.addEventListener("resize", resize);
 
     points.forEach(shiftPoint);
@@ -104,6 +166,19 @@ export default function AnimatedBackground() {
     function animate() {
       if (animateHeader) {
         ctx.clearRect(0, 0, width, height);
+
+
+        let r, g, b;
+        if (isDark) {
+          r = 245 + Math.sin(Date.now() * 0.001) * 10;
+          g = 245 + Math.cos(Date.now() * 0.001) * 10;
+          b = 255;
+        } else {
+          r = 30 + Math.sin(Date.now() * 0.001) * 15;
+          g = 30;
+          b = 60 + Math.cos(Date.now() * 0.001) * 15;
+        }
+
         points.forEach((p) => {
           if (Math.abs(getDistance(target, p)) < 4000) {
             p.active = 0.3;
@@ -118,7 +193,8 @@ export default function AnimatedBackground() {
             p.active = 0;
             p.circle.active = 0;
           }
-          drawLines(p);
+
+          drawLines(p, r, g, b);
           p.circle.draw();
         });
       }
@@ -137,29 +213,17 @@ export default function AnimatedBackground() {
       });
     }
 
-    function drawLines(p) {
+    function drawLines(p, r, g, b) {
       if (!p.active) return;
+
+
+      ctx.beginPath();
       p.closest.forEach((c) => {
-        ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(c.x, c.y);
-
-        let r, g, b;
-        if (isDark) {
-          // White/Pale Blue for dark mode
-          r = 245 + Math.sin(Date.now() * 0.001) * 10;
-          g = 245 + Math.cos(Date.now() * 0.001) * 10;
-          b = 255;
-        } else {
-          // Darker for better visibility in light mode
-          r = 30 + Math.sin(Date.now() * 0.001) * 15;
-          g = 30;
-          b = 60 + Math.cos(Date.now() * 0.001) * 15;
-        }
-
-        ctx.strokeStyle = `rgba(${r},${g},${b},${p.active})`;
-        ctx.stroke();
       });
+      ctx.strokeStyle = `rgba(${r},${g},${b},${p.active})`;
+      ctx.stroke();
     }
 
     function circle(pos, rad) {
@@ -186,7 +250,6 @@ export default function AnimatedBackground() {
     }
 
     return () => {
-      window.removeEventListener("scroll", scrollCheck);
       window.removeEventListener("resize", resize);
       cancelAnimationFrame(animationFrameId);
       gsap.killTweensOf(points);
@@ -195,8 +258,8 @@ export default function AnimatedBackground() {
   }, []);
 
   return (
-    <div id="large-header" ref={headerRef} className="large-header demo-1" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
-      <canvas id="demo-canvas" ref={canvasRef}></canvas>
+    <div id="large-header" ref={headerRef} className="large-header demo-1" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, transform: 'translateZ(0)' }}>
+      <canvas id="demo-canvas" ref={canvasRef} style={{ width: '100%', height: '100%' }}></canvas>
     </div>
   );
 }

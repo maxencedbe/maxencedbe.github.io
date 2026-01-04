@@ -2,15 +2,26 @@
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import AnimatedBackground from "../components/AnimatedBackground.jsx";
+import BackToTop from "../components/BackToTop.jsx";
+import ScrollObserver from "../components/ScrollObserver.jsx";
 import { ClientRouter } from "astro:transitions";
+import ProgressBar from "../components/ProgressBar.jsx";
 import "../styles/global.css";
 
-const { title, showNavbar = true } = Astro.props;
+const { title, showNavbar = true, isLocked = false } = Astro.props;
+const pathname = Astro.url.pathname;
+// ... (rest of props logic)
+const isLockedPage = isLocked || pathname === "/" || pathname === "/fr" || pathname === "/fr/";
+
 ---
 
 <!doctype html>
-<html lang={Astro.currentLocale ?? "en"}>
+<html
+  lang={Astro.currentLocale ?? "en"}
+  class={isLockedPage ? "overflow-hidden" : ""}
+>
   <head>
+    {/* ... head content ... */}
     <meta charset="UTF-8" />
     <meta name="description" content="Maxence Debes Portfolio" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,6 +35,7 @@ const { title, showNavbar = true } = Astro.props;
       rel="stylesheet"
     />
     <script is:inline>
+      /* ... theme script ... */
       (function () {
         const getTheme = () => {
           if (
@@ -43,6 +55,7 @@ const { title, showNavbar = true } = Astro.props;
       })();
     </script>
     <script>
+       /* ... lenis script ... */
       import Lenis from "lenis";
 
       const initLenis = () => {
@@ -79,6 +92,7 @@ const { title, showNavbar = true } = Astro.props;
         }
       });
     </script>
+
 
     <style>
       :root {
@@ -120,26 +134,42 @@ const { title, showNavbar = true } = Astro.props;
     </style>
   </head>
   <body
-    class={`flex flex-col min-h-screen ${Astro.url.pathname === "/" || Astro.url.pathname === "/fr" || Astro.url.pathname === "/fr/" ? "overflow-hidden" : ""}`}
+    class={`flex flex-col ${isLockedPage ? "h-[100dvh] overflow-hidden" : "min-h-screen"}`}
   >
-    <AnimatedBackground client:only="react" />
+    <div
+      id="background-pattern"
+      class="fixed inset-0 -z-50 pointer-events-none"
+    >
+    </div>
+
+    <AnimatedBackground client:only="react" transition:persist="background" />
     {
       showNavbar && (
-        <div id="navbar-wrapper">
-          <Navbar
-            client:load
-            currentPath={Astro.url.pathname}
-            currentLocale={Astro.currentLocale}
-          />
-        </div>
+        <Navbar
+          client:load
+          transition:persist="navbar"
+          currentPath={Astro.url.pathname}
+          currentLocale={Astro.currentLocale}
+        />
       )
     }
-    <div class="h-[30px] md:h-[120px] w-full"></div>
+    <div
+      class={`w-full ${isLockedPage ? "h-[170px] md:h-[200px] xl:h-[240px]" : "h-[100px] md:h-[120px]"}`}
+    >
+    </div>
     <main
       class={`transition-container flex-1 flex flex-col ${!showNavbar ? "no-navbar" : ""}`}
     >
       <slot />
     </main>
-    <div id="footer-wrapper"><Footer client:load /></div>
+    <div
+      id="footer-wrapper"
+      class={isLockedPage ? "fixed bottom-0 z-20" : ""}
+    >
+      <Footer client:load />
+    </div>
+    <BackToTop client:load />
+    <ScrollObserver client:only="react" />
+    <ProgressBar client:load />
   </body>
 </html>

@@ -11,6 +11,8 @@ html.lenis body {
 
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
+
+
 }
 
 .lenis.lenis-smooth [data-lenis-prevent] {
@@ -25,10 +27,10 @@ html.lenis body {
   pointer-events: none;
 }
 
-/* stylelint-disable-next-line */
+
 @variant dark (&:where(.dark, .dark *));
 
-/* View Transitions */
+
 ::view-transition-old(root) {
   animation-name: fade-out;
 }
@@ -63,7 +65,7 @@ html.lenis body {
   }
 }
 
-/* Base Styles */
+
 @layer base {
   html {
     font-family: "Poppins", sans-serif;
@@ -77,135 +79,122 @@ html.lenis body {
 
   body {
     font-family: "Poppins", sans-serif;
-    background-color: #ffffff;
+    background-color: transparent;
     color: #000000;
     transition: background-color 0.3s, color 0.3s;
-    background-image: radial-gradient(circle,
-        rgba(0, 0, 0, 0.3) 1px,
-        transparent 1px);
-    background-size: 40px 40px;
-    background-attachment: fixed;
   }
 
   html.dark body {
-    background-color: #000000;
+    background-color: transparent;
     color: #ffffff;
-    background-image: radial-gradient(circle,
-        rgba(255, 255, 255, 0.15) 1px,
-        transparent 1px);
-    background-attachment: fixed;
+  }
+
+  #background-pattern {
+    background-color: #ffffff;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  html.dark #background-pattern {
+    background-color: #000000;
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
   }
 }
 
 @layer utilities {
 
   .animate-fade-in {
-    animation: fade-in 0.6s ease-out forwards;
     opacity: 0;
+    will-change: opacity;
+    transition: opacity 1.2s ease-out;
+  }
+
+  .animate-fade-in.is-visible {
+    opacity: 1;
   }
 
   .animate-fade-in-up {
-    animation: fade-in-up 0.6s ease-out forwards;
     opacity: 0;
+    transform: translateY(20px);
+    will-change: opacity, transform;
+    transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  }
+
+  .animate-fade-in-up.is-visible {
+    opacity: 1;
+    transform: none;
   }
 
   .animate-fade-in-down {
-    animation: fade-in-down 0.6s ease-out forwards;
     opacity: 0;
+    transform: translateY(-20px);
+    will-change: opacity, transform;
+    transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  }
+
+  .animate-fade-in-down.is-visible {
+    opacity: 1;
+    transform: none;
   }
 
   .animate-fade-in-left {
-    animation: fade-in-left 0.6s ease-out forwards;
     opacity: 0;
+    transform: translateX(-20px);
+    will-change: opacity, transform;
+    transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  }
+
+  .animate-fade-in-left.is-visible {
+    opacity: 1;
+    transform: none;
   }
 
   .animate-fade-in-right {
-    animation: fade-in-right 0.6s ease-out forwards;
     opacity: 0;
+    transform: translateX(20px);
+    will-change: opacity, transform;
+    transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  }
+
+  .animate-fade-in-right.is-visible {
+    opacity: 1;
+    transform: none;
   }
 
   .animate-delay-100 {
-    animation-delay: 100ms;
+    transition-delay: 100ms;
   }
 
   .animate-delay-200 {
-    animation-delay: 200ms;
+    transition-delay: 200ms;
   }
 
   .animate-delay-300 {
-    animation-delay: 300ms;
+    transition-delay: 300ms;
   }
 
   .animate-delay-400 {
-    animation-delay: 400ms;
+    transition-delay: 400ms;
   }
 
   .animate-delay-500 {
-    animation-delay: 500ms;
+    transition-delay: 500ms;
   }
 
   .animate-delay-600 {
-    animation-delay: 600ms;
+    transition-delay: 600ms;
   }
 
   .animate-delay-700 {
-    animation-delay: 700ms;
+    transition-delay: 700ms;
   }
 
   .animate-delay-800 {
-    animation-delay: 800ms;
+    transition-delay: 800ms;
   }
 }
 
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in-down {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fade-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Custom Liquid Glass Style */
 .liquid-glass {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(40px) saturate(180%);
@@ -216,4 +205,15 @@ html.lenis body {
 .dark .liquid-glass {
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+::selection {
+  background-color: #f472b6 !important;
+  color: white !important;
+}
+
+::-moz-selection {
+  background-color: #f472b6 !important;
+  color: white !important;
 }

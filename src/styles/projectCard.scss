@@ -1,7 +1,7 @@
 :root {
   --background-color: rgba(255, 255, 255, 0.002);
-  --text-color: #333;
-  --card-background-color: rgba(255, 255, 255, 0.9);
+  --text-color: #000000;
+  --card-background-color: rgba(255, 255, 255, 0.05);
   --card-border-color: rgba(0, 0, 0, 0.2);
   --card-box-shadow-1: rgba(0, 0, 0, 0.05);
   --card-box-shadow-1-y: 3px;
@@ -26,22 +26,22 @@
   --card-hover-icon-color: #000000;
   --card-hover-icon-background-color: rgba(0, 0, 0, 0.1);
   --card-hover-icon-border-color: rgba(0, 0, 0, 0.2);
-  --blur-opacity: 2px;
+  --blur-opacity: 30px;
 }
 
 html.dark {
   --text-color: #ffffff;
-  --card-background-color: rgba(0, 0, 0, 0.95);
+  --card-background-color: rgba(0, 0, 0, 0.75);
   --card-border-color: rgba(255, 255, 255, 0.35);
-  --card-box-shadow-1: rgba(0, 0, 0, 0.2);
-  --card-box-shadow-2: rgba(0, 0, 0, 0.4);
+  --card-box-shadow-1: rgba(255, 255, 255, 0);
+  --card-box-shadow-2: rgba(255, 255, 255, 0);
   --card-label-color: #FFFFFF;
   --card-icon-color: #D4D4D8;
   --card-icon-background-color: rgba(255, 255, 255, 0.08);
   --card-icon-border-color: rgba(255, 255, 255, 0.12);
   --card-hover-border-color: rgba(255, 255, 255, 0.1);
-  --card-hover-box-shadow-1: rgba(0, 0, 0, 0.3);
-  --card-hover-box-shadow-2: rgba(0, 0, 0, 0.5);
+  --card-hover-box-shadow-1: rgba(255, 255, 255, 0.1);
+  --card-hover-box-shadow-2: rgba(255, 255, 255, 0.05);
   --card-hover-icon-color: #000000;
   --card-hover-icon-background-color: #ffffff;
   --card-hover-icon-border-color: rgba(255, 255, 255, 0.12);
@@ -61,9 +61,6 @@ html.dark {
   width: 100%;
   max-width: none;
   min-width: 300px;
-  background-color: var(--card-background-color);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
   padding: 28px 28px;
   border: 1px solid var(--card-border-color);
   border-radius: 15px;
@@ -72,6 +69,9 @@ html.dark {
   transition: box-shadow .25s, transform .25s ease-in-out;
   box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2);
   overflow: hidden;
+
+  /* Force Light Mode Blur visibility */
+  /* Force Light Mode Blur visibility block removed */
 
   &::before {
     content: '';
@@ -92,11 +92,17 @@ html.dark {
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background-color: rgba(0, 0, 0, 0.01);
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-    transition: background-color 0.3s, transform 0.2s;
+
+    /* Light Mode Skin */
+    html:not(.dark) & {
+      background-color: rgba(255, 255, 255, 0.9);
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+    }
+
+    transition: background-color 0.3s,
+    transform 0.2s;
 
     img {
       width: 20px;
@@ -106,13 +112,13 @@ html.dark {
       transition: filter 0.3s;
     }
 
-    &:hover {
+    /* Light Mode Hover */
+    html:not(.dark) &:hover {
       background-color: #000;
-      color: #fff;
+      border-color: #000;
 
       img {
         filter: brightness(0) invert(1);
-        /* Force white on hover */
       }
     }
   }
@@ -448,6 +454,12 @@ html.dark {
   }
 }
 
+@media (min-width: 769px) and (max-width: 1024px) {
+  .card .card-content {
+    padding-right: 60px;
+  }
+}
+
 html {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
@@ -461,7 +473,10 @@ html {
 
 /* Dark Mode Overrides */
 html.dark .card .card-github {
-  border-color: rgba(255, 255, 255, 0.25);
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 html.dark .card .card-github img {
@@ -487,4 +502,60 @@ html.dark .card .card-github:hover img {
 html.dark .card .icon svg {
   filter: brightness(0) invert(1) !important;
   /* Force white in dark mode */
+}
+
+/* Filter Button Standardized Style */
+/* Filter Button - Layout & Transitions */
+.filter-btn {
+  /* Layout */
+  transition: all 0.3s ease;
+  cursor: pointer;
+  color: var(--text-color);
+
+  /* Shared Shadow Base */
+  box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2);
+}
+
+/* Light Mode Skin */
+html:not(.dark) .filter-btn {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Dark Mode Skin */
+/* Dark Mode Skin */
+html.dark .filter-btn {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  color: #fff;
+  box-shadow: none;
+  /* Usually dark mode has less shadow */
+}
+
+/* Hover & Active States (High Specificity to override skins) */
+html .filter-btn:hover,
+html .filter-btn.active {
+  background-color: #f472b6 !important;
+  border-color: #f472b6 !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3) !important;
+}
+
+/* Standardized Glass Effect (Apple Style) */
+html:not(.dark) .card {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: saturate(180%) blur(20px) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 10px 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.dark .card {
+  background-color: rgba(0, 0, 0, 0.85) !important;
+  backdrop-filter: blur(2px) !important;
+  -webkit-backdrop-filter: blur(2px) !important;
 }

@@ -13,6 +13,8 @@ const linksFr = [
   { name: "Projets", href: "/projects" },
 ];
 
+
+
 const languages = [
   { code: "en", label: "ANG" },
   { code: "fr", label: "FRA" },
@@ -37,7 +39,6 @@ const findIndexFromPath = (path, locale) => {
   const n = normalize(path);
   const currentLinks = locale === "fr" ? linksFr : links;
 
-  // Remove /fr prefix for matching if in French
   let pathToCheck = n;
   if (locale === "fr" && pathToCheck.startsWith("/fr")) {
     pathToCheck = pathToCheck.replace("/fr", "") || "/";
@@ -88,7 +89,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
   const linkRefs = useRef([]);
   const navRef = useRef(null);
   const ulRef = useRef(null);
-  const langMenuRef = useRef(null); // Deprecated, keeping for safety during transition
+  const langMenuRef = useRef(null);
   const mobileLangMenuRef = useRef(null);
   const desktopLangMenuRef = useRef(null);
 
@@ -101,17 +102,15 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     }
   }, []);
 
-  // Scroll logic for smart navbar
+
   useEffect(() => {
     const controlNavbar = () => {
       if (typeof window !== "undefined") {
         const currentScrollY = window.scrollY;
 
         if (currentScrollY > lastScrollY && currentScrollY > 50) {
-          // Scrolling down & past threshold -> Hide
           setIsVisible(false);
         } else {
-          // Scrolling up -> Show
           setIsVisible(true);
         }
 
@@ -123,7 +122,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     return () => window.removeEventListener("scroll", controlNavbar);
   }, [lastScrollY]);
 
-  // Close language menu when clicking outside
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -192,15 +191,15 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
       updateSlider(idx);
     };
     const handleResize = () => updateSlider(activeIndex);
-
-    handleNavigation();
-    window.addEventListener("astro:after-swap", handleNavigation);
+    document.addEventListener("astro:page-load", handleNavigation);
     window.addEventListener("resize", handleResize);
+    handleNavigation();
+
     return () => {
-      window.removeEventListener("astro:after-swap", handleNavigation);
+      document.removeEventListener("astro:page-load", handleNavigation);
       window.removeEventListener("resize", handleResize);
     };
-  }, [activeIndex, currentLocale]);
+  }, [activeIndex, currentLocale, currentPath]);
 
   useEffect(() => {
     if (isOpen) {
@@ -219,7 +218,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     };
   }, [isOpen]);
 
-  // ✅ Fix iOS/Safari viewport height
+
   useEffect(() => {
     const setVh = () => {
       document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
@@ -230,14 +229,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
   }, []);
 
   const handleClick = (i) => {
-    setActiveIndex(i);
-    updateSlider(i);
     setIsOpen(false);
-
-    document.body.classList.add("no-transition");
-    setTimeout(() => {
-      document.body.classList.remove("no-transition");
-    }, 300);
   };
 
   const getLinkHref = (href) => {
@@ -247,13 +239,34 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     return href;
   };
 
+  const getLabel = (locale) => {
+    const found = languages.find(l => l.code === locale);
+    return found ? found.label : "ANG";
+  }
+
   return (
     <nav
+      id="main-navbar"
       ref={navRef}
-      className={`fixed top-0 left-0 w-full px-6 py-4 z-50 flex justify-between md:block transition-transform duration-300 bg-white/5 dark:bg-black/5 backdrop-blur-sm border-b-[0.5px] border-black/10 dark:border-white/10 ${isVisible ? "translate-y-0" : "-translate-y-full"
+      className={`fixed top-0 left-0 w-full px-6 py-4 z-50 flex justify-between md:block transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"
         }`}
     >
-      {/* Bouton hamburger mobile */}
+
+      <div
+        className="absolute inset-0 -z-10 bg-white/5 dark:bg-black/5 backdrop-blur-sm border-b-[0.5px] border-black/10 dark:border-white/10"
+        style={{
+          transform: "translate3d(0,0,0)",
+          WebkitBackdropFilter: "blur(8px)",
+          backdropFilter: "blur(8px)",
+          willChange: "transform",
+          backfaceVisibility: "hidden",
+          WebkitBackfaceVisibility: "hidden",
+          perspective: 1000,
+          WebkitPerspective: 1000
+        }}
+      />
+
+
       <button
         className="md:hidden flex flex-col gap-1 p-2 z-50"
         onClick={() => setIsOpen(!isOpen)}
@@ -272,52 +285,53 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
         />
       </button>
 
-      {/* Theme & Language Toggle Mobile (Right side) */}
+
       <div className="md:hidden flex gap-2 items-center z-50">
         <div className="relative" ref={mobileLangMenuRef}>
-          {/* Bouton visible quand le menu est fermé */}
           <button
             onClick={() => setIsLangMenuOpen(true)}
             className={`text-black dark:text-white cursor-pointer font-semibold text-xs transition-opacity duration-200 flex items-center justify-center gap-1 p-2 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
             aria-label="Open language menu"
           >
-            {currentLocale === "en" ? "ANG" : "FRA"}
+            {getLabel(currentLocale)}
             <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
               <ChevronDownIcon />
             </div>
           </button>
 
-          {/* Menu unifié type "pillule" qui overlay le bouton */}
+
           <div
-            className={`absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-200 ease-in-out bg-white/50 dark:bg-black/90 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-[60] ${isLangMenuOpen
+            className={`absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-200 ease-in-out bg-white/50 dark:bg-black/75 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-[60] ${isLangMenuOpen
               ? "opacity-100 pointer-events-auto"
               : "opacity-0 pointer-events-none"
               }`}
           >
-            {/* Header du menu: Langue actuelle (agit comme bouton de fermeture) */}
+
             <button
               onClick={() => setIsLangMenuOpen(false)}
               className="font-semibold text-xs text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
               aria-label="Close language menu"
             >
-              {currentLocale === "en" ? "ANG" : "FRA"}
+              {getLabel(currentLocale)}
               <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
                 <ChevronDownIcon />
               </div>
             </button>
 
-            {/* Options de langue */}
+
             {languages
               .filter((lang) => lang.code !== currentLocale)
-              .map((lang) => (
-                <button
-                  key={lang.code}
-                  onClick={() => changeLanguage(lang.code)}
-                  className="font-medium text-xs text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center"
-                >
-                  {lang.label}
-                </button>
-              ))}
+              .map((lang) => {
+                return (
+                  <button
+                    key={lang.code}
+                    onClick={() => changeLanguage(lang.code)}
+                    className="font-medium text-xs text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block"
+                  >
+                    {lang.label}
+                  </button>
+                );
+              })}
           </div>
         </div>
 
@@ -333,7 +347,6 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
 
       {typeof document !== 'undefined' && createPortal(
         <>
-          {/* Bouton fermeture menu mobile (dans le portal) */}
           <button
             className={`fixed top-4 left-6 md:hidden flex flex-col gap-1 p-2 z-[1000] transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             onClick={() => setIsOpen(false)}
@@ -351,14 +364,14 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               style={{ transform: "rotate(-45deg) translate(5px, -5px)" }}
             />
           </button>
-          {/* Overlay mobile animé */}
+
           <div
             className={`fixed inset-0 bg-transparent bg-opacity-30 backdrop-blur-sm md:hidden z-[998] transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
               }`}
             onClick={() => setIsOpen(false)}
           />
 
-          {/* Menu mobile slide-in/out */}
+
           <ul
             className={`fixed top-0 left-0 w-full h-[100dvh] md:h-screen bg-white/70 dark:bg-black/70 backdrop-blur-sm z-[999] flex flex-col justify-center items-center gap-8 p-8 transform transition-transform duration-300 md:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"
               }`}
@@ -384,7 +397,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
         document.body
       )}
 
-      {/* Menu desktop */}
+
       <div className="hidden md:flex md:flex-row md:items-center md:justify-between">
         <ul ref={ulRef} className="flex flex-row gap-x-8 relative">
           {navLinks.map((link, i) => (
@@ -402,7 +415,6 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               </a>
             </li>
           ))}
-          {/* Slider desktop */}
           <span
             className="absolute bottom-0 h-[1px] bg-pink-400 rounded transition-all duration-200 hidden md:block"
             style={{
@@ -412,52 +424,53 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
           />
         </ul>
 
-        {/* Theme & Language Toggle Desktop */}
+
         <div className="flex gap-4 items-center">
           <div className="relative" ref={desktopLangMenuRef}>
-            {/* Bouton visible quand le menu est fermé */}
             <button
               onClick={() => setIsLangMenuOpen(true)}
               className={`text-black dark:text-white cursor-pointer font-medium transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
               aria-label="Open language menu"
             >
-              {currentLocale === "en" ? "ANG" : "FRA"}
+              {getLabel(currentLocale)}
               <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
                 <ChevronDownIcon />
               </div>
             </button>
 
-            {/* Menu unifié type "pillule" qui overlay le bouton */}
+
             <div
-              className={`absolute -top-[9px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-white/50 dark:bg-black/90 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-50 ${isLangMenuOpen
+              className={`absolute -top-[9px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-white/50 dark:bg-black/75 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-50 ${isLangMenuOpen
                 ? "opacity-100 pointer-events-auto"
                 : "opacity-0 pointer-events-none"
                 }`}
             >
-              {/* Header du menu: Langue actuelle (agit comme bouton de fermeture) */}
+
               <button
                 onClick={() => setIsLangMenuOpen(false)}
                 className="font-medium text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
                 aria-label="Close language menu"
               >
-                {currentLocale === "en" ? "ANG" : "FRA"}
+                {getLabel(currentLocale)}
                 <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
                   <ChevronDownIcon />
                 </div>
               </button>
 
-              {/* Options de langue */}
+
               {languages
                 .filter((lang) => lang.code !== currentLocale)
-                .map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => changeLanguage(lang.code)}
-                    className="font-medium text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center"
-                  >
-                    {lang.label}
-                  </button>
-                ))}
+                .map((lang) => {
+                  return (
+                    <button
+                      key={lang.code}
+                      onClick={() => changeLanguage(lang.code)}
+                      className="font-medium text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block"
+                    >
+                      {lang.label}
+                    </button>
+                  );
+                })}
             </div>
           </div>
 

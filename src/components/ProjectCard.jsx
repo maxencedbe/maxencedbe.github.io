@@ -16,18 +16,18 @@ export default function ProjectCard({ title, description, imageUrl, githubUrl })
         </a>
       )}
 
-      {/* Image */}
+
       <div className="card-image">
         <img src={imageUrl} alt={title} />
       </div>
 
-      {/* Contenu texte */}
+
       <div className="card-content">
         <h4>{title}</h4>
         <p>{description}</p>
       </div>
 
-      {/* Effets */}
+
       <div className="shine"></div>
 
       <div className="background">

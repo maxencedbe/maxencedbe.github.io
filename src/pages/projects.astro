@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import ProjectCard from "../components/ProjectCard.jsx";
+import ProjectGrid from "../components/ProjectGrid.jsx";
 import "../styles/projectCard.scss";
 ---
 
@@ -11,72 +11,26 @@ import "../styles/projectCard.scss";
       class="max-w-[1280px] lg:max-w-[1162px] mx-auto pb-6 px-4 sm:px-6 md:px-8"
     >
       <h1
-        class="text-4xl font-bold text-black dark:text-white text-center md:mb-20 mb-8 animate-fade-in-down pt-10"
+        class="text-4xl font-bold text-black dark:text-white text-center md:mb-10 mb-8 animate-fade-in-down pt-10"
       >
         My projects
       </h1>
 
       <p
-        class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-12 md:mb-16 text-black dark:text-white animate-fade-in animate-delay-200"
+        class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white animate-fade-in animate-delay-200"
       >
         Here you will find a selection of projects I have worked on, ranging
         from academic research to personal and professional experiences. Each
         one reflects my interest in AI, data, and software development. Whenever
-        possible, I have included links to repositories or demos so you can
+        possible, I have included links to repositories so you can
         explore the work in more detail. Some projects are still under
         development, as I am continuously improving them.
       </p>
     </section>
     <section
-      class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8"
+      class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8 w-full"
     >
-      <div
-        class="flex flex-col items-center w-full md:mb-16 mb-8 animate-fade-in-up animate-delay-300"
-      >
-        <ProjectCard
-          client:load
-          title="ScratchNet"
-          description="Reimplemented a Multi-Layer Perceptron (MLP) from scratch with NumPy."
-          imageUrl="/Neural_network.png"
-          githubUrl="https://github.com/maxencedbe/scratchnet"
-        />
-      </div>
-
-      <div
-        class="flex flex-col items-center w-full md:mb-16 mb-8 animate-fade-in-up animate-delay-400"
-      >
-        <ProjectCard
-          client:load
-          title="Personal Portfolio Website"
-          description="Developed and deployed a personal portfolio website using Astro."
-          imageUrl="/Astro.png"
-          githubUrl="https://github.com/maxencedbe/maxencedbe.github.io"
-        />
-      </div>
-
-      <div
-        class="flex flex-col items-center w-full md:mb-16 mb-8 animate-fade-in-up animate-delay-500"
-      >
-        <ProjectCard
-          client:load
-          title="Data Privacy & Anonymization — Project Cassiopee"
-          description="Assessed privacy risks in anonymized datasets through OSINT and re-identification case studies, and proposed data protection strategies. Project conducted at Telecom SudParis under the supervision of Maryline Laurent and Louis-Philippe Sondeck."
-          imageUrl="/Data.png"
-          githubUrl="https://github.com/maxencedbe/Cassiopee"
-        />
-      </div>
-
-      <div
-        class="flex flex-col items-center w-full animate-fade-in-up animate-delay-600"
-      >
-        <ProjectCard
-          client:load
-          title="Automated Parking Optimization"
-          description="Developed a Python-based optimization model for vehicle placement in multi-level automated parking systems. Designed and evaluated heuristic algorithms (A search, simulated annealing) to minimize retrieval costs and improve system efficiency."
-          imageUrl="/Parking.png"
-          githubUrl="https://github.com/maxencedbe/parking-optimization"
-        />
-      </div>
+      <ProjectGrid client:load />
     </section>
   </main>
 

@@ -1,33 +1,16 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import Layout from "../../layouts/Layout.astro";
 ---
 
-<Layout title="Page not found" showNavbar={false} isLocked={true}>
-  <main class="flex flex-1 flex-col items-center justify-center text-center px-4 pt-40 md:pt-24">
-    <h1 id="not-found-title" class="animate-type text-black dark:text-white md:text-6xl md:pb-2" style="opacity: 0; transition: opacity 0.2s">
-      404 | Page not found
+<Layout title="Page non trouvée" showNavbar={false} isLocked={true}>
+  <main
+    class="flex flex-1 flex-col items-center justify-center text-center px-4 pt-40 md:pt-24"
+  >
+    <h1 class="animate-type text-black dark:text-white md:text-6xl md:pb-2">
+      404 | Page non trouvée
     </h1>
-    <a id="back-button" href="/" class="back-button" style="opacity: 0; transition: opacity 0.2s"> Back to home page </a>
+    <a href="/fr" class="back-button"> Retour à l'accueil </a>
   </main>
-
-  <script is:inline>
-    const pathname = window.location.pathname;
-    const title = document.getElementById("not-found-title");
-    const button = document.getElementById("back-button");
-
-    if (pathname.startsWith("/fr")) {
-      if (title) title.innerText = "404 | Page non trouvée";
-      if (button) {
-        button.innerText = "Retour à l'accueil";
-        button.setAttribute("href", "/fr");
-      }
-      document.title = "Page non trouvée";
-    }
-
-    // Reveal elements after text update
-    if (title) title.style.opacity = "1";
-    if (button) button.style.opacity = "1";
-  </script>
 
   <style>
     .animate-type {
