@@ -170,6 +170,6 @@ const isLockedPage = isLocked || pathname === "/" || pathname === "/fr" || pathn
     </div>
     <BackToTop client:load />
     <ScrollObserver client:only="react" />
-    <ProgressBar client:load />
+    {!isLockedPage && <ProgressBar client:load />}
   </body>
 </html>
