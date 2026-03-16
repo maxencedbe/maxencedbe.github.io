@@ -1,58 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
-
-const links = [
-  { name: "Home", href: "/" },
-  { name: "About me", href: "/about" },
-  { name: "Projects", href: "/projects" },
-];
-
-const linksFr = [
-  { name: "Accueil", href: "/" },
-  { name: "À propos", href: "/about" },
-  { name: "Projets", href: "/projects" },
-];
-
-
+import { navigate } from "astro:transitions/client";
 
 const languages = [
   { code: "en", label: "ANG" },
   { code: "fr", label: "FRA" },
 ];
 
-function normalize(p) {
-  if (!p) return "/";
-  if (p.length > 1 && p.endsWith("/")) return p.slice(0, -1);
-  return p;
-}
-
-const resolveHref = (href) => {
-  if (typeof window === "undefined") return normalize(href);
-  try {
-    return normalize(new URL(href, window.location.origin).pathname);
-  } catch {
-    return normalize(href);
-  }
-};
-
-const findIndexFromPath = (path, locale) => {
-  const n = normalize(path);
-  const currentLinks = locale === "fr" ? linksFr : links;
-
-  let pathToCheck = n;
-  if (locale === "fr" && pathToCheck.startsWith("/fr")) {
-    pathToCheck = pathToCheck.replace("/fr", "") || "/";
-  }
-
-  let idx = currentLinks.findIndex((l) => resolveHref(l.href) === pathToCheck);
-  if (idx !== -1) return idx;
-
-  idx = currentLinks.findIndex((l) => l.href !== "/" && pathToCheck.startsWith(resolveHref(l.href)));
-  return idx !== -1 ? idx : 0;
-};
-
 const SunIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="5"></circle>
     <line x1="12" y1="1" x2="12" y2="3"></line>
     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -66,7 +21,7 @@ const SunIcon = () => (
 );
 
 const MoonIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
   </svg>
 );
@@ -78,22 +33,11 @@ const ChevronDownIcon = () => (
 );
 
 export default function Navbar({ currentPath, currentLocale = "en" }) {
-  const [activeIndex, setActiveIndex] = useState(() => findIndexFromPath(currentPath || "/", currentLocale));
-  const [sliderStyle, setSliderStyle] = useState({ left: 0, width: 0 });
-  const [isOpen, setIsOpen] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [time, setTime] = useState("");
 
-  const linkRefs = useRef([]);
-  const navRef = useRef(null);
-  const ulRef = useRef(null);
   const langMenuRef = useRef(null);
-  const mobileLangMenuRef = useRef(null);
-  const desktopLangMenuRef = useRef(null);
-
-  const navLinks = currentLocale === "fr" ? linksFr : links;
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -102,38 +46,31 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     }
   }, []);
 
-
-  useEffect(() => {
-    const controlNavbar = () => {
-      if (typeof window !== "undefined") {
-        const currentScrollY = window.scrollY;
-
-        if (currentScrollY > lastScrollY && currentScrollY > 50) {
-          setIsVisible(false);
-        } else {
-          setIsVisible(true);
-        }
-
-        setLastScrollY(currentScrollY);
-      }
-    };
-
-    window.addEventListener("scroll", controlNavbar);
-    return () => window.removeEventListener("scroll", controlNavbar);
-  }, [lastScrollY]);
-
-
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        (!mobileLangMenuRef.current || !mobileLangMenuRef.current.contains(event.target)) &&
-        (!desktopLangMenuRef.current || !desktopLangMenuRef.current.contains(event.target))
-      ) {
+      if (langMenuRef.current && !langMenuRef.current.contains(event.target)) {
         setIsLangMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const updateTime = () => {
+      const now = new Date();
+      setTime(
+        new Intl.DateTimeFormat("en-US", {
+          timeZone: "Europe/Paris",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }).format(now)
+      );
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const toggleTheme = () => {
@@ -147,150 +84,89 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     localStorage.setItem("theme", newTheme);
   };
 
-  const changeLanguage = (newLocale) => {
-    if (newLocale === currentLocale) {
-      setIsLangMenuOpen(false);
-      return;
-    }
-
-    let newPath = currentPath;
-
-    if (newLocale === "fr") {
-      if (!newPath.startsWith("/fr")) {
-        newPath = "/fr" + (newPath === "/" ? "" : newPath);
-      }
-    } else {
-      if (newPath.startsWith("/fr")) {
-        newPath = newPath.replace("/fr", "") || "/";
-      }
-    }
-    window.location.href = newPath;
-  };
-
-  const updateSlider = (index) => {
-    if (window.innerWidth < 768) return;
-    requestAnimationFrame(() => {
-      const activeLink = linkRefs.current[index];
-      const ul = ulRef.current;
-      if (!activeLink || !ul) return;
-
-      const linkRect = activeLink.getBoundingClientRect();
-      const ulRect = ul.getBoundingClientRect();
-
-      setSliderStyle({
-        left: linkRect.left - ulRect.left,
-        width: linkRect.width,
-      });
-    });
-  };
-
-  useEffect(() => {
-    const handleNavigation = () => {
-      const idx = findIndexFromPath(window.location.pathname, currentLocale);
-      setActiveIndex(idx);
-      updateSlider(idx);
-    };
-    const handleResize = () => updateSlider(activeIndex);
-    document.addEventListener("astro:page-load", handleNavigation);
-    window.addEventListener("resize", handleResize);
-    handleNavigation();
-
-    return () => {
-      document.removeEventListener("astro:page-load", handleNavigation);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [activeIndex, currentLocale, currentPath]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      document.body.style.position = "fixed";
-      document.body.style.width = "100%";
-    } else {
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
-    }
-    return () => {
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
-    };
-  }, [isOpen]);
-
-
-  useEffect(() => {
-    const setVh = () => {
-      document.documentElement.style.setProperty("--vh", `${window.innerHeight * 0.01}px`);
-    };
-    setVh();
-    window.addEventListener("resize", setVh);
-    return () => window.removeEventListener("resize", setVh);
-  }, []);
-
-  const handleClick = (i) => {
-    setIsOpen(false);
-  };
-
-  const getLinkHref = (href) => {
-    if (currentLocale === "fr") {
-      return "/fr" + (href === "/" ? "" : href);
-    }
-    return href;
-  };
-
   const getLabel = (locale) => {
     const found = languages.find(l => l.code === locale);
     return found ? found.label : "ANG";
-  }
+  };
+
+  const handleLanguageSwitch = (e, newLocale) => {
+    e.preventDefault();
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem('langScroll', window.scrollY);
+    }
+    navigate(newLocale === "fr" ? "/fr" : "/");
+  };
+
+  const resumeUrl = currentLocale === 'fr' ? '/Maxence_Debes_Resume_Fra.pdf' : '/Maxence_Debes_Resume_Ang.pdf';
 
   return (
-    <nav
-      id="main-navbar"
-      ref={navRef}
-      className={`fixed top-0 left-0 w-full px-6 py-4 z-50 flex justify-between md:block transition-transform duration-300 ${isVisible ? "translate-y-0" : "-translate-y-full"
-        }`}
-    >
-
+    <nav className="fixed top-0 left-0 w-full px-6 py-4 z-[90] flex items-center justify-between">
+      {/* Dynamic Glass Background */}
       <div
         className="absolute inset-0 -z-10 bg-white/5 dark:bg-black/5 backdrop-blur-sm border-b-[0.5px] border-black/10 dark:border-white/10"
         style={{
-          transform: "translate3d(0,0,0)",
           WebkitBackdropFilter: "blur(8px)",
           backdropFilter: "blur(8px)",
-          willChange: "transform",
-          backfaceVisibility: "hidden",
-          WebkitBackfaceVisibility: "hidden",
-          perspective: 1000,
-          WebkitPerspective: 1000
         }}
       />
 
+      {/* LEFT SIDE: Branding & Widgets */}
+      <div className="flex items-center gap-6">
+        {/* 1. Branding */}
+        <div className="text-black dark:text-white font-bold text-lg md:text-xl tracking-tight">
+          Maxence Debes
+        </div>
 
-      <button
-        className="md:hidden flex flex-col gap-1 p-2 z-50"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span
-          className={`block w-6 h-0.5 transition-transform duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
-          style={{ transform: isOpen ? "rotate(45deg) translate(5px, 5px)" : "none" }}
-        />
-        <span
-          className={`block w-6 h-0.5 transition-opacity duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
-          style={{ opacity: isOpen ? 0 : 1 }}
-        />
-        <span
-          className={`block w-6 h-0.5 transition-transform duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
-          style={{ transform: isOpen ? "rotate(-45deg) translate(5px, -5px)" : "none" }}
-        />
-      </button>
+        {/* 2. Desktop Only Widgets */}
+        <div className="hidden lg:flex items-center gap-4 text-xs font-medium text-black/60 dark:text-white/60">
 
+          <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10"></div>
 
-      <div className="md:hidden flex gap-2 items-center z-50">
-        <div className="relative" ref={mobileLangMenuRef}>
+          {/* Timezone */}
+          <div className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            <span>Paris, FR — {time}</span>
+          </div>
+
+          <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10"></div>
+
+          {/* Resume Buttons */}
+          <div className="flex items-center gap-2">
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 transition-all duration-300 hover:bg-pink-400 hover:text-white hover:border-pink-400 dark:hover:bg-pink-400/80 dark:hover:text-black dark:hover:border-pink-400/80 hover:scale-105 active:scale-95 hover:shadow-pink-400/20"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-colors duration-300">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              <span>View resume</span>
+            </a>
+
+            <a
+              href={resumeUrl}
+              download
+              className="group flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 transition-all duration-300 hover:bg-pink-400 hover:text-white hover:border-pink-400 dark:hover:bg-pink-400/80 dark:hover:text-black dark:hover:border-pink-400/80 hover:scale-105 active:scale-95 hover:shadow-pink-400/20"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-colors duration-300">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              <span>Download resume</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {/* RIGHT SIDE: Lang & Theme */}
+      <div className="flex gap-2 md:gap-4 items-center">
+        <div className="relative" ref={langMenuRef}>
           <button
-            onClick={() => setIsLangMenuOpen(true)}
-            className={`text-black dark:text-white cursor-pointer font-semibold text-xs transition-opacity duration-200 flex items-center justify-center gap-1 p-2 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+            onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+            className={`text-black dark:text-white cursor-pointer font-medium text-sm transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
             aria-label="Open language menu"
           >
             {getLabel(currentLocale)}
@@ -299,17 +175,15 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
             </div>
           </button>
 
-
           <div
-            className={`absolute top-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 transition-all duration-200 ease-in-out bg-white/50 dark:bg-black/75 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-[60] ${isLangMenuOpen
-              ? "opacity-100 pointer-events-auto"
+            className={`absolute -top-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-white/70 dark:bg-black/75 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-50 ${isLangMenuOpen
+              ? "opacity-100 pointer-events-auto shadow-lg"
               : "opacity-0 pointer-events-none"
               }`}
           >
-
             <button
               onClick={() => setIsLangMenuOpen(false)}
-              className="font-semibold text-xs text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
+              className="font-medium text-sm text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
               aria-label="Close language menu"
             >
               {getLabel(currentLocale)}
@@ -318,172 +192,50 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               </div>
             </button>
 
-
             {languages
               .filter((lang) => lang.code !== currentLocale)
               .map((lang) => {
                 return (
-                  <button
+                  <a
                     key={lang.code}
-                    onClick={() => changeLanguage(lang.code)}
-                    className="font-medium text-xs text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block"
+                    href={lang.code === "fr" ? "/fr" : "/"}
+                    onClick={(e) => handleLanguageSwitch(e, lang.code)}
+                    className="font-medium text-sm text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block pt-1"
                   >
                     {lang.label}
-                  </button>
+                  </a>
                 );
               })}
           </div>
         </div>
 
-        <button
+        {/* iPhone Style Theme Slider - Refined Glassmorphism Version */}
+        <div 
           onClick={toggleTheme}
-          className="p-2 bg-white/20 dark:bg-black/20 backdrop-blur-sm rounded-full text-black dark:text-white cursor-pointer"
+          className="relative w-[72px] h-9 rounded-full bg-black/[0.05] dark:bg-white/[0.08] border border-black/10 dark:border-white/10 cursor-pointer transition-all duration-300 flex items-center"
+          role="button"
           aria-label="Toggle theme"
         >
-          <span className="hidden dark:block"><SunIcon /></span>
-          <span className="block dark:hidden"><MoonIcon /></span>
-        </button>
-      </div>
-
-      {typeof document !== 'undefined' && createPortal(
-        <>
-          <button
-            className={`fixed top-4 left-6 md:hidden flex flex-col gap-1 p-2 z-[1000] transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
-            onClick={() => setIsOpen(false)}
-          >
-            <span
-              className={`block w-6 h-0.5 transition-transform duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
-              style={{ transform: "rotate(45deg) translate(5px, 5px)" }}
-            />
-            <span
-              className={`block w-6 h-0.5 transition-opacity duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
-              style={{ opacity: 0 }}
-            />
-            <span
-              className={`block w-6 h-0.5 transition-transform duration-300 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
-              style={{ transform: "rotate(-45deg) translate(5px, -5px)" }}
-            />
-          </button>
-
-          <div
-            className={`fixed inset-0 bg-transparent bg-opacity-30 backdrop-blur-sm md:hidden z-[998] transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-              }`}
-            onClick={() => setIsOpen(false)}
-          />
-
-
-          <ul
-            className={`fixed top-0 left-0 w-full h-[100dvh] md:h-screen bg-white/70 dark:bg-black/70 backdrop-blur-sm z-[999] flex flex-col justify-center items-center gap-8 p-8 transform transition-transform duration-300 md:hidden ${isOpen ? "translate-x-0" : "-translate-x-full"
-              }`}
-            style={{ height: "calc(var(--vh, 1vh) * 100)", backdropFilter: "blur(6px) saturate(150%)", WebkitBackdropFilter: "blur(6px) saturate(150%)" }}
-          >
-            {navLinks.map((link, i) => (
-              <li key={link.href} className="w-full flex justify-center">
-                <a
-                  href={getLinkHref(link.href)}
-                  ref={(el) => (linkRefs.current[i] = el)}
-                  className={`font-sans text-lg tracking-wide transition-colors duration-300 ease-in-out text-center ${activeIndex === i
-                    ? "text-pink-400 font-semibold underline underline-offset-4 decoration-pink-400 transition-none"
-                    : "text-black dark:text-white hover:text-pink-400"
-                    }`}
-                  onClick={() => handleClick(i)}
-                >
-                  {link.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </>,
-        document.body
-      )}
-
-
-      <div className="hidden md:flex md:flex-row md:items-center md:justify-between">
-        <ul ref={ulRef} className="flex flex-row gap-x-8 relative">
-          {navLinks.map((link, i) => (
-            <li key={link.href} className="relative flex flex-col items-center md:items-start">
-              <a
-                href={getLinkHref(link.href)}
-                ref={(el) => (linkRefs.current[i] = el)}
-                className={`font-sans font-normal pb-0.5 transition-colors duration-400 ease-in-out ${activeIndex === i
-                  ? "text-pink-400 transition-none"
-                  : "text-black dark:text-white hover:text-pink-400"
-                  }`}
-                onClick={() => handleClick(i)}
-              >
-                {link.name}
-              </a>
-            </li>
-          ))}
-          <span
-            className="absolute bottom-0 h-[1px] bg-pink-400 rounded transition-all duration-200 hidden md:block"
-            style={{
-              left: sliderStyle.left,
-              width: sliderStyle.width,
-            }}
-          />
-        </ul>
-
-
-        <div className="flex gap-4 items-center">
-          <div className="relative" ref={desktopLangMenuRef}>
-            <button
-              onClick={() => setIsLangMenuOpen(true)}
-              className={`text-black dark:text-white cursor-pointer font-medium transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-              aria-label="Open language menu"
-            >
-              {getLabel(currentLocale)}
-              <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
-                <ChevronDownIcon />
-              </div>
-            </button>
-
-
-            <div
-              className={`absolute -top-[9px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-white/50 dark:bg-black/75 backdrop-blur-sm border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-50 ${isLangMenuOpen
-                ? "opacity-100 pointer-events-auto"
-                : "opacity-0 pointer-events-none"
-                }`}
-            >
-
-              <button
-                onClick={() => setIsLangMenuOpen(false)}
-                className="font-medium text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
-                aria-label="Close language menu"
-              >
-                {getLabel(currentLocale)}
-                <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
-                  <ChevronDownIcon />
-                </div>
-              </button>
-
-
-              {languages
-                .filter((lang) => lang.code !== currentLocale)
-                .map((lang) => {
-                  return (
-                    <button
-                      key={lang.code}
-                      onClick={() => changeLanguage(lang.code)}
-                      className="font-medium text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block"
-                    >
-                      {lang.label}
-                    </button>
-                  );
-                })}
-            </div>
+          {/* Background Icons - Balanced spacing */}
+          <div className="absolute inset-0 flex items-center justify-between px-3 pointer-events-none opacity-30">
+            <div className="scale-[0.8] text-black dark:text-white"><SunIcon /></div>
+            <div className="scale-[0.8] text-black dark:text-white"><MoonIcon /></div>
           </div>
 
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-full text-black dark:text-white cursor-pointer"
-            aria-label="Toggle theme"
+          {/* Sliding Thumb - Glassmorphism Effect */}
+          <div 
+            className={`absolute left-1 w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${theme === 'dark' ? 'translate-x-[36px]' : 'translate-x-0'}`}
+            style={{ 
+              WebkitBackdropFilter: "blur(12px)",
+              backdropFilter: "blur(12px)"
+            }}
           >
-            <span className="hidden dark:block"><SunIcon /></span>
-            <span className="block dark:hidden"><MoonIcon /></span>
-          </button>
+            <div className="text-black dark:text-white scale-[0.7] drop-shadow-sm">
+              {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+            </div>
+          </div>
         </div>
       </div>
-    </nav >
+    </nav>
   );
 }

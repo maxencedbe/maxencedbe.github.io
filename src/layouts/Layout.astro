@@ -1,24 +1,23 @@
 ---
 import Navbar from "../components/Navbar.jsx";
-import Footer from "../components/Footer.jsx";
 import AnimatedBackground from "../components/AnimatedBackground.jsx";
 import BackToTop from "../components/BackToTop.jsx";
 import ScrollObserver from "../components/ScrollObserver.jsx";
 import { ClientRouter } from "astro:transitions";
 import ProgressBar from "../components/ProgressBar.jsx";
+import SideNav from "../components/SideNav.jsx";
 import "../styles/global.css";
 
 const { title, showNavbar = true, isLocked = false } = Astro.props;
 const pathname = Astro.url.pathname;
-// ... (rest of props logic)
-const isLockedPage = isLocked || pathname === "/" || pathname === "/fr" || pathname === "/fr/";
+const isLockedPage = isLocked;
 
 ---
 
 <!doctype html>
 <html
   lang={Astro.currentLocale ?? "en"}
-  class={isLockedPage ? "overflow-hidden" : ""}
+  class=""
 >
   <head>
     {/* ... head content ... */}
@@ -134,11 +133,11 @@ const isLockedPage = isLocked || pathname === "/" || pathname === "/fr" || pathn
     </style>
   </head>
   <body
-    class={`flex flex-col ${isLockedPage ? "h-[100dvh] overflow-hidden" : "min-h-screen"}`}
+    class="flex flex-col min-h-screen"
   >
     <div
       id="background-pattern"
-      class="fixed inset-0 -z-50 pointer-events-none"
+      class="fixed inset-0 -z-50 pointer-events-none bg-dots"
     >
     </div>
 
@@ -154,7 +153,7 @@ const isLockedPage = isLocked || pathname === "/" || pathname === "/fr" || pathn
       )
     }
     <div
-      class={`w-full ${isLockedPage ? "h-[170px] md:h-[200px] xl:h-[240px]" : "h-[100px] md:h-[120px]"}`}
+      class="w-full h-[100px] md:h-[120px]"
     >
     </div>
     <main
@@ -162,14 +161,18 @@ const isLockedPage = isLocked || pathname === "/" || pathname === "/fr" || pathn
     >
       <slot />
     </main>
-    <div
-      id="footer-wrapper"
-      class={isLockedPage ? "fixed bottom-0 z-20" : ""}
-    >
-      <Footer client:load />
-    </div>
     <BackToTop client:load />
+    <SideNav client:load currentLocale={Astro.currentLocale} />
     <ScrollObserver client:only="react" />
-    {!isLockedPage && <ProgressBar client:load />}
+    <ProgressBar client:load />
+    <script>
+      document.addEventListener('astro:after-swap', () => {
+        const langScroll = sessionStorage.getItem('langScroll');
+        if (langScroll !== null) {
+          window.scrollTo({ top: parseInt(langScroll, 10), behavior: 'instant' });
+          sessionStorage.removeItem('langScroll');
+        }
+      });
+    </script>
   </body>
 </html>
