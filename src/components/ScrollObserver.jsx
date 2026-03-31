@@ -13,12 +13,13 @@ export default function ScrollObserver() {
                 entries.forEach((entry) => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add("is-visible");
-                        observer.unobserve(entry.target);
+                    } else {
+                        entry.target.classList.remove("is-visible");
                     }
                 });
             }, observerOptions);
 
-            const animatedElements = document.querySelectorAll("[class*='animate-']");
+            const animatedElements = document.querySelectorAll("[class*='reveal-']");
             animatedElements.forEach((el) => {
                 el.classList.remove("is-visible");
                 observer.observe(el);

@@ -26,7 +26,8 @@ export default function ProgressBar() {
 
             const visibleThickness = 3;
 
-            const perimeter = 2 * (dims.w + dims.h);
+            const strokeWidth = 3;
+            const perimeter = 2 * ((dims.w - strokeWidth) + (dims.h - strokeWidth));
             const snakeLengthPx = 500; // Fixed size in pixels
 
             if (requestDisplay) cancelAnimationFrame(requestDisplay);
@@ -43,13 +44,33 @@ export default function ProgressBar() {
             });
         };
 
+        const resizeObserver = new ResizeObserver(() => {
+            handleScroll();
+        });
+        resizeObserver.observe(document.body);
+
         window.addEventListener("scroll", handleScroll, { passive: true });
+
+        const handlePageSwap = () => {
+            if (rectRef.current) {
+                rectRef.current.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1)';
+                // We use 1300ms to give it a generous padding to finish before removing smooth scrolling
+                setTimeout(() => {
+                    if (rectRef.current) rectRef.current.style.transition = 'none';
+                }, 1300);
+            }
+            // Trigger an immediate recalculation when swap happens to start the animation
+            handleScroll();
+        };
+        document.addEventListener('astro:after-swap', handlePageSwap);
 
         // Initial setup on mount
         const initialTimeout = setTimeout(handleScroll, 50);
 
         return () => {
+            resizeObserver.disconnect();
             window.removeEventListener("scroll", handleScroll);
+            document.removeEventListener('astro:after-swap', handlePageSwap);
             clearTimeout(initialTimeout);
             if (requestDisplay) cancelAnimationFrame(requestDisplay);
         };
@@ -57,14 +78,9 @@ export default function ProgressBar() {
 
     if (dims.w === 0) return null;
 
-    // To ensure 100% symmetry between the Top edge (whose shadow is naturally clipped
-    // by the physical monitor) and the Right edge (whose shadow was bleeding into the WebKit scrollbar area),
-    // we use a pure HTML <div> with 'overflow: hidden' mapped precisely to dims.w (clientWidth).
-    // The SVG draws a 6px stroke centered on the 0/w/h boundary.
-    // The HTML <div> acts as a mathematical guillotine, slicing exactly 3px and trimming 
-    // all outward drop shadows perfectly on all 4 sides identically.
-    const visibleThickness = 3.5;
-    const strokeWidth = visibleThickness * 2; // 6px centered stroke
+    const strokeWidth = 3; // Set back to 3px
+    const inset = strokeWidth / 2;
+    const rectWidth = dims.w - strokeWidth;
     const color = "#ec4899"; // pink-400
 
     return (
@@ -77,7 +93,7 @@ export default function ProgressBar() {
                 height: dims.h,
                 zIndex: 9999,
                 pointerEvents: "none",
-                overflow: "hidden" // The Guillotine
+                overflow: "hidden" 
             }}
         >
             <svg
@@ -87,15 +103,16 @@ export default function ProgressBar() {
             >
                 <rect
                     ref={rectRef}
-                    x={0}
-                    y={0}
-                    width={dims.w}
-                    height={dims.h}
+                    x={inset}
+                    y={inset}
+                    width={rectWidth}
+                    height={dims.h - strokeWidth}
                     fill="none"
                     stroke={color}
                     strokeWidth={strokeWidth}
+                    strokeLinecap="square" // Fills the tiny 1.5px gap perfectly to the edge
                     style={{
-                        filter: "drop-shadow(0 0 6px rgba(236,72,153,0.8))",
+                        filter: "drop-shadow(0 0 8px rgba(236,72,153,0.8))",
                     }}
                 />
             </svg>

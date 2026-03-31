@@ -67,7 +67,7 @@ const education = [
       class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-8 md:gap-16 lg:gap-32 xl:gap-40"
     >
       <div
-        class="flex flex-col items-center lg:items-start text-center lg:text-left animate-fade-in-up"
+        class="flex flex-col items-center lg:items-start text-center lg:text-left reveal-up"
       >
         <h1
           class="text-3xl sm:text-5xl md:text-6xl font-bold text-black dark:text-white"
@@ -84,7 +84,7 @@ const education = [
       </div>
 
       <div
-        class="flex justify-center items-center mt-2 lg:mt-0 animate-fade-in-left animate-delay-200"
+        class="flex justify-center items-center mt-2 lg:mt-0 reveal-scale reveal-delay-200"
       >
         <div
           class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border-1 border-black dark:border-white overflow-hidden"
@@ -106,8 +106,8 @@ const education = [
               href={link.url}
               target="_blank"
               rel="noopener noreferrer"
-              class={`contact-button animate-fade-in-up`}
-              style={{ animationDelay: `${400 + index * 100}ms` }}
+              class={`contact-button reveal-up`}
+              style={{ transitionDelay: `${400 + index * 100}ms` }}
             >
               <img src={link.icon} alt={link.name} />
             </a>
@@ -117,10 +117,21 @@ const education = [
     </div>
 
     {/* Scroll Indicator */}
-    <div class="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-      <span class="text-xs font-bold tracking-widest text-black dark:text-white uppercase">Scroll</span>
-      <div class="w-[30px] h-[50px] border-2 border-neutral-400 dark:border-neutral-500 rounded-full flex justify-center p-1">
-        <div class="w-1.5 h-3 bg-pink-500 rounded-full animate-bounce"></div>
+    <div class="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2">
+      <div class="flex flex-col items-center gap-2 opacity-0" style={{ animation: 'heroRevealUp 1.5s cubic-bezier(0.22, 1, 0.36, 1) 800ms forwards' }}>
+        <span class="text-xs font-bold tracking-widest text-black dark:text-white uppercase">Scroll</span>
+        
+        {/* Scroll Mouse (Desktop) */}
+        <div class="hidden sm:flex w-[30px] h-[50px] border-2 border-neutral-400 dark:border-neutral-500 rounded-full justify-center p-1">
+          <div class="w-1.5 h-3 bg-pink-500 rounded-full animate-bounce"></div>
+        </div>
+
+        {/* Scroll Arrow (Mobile) */}
+        <div class="flex sm:hidden text-pink-500 animate-bounce mt-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </div>
       </div>
     </div>
   </section>
@@ -128,17 +139,17 @@ const education = [
   <!-- ═══════════════════ ABOUT ═══════════════════ -->
   <section id="about" class="px-6 md:px-12 text-black dark:text-white pt-24 pb-20 mt-12 sm:mt-24 bg-black/5 dark:bg-white/[0.04]">
     <div class="max-w-[1100px] mx-auto">
-      <div class="mb-2 text-center">
+      <div class="mb-2 text-center reveal-up">
         <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">About me</span>
       </div>
       <h2
-        class="text-4xl font-bold text-black dark:text-white mb-8 md:mb-10 text-center animate-fade-in-down"
+        class="text-4xl font-bold text-black dark:text-white mb-8 md:mb-10 text-center reveal-up reveal-delay-100"
       >
         About me
       </h2>
 
       <p
-        class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white animate-fade-in animate-delay-200"
+        class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white reveal-fade reveal-delay-200"
       >
         I am Maxence Debes, an MSc data science student with a strong background
         in mathematics and computer science. I am passionate about machine
@@ -152,24 +163,24 @@ const education = [
 
     <div class="max-w-[1100px] mx-auto mb-20">
       <h2
-        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white animate-fade-in-right animate-delay-100"
+        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white reveal-up reveal-delay-100"
       >
         Work experience
       </h2>
 
-      <div class="animate-fade-in-up animate-delay-200 w-full mb-16 md:mb-20">
+      <div class="reveal-up reveal-delay-200 w-full mb-16 md:mb-20">
          <ExperienceCarousel client:load items={workExperience} />
       </div>
 
       <h2
-        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white animate-fade-in-right animate-delay-100"
+        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white reveal-up reveal-delay-100"
       >
         Skills & interests
       </h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="md:col-span-2 animate-fade-in-up animate-delay-200">
-          <div class="glass-card p-6">
+      <div class="flex flex-col lg:flex-row gap-6 items-stretch w-full">
+        <div class="flex-1 w-full reveal-up reveal-delay-200">
+          <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
             </svg>
@@ -184,8 +195,8 @@ const education = [
           </div>
         </div>
 
-        <div class="animate-fade-in-up animate-delay-300">
-          <div class="glass-card p-6">
+        <div class="flex-1 w-full reveal-up reveal-delay-300">
+          <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
             </svg>
@@ -200,8 +211,8 @@ const education = [
           </div>
         </div>
 
-        <div class="animate-fade-in-up animate-delay-400">
-          <div class="glass-card p-6">
+        <div class="flex-1 w-full reveal-up reveal-delay-400">
+          <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
             </svg>
@@ -217,12 +228,12 @@ const education = [
       <div class="w-full h-16 md:h-20"></div>
 
       <h2
-        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white animate-fade-in-right animate-delay-100"
+        class="text-2xl font-semibold mb-8 section-title text-black dark:text-white reveal-up reveal-delay-100"
       >
         Education
       </h2>
 
-      <div class="animate-fade-in-up animate-delay-200 w-full">
+      <div class="reveal-up reveal-delay-200 w-full">
          <ExperienceCarousel client:load items={education} />
       </div>
     </div>
@@ -232,17 +243,17 @@ const education = [
   <section id="projects" class="pt-24 pb-20">
     <main class="flex flex-col items-center px-4 w-full mx-auto">
       <div class="max-w-[1280px] lg:max-w-[1162px] mx-auto pb-6 px-4 sm:px-6 md:px-8">
-        <div class="mb-2 text-center">
+        <div class="mb-2 text-center reveal-up">
           <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">My projects</span>
         </div>
         <h2
-          class="text-4xl font-bold text-black dark:text-white text-center md:mb-10 mb-8 animate-fade-in-down"
+          class="text-4xl font-bold text-black dark:text-white text-center md:mb-10 mb-8 reveal-up reveal-delay-100"
         >
           My projects
         </h2>
 
         <p
-          class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white animate-fade-in animate-delay-200"
+          class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white reveal-fade reveal-delay-200"
         >
           Here you will find a selection of projects I have worked on, ranging
           from academic research to personal and professional experiences. Each
@@ -261,15 +272,15 @@ const education = [
   <!-- ═══════════════════ CONTACT ═══════════════════ -->
   <section id="contact" class="pt-24 pb-0 bg-black/5 dark:bg-white/[0.04] min-h-svh flex flex-col justify-between">
     <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center justify-start relative z-10">
-      <div class="mb-2 text-center animate-fade-in-up">
+      <div class="mb-2 text-center reveal-up">
         <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">Let's connect</span>
       </div>
-      <h2 class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-6 md:mb-12 text-center animate-fade-in-down">Let's connect</h2>
+      <h2 class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-6 md:mb-12 text-center reveal-up reveal-delay-100">Let's connect</h2>
       
       <div class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full mt-4 lg:mt-8">
         
         {/* Left Column: Context & Status */}
-        <div class="w-full md:w-1/2 flex flex-col justify-center animate-fade-in-right animate-delay-200">
+        <div class="w-full md:w-1/2 flex flex-col justify-center reveal-right reveal-delay-200">
           <p class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white mb-8 max-w-lg">
             Whether you have a question, a project idea, or just want to chat about AI, software engineering, and the future of tech, my inbox is always open. I'll do my best to get back to you!
           </p>
@@ -285,7 +296,7 @@ const education = [
           </div>
         </div>
 
-        <div class="w-full md:w-1/2 max-w-lg mx-auto md:mx-0 animate-fade-in-left animate-delay-400">
+        <div class="w-full md:w-1/2 max-w-lg mx-auto md:mx-0 reveal-left reveal-delay-400">
           <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="flex flex-col gap-5 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.35)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all">
             <input type="hidden" name="access_key" value="b7a332b3-794a-40fe-999e-e85a68145764" />
             <input type="hidden" name="subject" value="New message from your Portfolio" />

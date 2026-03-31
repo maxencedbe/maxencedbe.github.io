@@ -4,7 +4,8 @@ import useEmblaCarousel from 'embla-carousel-react';
 const ExperienceCarousel = ({ items }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'center',
-    containScroll: 'trimSnaps'
+    containScroll: 'trimSnaps',
+    watchDrag: false // Disable dragging
   });
 
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
@@ -43,7 +44,7 @@ const ExperienceCarousel = ({ items }) => {
           {items.map((item, index) => (
             <div
               key={index}
-              className="flex-[0_0_100%] min-w-0 px-6 sm:px-10 cursor-pointer"
+              className="flex-[0_0_100%] min-w-0 px-6 sm:px-10"
             >
               <div className="glass-card group p-5 sm:p-6 h-full flex flex-row items-center gap-6 sm:gap-10">
                 {/* SVG Border Effect */}
@@ -122,7 +123,7 @@ const ExperienceCarousel = ({ items }) => {
         {scrollSnaps.map((_, index) => (
           <button
             key={index}
-            className={`w-2 h-2 rounded-full transition-all duration-300 
+            className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-300 
               ${index === selectedIndex ? 'w-6 bg-pink-500' : 'bg-neutral-300 dark:bg-neutral-600 hover:bg-neutral-400 dark:hover:bg-neutral-500'}
             `}
             onClick={() => scrollTo(index)}

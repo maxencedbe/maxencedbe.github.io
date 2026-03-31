@@ -33,11 +33,22 @@ const ChevronDownIcon = () => (
 );
 
 export default function Navbar({ currentPath, currentLocale = "en" }) {
+  const [activeLocale, setActiveLocale] = useState(currentLocale);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [theme, setTheme] = useState("dark");
   const [time, setTime] = useState("");
 
   const langMenuRef = useRef(null);
+
+  useEffect(() => {
+    const handlePageLoad = () => {
+      const lang = document.documentElement.lang || "en";
+      setActiveLocale(lang);
+    };
+    handlePageLoad();
+    document.addEventListener("astro:page-load", handlePageLoad);
+    return () => document.removeEventListener("astro:page-load", handlePageLoad);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -97,7 +108,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     navigate(newLocale === "fr" ? "/fr" : "/");
   };
 
-  const resumeUrl = currentLocale === 'fr' ? '/Maxence_Debes_Resume_Fra.pdf' : '/Maxence_Debes_Resume_Ang.pdf';
+  const resumeUrl = activeLocale === 'fr' ? '/Maxence_Debes_Resume_Fra.pdf' : '/Maxence_Debes_Resume_Ang.pdf';
 
   return (
     <nav className="fixed top-0 left-0 w-full px-6 py-4 z-[90] flex items-center justify-between">
@@ -142,7 +153,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
                 <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                 <circle cx="12" cy="12" r="3"></circle>
               </svg>
-              <span>View resume</span>
+              <span>{activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}</span>
             </a>
 
             <a
@@ -155,7 +166,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
-              <span>Download resume</span>
+              <span>{activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}</span>
             </a>
           </div>
         </div>
@@ -169,7 +180,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
             className={`text-black dark:text-white cursor-pointer font-medium text-sm transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
             aria-label="Open language menu"
           >
-            {getLabel(currentLocale)}
+            {getLabel(activeLocale)}
             <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
               <ChevronDownIcon />
             </div>
@@ -186,14 +197,14 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               className="font-medium text-sm text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
               aria-label="Close language menu"
             >
-              {getLabel(currentLocale)}
+              {getLabel(activeLocale)}
               <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
                 <ChevronDownIcon />
               </div>
             </button>
 
             {languages
-              .filter((lang) => lang.code !== currentLocale)
+              .filter((lang) => lang.code !== activeLocale)
               .map((lang) => {
                 return (
                   <a
@@ -210,22 +221,28 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
         </div>
 
         {/* iPhone Style Theme Slider - Refined Glassmorphism Version */}
-        <div 
+        <div
           onClick={toggleTheme}
           className="relative w-[72px] h-9 rounded-full bg-black/[0.05] dark:bg-white/[0.08] border border-black/10 dark:border-white/10 cursor-pointer transition-all duration-300 flex items-center"
           role="button"
           aria-label="Toggle theme"
         >
-          {/* Background Icons - Balanced spacing */}
-          <div className="absolute inset-0 flex items-center justify-between px-3 pointer-events-none opacity-30">
-            <div className="scale-[0.8] text-black dark:text-white"><SunIcon /></div>
-            <div className="scale-[0.8] text-black dark:text-white"><MoonIcon /></div>
+          {/* Background Icons - Perfectly tied to thumb coordinates */}
+          <div className="absolute inset-0 pointer-events-none opacity-30">
+            {/* Left position matches state theme==='light' */}
+            <div className="absolute top-[3px] left-[3px] w-7 h-7 flex items-center justify-center">
+              <div className="scale-[0.7] text-black dark:text-white"><SunIcon /></div>
+            </div>
+            {/* Right position matches state theme==='dark' */}
+            <div className="absolute top-[3px] left-[3px] w-7 h-7 translate-x-[36px] flex items-center justify-center">
+              <div className="scale-[0.7] text-black dark:text-white"><MoonIcon /></div>
+            </div>
           </div>
 
           {/* Sliding Thumb - Glassmorphism Effect */}
-          <div 
-            className={`absolute left-1 w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${theme === 'dark' ? 'translate-x-[36px]' : 'translate-x-0'}`}
-            style={{ 
+          <div
+            className={`absolute top-[3px] left-[3px] w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${theme === 'dark' ? 'translate-x-[36px]' : 'translate-x-0'}`}
+            style={{
               WebkitBackdropFilter: "blur(12px)",
               backdropFilter: "blur(12px)"
             }}

@@ -59,6 +59,7 @@ const isLockedPage = isLocked;
 
       const initLenis = () => {
         const lenis = new Lenis();
+        (window as any).lenis = lenis;
 
         function raf(time: number) {
           lenis.raf(time);
@@ -164,7 +165,7 @@ const isLockedPage = isLocked;
     <BackToTop client:load />
     <SideNav client:load currentLocale={Astro.currentLocale} />
     <ScrollObserver client:only="react" />
-    <ProgressBar client:load />
+    <ProgressBar client:load transition:persist="progressbar" />
     <script>
       document.addEventListener('astro:after-swap', () => {
         const langScroll = sessionStorage.getItem('langScroll');

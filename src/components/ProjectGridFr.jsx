@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import ProjectCard from "./ProjectCard.jsx";
 
 const projectsData = [
@@ -57,12 +58,15 @@ const filters = ["Tout", "Deep Learning", "Machine Learning", "Développement we
 
 export default function ProjectGridFr() {
     const [activeFilter, setActiveFilter] = useState("Tout");
+    const [showAll, setShowAll] = useState(false);
     const containerRef = React.useRef(null);
 
     const filteredProjects = useMemo(() => {
         if (activeFilter === "Tout") return projectsData;
         return projectsData.filter(project => project.category.includes(activeFilter));
     }, [activeFilter]);
+
+    const displayedProjects = filteredProjects;
 
     // Re-run animation observer when items change
     React.useEffect(() => {
@@ -78,19 +82,36 @@ export default function ProjectGridFr() {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add("is-visible");
-                    observer.unobserve(entry.target);
+                } else {
+                    entry.target.classList.remove("is-visible");
                 }
             });
         }, observerOptions);
 
-        const elements = containerRef.current.querySelectorAll("[class*='animate-']");
+        const elements = containerRef.current.querySelectorAll("[class*='reveal-']");
         elements.forEach((el) => {
             el.classList.remove("is-visible"); // Reset to allow fade-in
             observer.observe(el);
         });
 
         return () => observer.disconnect();
-    }, [filteredProjects]);
+    }, [displayedProjects]);
+
+    const handleToggleExpand = () => {
+        if (showAll) {
+            setShowAll(false);
+            if (containerRef.current) {
+                if (window.lenis) {
+                    window.lenis.scrollTo(containerRef.current, { offset: -100, duration: 1.5 });
+                } else {
+                    const y = containerRef.current.getBoundingClientRect().top + window.scrollY - 100;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }
+            }
+        } else {
+            setShowAll(true);
+        }
+    };
 
     return (
         <div className="w-full" ref={containerRef}>
@@ -108,21 +129,73 @@ export default function ProjectGridFr() {
             </div>
 
             {/* Projects Grid/List */}
-            <div className="flex flex-col items-center w-full">
-                {filteredProjects.map((project, index) => (
-                    <div
-                        key={project.title}
-                        className={`flex flex-col items-center w-full animate-fade-in-up ${index === filteredProjects.length - 1 ? "mb-0" : "md:mb-16 mb-8"}`}
-                        style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                        <ProjectCard
-                            title={project.title}
-                            description={project.description}
-                            imageUrl={project.imageUrl}
-                            githubUrl={project.githubUrl}
-                        />
+            <div className="flex flex-col items-center w-full max-w-6xl mx-auto">
+                <div className="flex flex-col gap-8 md:gap-16 w-full items-center">
+                    {/* Always visible ones */}
+                    {displayedProjects.map((project, index) => {
+                        const isHiddenByDefault = activeFilter === "Tous" && index >= 3;
+                        if (isHiddenByDefault) return null;
+
+                        return (
+                            <div
+                                key={project.title}
+                                className="flex flex-col items-center w-full reveal-up"
+                                style={{ animationDelay: `${index * 100}ms` }}
+                            >
+                                <ProjectCard
+                                    title={project.title}
+                                    description={project.description}
+                                    imageUrl={project.imageUrl}
+                                    githubUrl={project.githubUrl}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+                {/* Smooth Expandable Wrapper for items > 3 */}
+                <AnimatePresence initial={false}>
+                    {activeFilter === "Tous" && displayedProjects.length > 3 && showAll && (
+                        <motion.div 
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                            className="overflow-hidden flex flex-col items-center w-full"
+                        >
+                            <div className="flex flex-col gap-8 md:gap-16 w-full items-center pt-8 md:pt-16 pb-8 md:pb-16 px-4 md:px-8">
+                                {displayedProjects.slice(3).map((project, index) => (
+                                    <div
+                                        key={project.title}
+                                        className="flex flex-col items-center w-full"
+                                    >
+                                        <ProjectCard
+                                            title={project.title}
+                                            description={project.description}
+                                            imageUrl={project.imageUrl}
+                                            githubUrl={project.githubUrl}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+                {displayedProjects.length === 0 && (
+                    <p className="text-center text-gray-500 mt-10">Aucun projet trouvé dans cette catégorie.</p>
+                )}
+
+                {/* Show More / Show Less Buttons */}
+                {activeFilter === "Tous" && displayedProjects.length > 3 && (
+                    <div className="mt-8 md:mt-12 flex justify-center reveal-fade">
+                        <button 
+                            onClick={handleToggleExpand} 
+                            className="px-8 py-3 rounded-full text-sm sm:text-base font-medium filter-btn transition-colors duration-300"
+                        >
+                            {showAll ? 'Voir moins' : 'Voir plus de projets'}
+                        </button>
                     </div>
-                ))}
+                )}
             </div>
         </div>
     );
