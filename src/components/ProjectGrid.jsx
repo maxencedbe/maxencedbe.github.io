@@ -101,16 +101,33 @@ export default function ProjectGrid() {
         return () => observer.disconnect();
     }, [displayedProjects]);
 
+    const smoothScrollTo = (element, duration = 800, onComplete) => {
+        const start = window.scrollY;
+        const target = element.getBoundingClientRect().top + window.scrollY;
+        const distance = target - start;
+        const startTime = performance.now();
+
+        const ease = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+        const step = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            window.scrollTo(0, start + distance * ease(progress));
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else if (onComplete) {
+                onComplete();
+            }
+        };
+
+        requestAnimationFrame(step);
+    };
+
     const handleToggleExpand = () => {
         if (showAll) {
-            setShowAll(false);
-            if (containerRef.current) {
-                if (window.lenis) {
-                    window.lenis.scrollTo(containerRef.current, { offset: -100, duration: 1.5 });
-                } else {
-                    const y = containerRef.current.getBoundingClientRect().top + window.scrollY - 100;
-                    window.scrollTo({ top: y, behavior: 'smooth' });
-                }
+            const el = document.getElementById('projects');
+            if (el) {
+                smoothScrollTo(el, 800, () => setShowAll(false));
             }
         } else {
             setShowAll(true);
@@ -166,7 +183,7 @@ export default function ProjectGrid() {
                             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                             className="overflow-hidden flex flex-col items-center w-full"
                         >
-                            <div className="flex flex-col gap-8 md:gap-16 w-full items-center pt-8 md:pt-16 pb-8 md:pb-16 px-4 md:px-8">
+                            <div className="flex flex-col gap-8 md:gap-16 w-full items-center pt-8 md:pt-16">
                                 {displayedProjects.slice(3).map((project, index) => (
                                     <div
                                         key={project.title}

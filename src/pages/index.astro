@@ -102,15 +102,16 @@ const education = [
       <div class="contact-buttons">
         {
           links.map((link, index) => (
-            <a
-              href={link.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class={`contact-button reveal-up`}
-              style={{ transitionDelay: `${400 + index * 100}ms` }}
-            >
-              <img src={link.icon} alt={link.name} />
-            </a>
+            <div class="reveal-up reveal-early" style={{ transitionDelay: `${400 + index * 100}ms` }}>
+              <a
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="contact-button"
+              >
+                <img src={link.icon} alt={link.name} />
+              </a>
+            </div>
           ))
         }
       </div>
@@ -118,11 +119,11 @@ const education = [
 
     {/* Scroll Indicator */}
     <div class="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2">
-      <div class="flex flex-col items-center gap-2 opacity-0" style={{ animation: 'heroRevealUp 1.5s cubic-bezier(0.22, 1, 0.36, 1) 800ms forwards' }}>
+      <div class="flex flex-col items-center gap-2 reveal-up reveal-early" style={{ transitionDelay: '800ms' }}>
         <span class="text-xs font-bold tracking-widest text-black dark:text-white uppercase">Scroll</span>
         
         {/* Scroll Mouse (Desktop) */}
-        <div class="hidden sm:flex w-[30px] h-[50px] border-2 border-neutral-400 dark:border-neutral-500 rounded-full justify-center p-1">
+        <div class="hidden sm:flex w-[30px] h-[50px] border-2 border-neutral-400 dark:border-white/15 rounded-full justify-center p-1">
           <div class="w-1.5 h-3 bg-pink-500 rounded-full animate-bounce"></div>
         </div>
 
@@ -137,7 +138,7 @@ const education = [
   </section>
 
   <!-- ═══════════════════ ABOUT ═══════════════════ -->
-  <section id="about" class="px-6 md:px-12 text-black dark:text-white pt-24 pb-20 mt-12 sm:mt-24 bg-black/5 dark:bg-white/[0.04]">
+  <section id="about" class="px-6 md:px-12 text-black dark:text-white pt-24 pb-20 mt-12 sm:mt-24 section-bg-reveal">
     <div class="max-w-[1100px] mx-auto">
       <div class="mb-2 text-center reveal-up">
         <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">About me</span>
@@ -270,7 +271,7 @@ const education = [
   </section>
 
   <!-- ═══════════════════ CONTACT ═══════════════════ -->
-  <section id="contact" class="pt-24 pb-0 bg-black/5 dark:bg-white/[0.04] min-h-svh flex flex-col justify-between">
+  <section id="contact" class="pt-24 pb-0 min-h-svh flex flex-col justify-between section-bg-reveal">
     <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center justify-start relative z-10">
       <div class="mb-2 text-center reveal-up">
         <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">Let's connect</span>
@@ -281,7 +282,7 @@ const education = [
         
         {/* Left Column: Context & Status */}
         <div class="w-full md:w-1/2 flex flex-col justify-center reveal-right reveal-delay-200">
-          <p class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white mb-8 max-w-lg">
+          <p class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white/80 mb-8 max-w-lg">
             Whether you have a question, a project idea, or just want to chat about AI, software engineering, and the future of tech, my inbox is always open. I'll do my best to get back to you!
           </p>
           
@@ -290,7 +291,7 @@ const education = [
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
-            <span class="text-xs sm:text-sm font-semibold tracking-wide text-black/70 dark:text-white">
+            <span class="text-xs sm:text-sm font-semibold tracking-wide text-black/70 dark:text-white/70">
               Open to new opportunities
             </span>
           </div>
@@ -303,17 +304,17 @@ const education = [
             <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
             
             <div class="flex flex-col gap-1.5">
-              <label for="name" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white/60 ml-1">Name</label>
+              <label for="name" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Name</label>
               <input type="text" id="name" name="name" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" placeholder="John Doe" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm" />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="email" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white/60 ml-1">Email</label>
+              <label for="email" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Email</label>
               <input type="email" id="email" name="email" required oninvalid="this.setCustomValidity('Please enter a valid email address.')" oninput="this.setCustomValidity('')" placeholder="john@example.com" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm" />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="message" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white/60 ml-1">Message</label>
+              <label for="message" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Message</label>
               <textarea id="message" name="message" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" rows="4" placeholder="Hello Maxence, I'd like to talk about..." class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm resize-none"></textarea>
             </div>
 
@@ -358,19 +359,22 @@ const education = [
     }
 
     :global(.dark) .contact-button {
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      background-color: rgba(0, 0, 0, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      background-color: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(2px);
       -webkit-backdrop-filter: blur(2px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      box-shadow: none;
     }
 
     .contact-button:hover {
       background-color: #000000;
+      border-color: #000000;
+      transform: scale(1.1);
     }
 
     :global(.dark) .contact-button:hover {
       background-color: #ffffff;
+      border-color: #ffffff;
     }
 
     .contact-button img {

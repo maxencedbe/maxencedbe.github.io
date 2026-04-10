@@ -19,6 +19,13 @@ export default function AnimatedBackground() {
     let animateHeader = true;
     let animationFrameId;
     let isDark = document.documentElement.classList.contains("dark");
+    const revealSpread = 2500;
+    const pointFadeDuration = 400;
+    const revealStart = performance.now();
+
+    setTimeout(() => {
+      document.dispatchEvent(new CustomEvent('constellation-ready'));
+    }, revealSpread + pointFadeDuration);
 
 
     const observer = new MutationObserver((mutations) => {
@@ -55,7 +62,11 @@ export default function AnimatedBackground() {
       for (let y = 0; y < height; y += spacing) {
         const px = x + Math.random() * spacing;
         const py = y + Math.random() * spacing;
-        points.push({ x: px, originX: px, y: py, originY: py });
+        points.push({
+          x: px, originX: px,
+          y: py, originY: py,
+          birthTime: Math.random() * revealSpread, // staggered birth
+        });
       }
     }
 
@@ -115,7 +126,11 @@ export default function AnimatedBackground() {
         for (let y = 0; y < height; y += spacing) {
           const px = x + Math.random() * spacing;
           const py = y + Math.random() * spacing;
-          points.push({ x: px, originX: px, y: py, originY: py });
+          points.push({
+            x: px, originX: px,
+            y: py, originY: py,
+            birthTime: Math.random() * revealSpread,
+          });
         }
       }
 
@@ -167,6 +182,7 @@ export default function AnimatedBackground() {
       if (animateHeader) {
         ctx.clearRect(0, 0, width, height);
 
+        const elapsed = performance.now() - revealStart;
 
         let r, g, b;
         if (isDark) {
@@ -180,18 +196,32 @@ export default function AnimatedBackground() {
         }
 
         points.forEach((p) => {
-          if (Math.abs(getDistance(target, p)) < 4000) {
-            p.active = 0.3;
-            p.circle.active = 0.6;
-          } else if (Math.abs(getDistance(target, p)) < 20000) {
-            p.active = 0.1;
-            p.circle.active = 0.3;
-          } else if (Math.abs(getDistance(target, p)) < 40000) {
-            p.active = 0.02;
-            p.circle.active = 0.1;
-          } else {
+          // How long since this point was born (0 if not yet born)
+          const age = Math.max(0, elapsed - p.birthTime);
+          // Fade-in multiplier for this individual point (0 → 1 over pointFadeDuration)
+          const pointAlpha = Math.min(1, age / pointFadeDuration);
+
+          if (pointAlpha <= 0) {
             p.active = 0;
             p.circle.active = 0;
+          } else {
+            // Normal mouse-based opacity, multiplied by individual point alpha
+            let baseActive, baseCircleActive;
+            if (Math.abs(getDistance(target, p)) < 4000) {
+              baseActive = 0.3;
+              baseCircleActive = 0.6;
+            } else if (Math.abs(getDistance(target, p)) < 20000) {
+              baseActive = 0.1;
+              baseCircleActive = 0.3;
+            } else if (Math.abs(getDistance(target, p)) < 40000) {
+              baseActive = 0.02;
+              baseCircleActive = 0.1;
+            } else {
+              baseActive = 0;
+              baseCircleActive = 0;
+            }
+            p.active = baseActive * pointAlpha;
+            p.circle.active = baseCircleActive * pointAlpha;
           }
 
           drawLines(p, r, g, b);

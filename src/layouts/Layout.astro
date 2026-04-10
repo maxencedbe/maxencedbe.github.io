@@ -132,42 +132,149 @@ const isLockedPage = isLocked;
         }
       }
     </style>
+
+    <style>
+      /* Hide content during constellation intro */
+      body.is-loading #content-wrapper,
+      body.is-loading #navbar-wrapper-el,
+      body.is-loading #sidenav-wrapper-el,
+      body.is-loading #progressbar-wrapper-el {
+        opacity: 0;
+        pointer-events: none;
+      }
+      /* Dot pattern fades in during the constellation build */
+      #background-pattern {
+        opacity: 0;
+        transition: opacity 3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      #background-pattern.dots-visible {
+        opacity: 1;
+      }
+      /* Navbar, SideNav, ProgressBar & Content get smooth fade-ins */
+      #content-wrapper,
+      #navbar-wrapper-el,
+      #sidenav-wrapper-el,
+      #progressbar-wrapper-el {
+        transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+    </style>
   </head>
   <body
-    class="flex flex-col min-h-screen"
+    class="flex flex-col min-h-screen is-loading"
   >
-    <div
-      id="background-pattern"
-      class="fixed inset-0 -z-50 pointer-events-none bg-dots"
-    >
-    </div>
+
+    <div id="background-pattern" class="fixed inset-0 -z-50 pointer-events-none bg-dots"></div>
 
     <AnimatedBackground client:only="react" transition:persist="background" />
     {
       showNavbar && (
-        <Navbar
-          client:load
-          transition:persist="navbar"
-          currentPath={Astro.url.pathname}
-          currentLocale={Astro.currentLocale}
-        />
+        <div id="navbar-wrapper-el">
+          <Navbar
+            client:load
+            transition:persist="navbar"
+            currentPath={Astro.url.pathname}
+            currentLocale={Astro.currentLocale}
+          />
+        </div>
       )
     }
     <div
       class="w-full h-[100px] md:h-[120px]"
     >
     </div>
+    <div id="content-wrapper" class="flex-1 flex flex-col">
     <main
       class={`transition-container flex-1 flex flex-col ${!showNavbar ? "no-navbar" : ""}`}
     >
       <slot />
     </main>
+    </div>
     <BackToTop client:load />
-    <SideNav client:load currentLocale={Astro.currentLocale} />
+    <div id="sidenav-wrapper-el">
+      <SideNav client:load currentLocale={Astro.currentLocale} />
+    </div>
     <ScrollObserver client:only="react" />
-    <ProgressBar client:load transition:persist="progressbar" />
+    <div id="progressbar-wrapper-el">
+      <ProgressBar client:load transition:persist="progressbar" />
+    </div>
     <script>
+      // Track real Astro client-side navigations vs F5 reloads
+      let isAstroNavigation = false;
+      document.addEventListener('astro:before-swap', () => {
+        isAstroNavigation = true;
+      });
+
+      // Fade in the dot pattern 500ms into the constellation build
+      if (document.body.classList.contains('is-loading')) {
+        setTimeout(() => {
+          const bg = document.getElementById('background-pattern');
+          if (bg) bg.classList.add('dots-visible');
+        }, 500);
+      } else {
+        const bg = document.getElementById('background-pattern');
+        if (bg) bg.classList.add('dots-visible');
+      }
+
+      // Reveal content once constellation is ready (F5 path)
+      document.addEventListener('constellation-ready', () => {
+        // If user refreshed while scrolled down, skip the intro animation
+        if (window.scrollY > 200) {
+          document.body.classList.remove('is-loading');
+          document.querySelectorAll('[class*="reveal-"]').forEach(el => {
+            el.classList.add('is-visible');
+          });
+          document.querySelectorAll('.section-bg-reveal').forEach(el => {
+            el.classList.add('is-visible');
+          });
+          document.dispatchEvent(new CustomEvent('stagger-complete'));
+          return;
+        }
+
+        // Collect above-fold reveal elements, sorted top to bottom
+        const viewportH = window.innerHeight;
+        const aboveFoldEls = [
+          ...document.querySelectorAll('[class*="reveal-"]'),
+          ...document.querySelectorAll('.section-bg-reveal')
+        ]
+          .filter(el => {
+            const rect = el.getBoundingClientRect();
+            return rect.top < viewportH;
+          })
+          .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+
+        // 1. Strip is-visible from above-fold elements
+        aboveFoldEls.forEach(el => el.classList.remove('is-visible'));
+
+        // 2. Make content wrapper visible instantly (no transition)
+        document.body.classList.remove('is-loading');
+
+        // 3. Two rAFs to guarantee browser has painted with elements at opacity:0
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            // 4. Stagger re-adding is-visible, 150ms between each element
+            const staggerDelay = 150;
+            aboveFoldEls.forEach((el, i) => {
+              setTimeout(() => el.classList.add('is-visible'), i * staggerDelay);
+            });
+            // 5. After the last element has animated in, re-enable ScrollObserver
+            const totalStaggerTime = aboveFoldEls.length * staggerDelay + 1500; // +1.5s for last transition
+            setTimeout(() => {
+              document.dispatchEvent(new CustomEvent('stagger-complete'));
+            }, totalStaggerTime);
+          });
+        });
+      });
+
+      // On Astro internal navigation only (NOT F5), immediately show content
       document.addEventListener('astro:after-swap', () => {
+        if (isAstroNavigation) {
+          document.body.classList.remove('is-loading');
+          isAstroNavigation = false;
+        }
+        // Dots always visible on internal nav
+        const bg = document.getElementById('background-pattern');
+        if (bg) bg.classList.add('dots-visible');
+
         const langScroll = sessionStorage.getItem('langScroll');
         if (langScroll !== null) {
           window.scrollTo({ top: parseInt(langScroll, 10), behavior: 'instant' });

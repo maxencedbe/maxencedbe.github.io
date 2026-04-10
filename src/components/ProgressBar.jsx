@@ -3,13 +3,29 @@ import React, { useEffect, useRef, useState } from "react";
 export default function ProgressBar() {
     const rectRef = useRef(null);
     const [dims, setDims] = useState({ w: 0, h: 0 });
+    const [isReady, setIsReady] = useState(false);
+
+    // Wait for intro to finish before showing
+    useEffect(() => {
+        if (!document.body.classList.contains('is-loading')) {
+            setIsReady(true);
+            return;
+        }
+        const handleReady = () => {
+            // Delay to let layout fully stabilize after intro
+            setTimeout(() => setIsReady(true), 500);
+        };
+        document.addEventListener('stagger-complete', handleReady);
+        return () => document.removeEventListener('stagger-complete', handleReady);
+    }, []);
 
     useEffect(() => {
+        if (!isReady) return;
         const updateDims = () => setDims({ w: document.documentElement.clientWidth, h: window.innerHeight });
         window.addEventListener("resize", updateDims);
         updateDims();
         return () => window.removeEventListener("resize", updateDims);
-    }, []);
+    }, [isReady]);
 
     useEffect(() => {
         let requestDisplay;
@@ -76,7 +92,7 @@ export default function ProgressBar() {
         };
     }, [dims]);
 
-    if (dims.w === 0) return null;
+    if (!isReady || dims.w === 0) return null;
 
     const strokeWidth = 3; // Set back to 3px
     const inset = strokeWidth / 2;
@@ -112,6 +128,7 @@ export default function ProgressBar() {
                     strokeWidth={strokeWidth}
                     strokeLinecap="square" // Fills the tiny 1.5px gap perfectly to the edge
                     style={{
+                        strokeDasharray: "0 99999",
                         filter: "drop-shadow(0 0 8px rgba(236,72,153,0.8))",
                     }}
                 />

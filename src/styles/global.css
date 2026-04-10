@@ -114,6 +114,20 @@ html {
 
 @layer utilities {
 
+  /* Section background reveal */
+  .section-bg-reveal {
+    background-color: transparent;
+    transition: background-color 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .section-bg-reveal.is-visible {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .dark .section-bg-reveal.is-visible {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
   /* Premium Reveals */
   .reveal-up {
     opacity: 0;
@@ -231,12 +245,12 @@ html {
   }
 
   .bg-dots {
-    background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px);
     background-size: 30px 30px;
   }
 
   .dark .bg-dots {
-    background-image: radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
   }
 
   /* Shared Card Styles */
@@ -278,7 +292,7 @@ html {
   background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  border: 1px solid rgba(255, 255, 255, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: none;
 }
 

@@ -124,9 +124,12 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
       {/* LEFT SIDE: Branding & Widgets */}
       <div className="flex items-center gap-6">
         {/* 1. Branding */}
-        <div className="text-black dark:text-white font-bold text-lg md:text-xl tracking-tight">
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="text-black dark:text-white font-bold text-lg md:text-xl tracking-tight cursor-pointer transition-colors duration-300 hover:text-pink-400"
+        >
           Maxence Debes
-        </div>
+        </button>
 
         {/* 2. Desktop Only Widgets */}
         <div className="hidden lg:flex items-center gap-4 text-xs font-medium text-black/60 dark:text-white/60">

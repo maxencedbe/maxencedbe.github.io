@@ -5,18 +5,40 @@ export default function Typewriter({ words, typeSpeed = 100, deleteSpeed = 50, d
     const [subIndex, setSubIndex] = useState(0);
     const [reverse, setReverse] = useState(false);
     const [blink, setBlink] = useState(true);
+    const [hasStarted, setHasStarted] = useState(false);
+
+    // Start typing when constellation intro is done
+    useEffect(() => {
+        // If intro already completed (e.g. language switch), start immediately
+        if (!document.body.classList.contains('is-loading')) {
+            setHasStarted(true);
+            return;
+        }
+
+        // Otherwise wait for constellation intro to finish
+        const handler = () => {
+            setIndex(0);
+            setSubIndex(0);
+            setReverse(false);
+            setTimeout(() => setHasStarted(true), 300);
+        };
+
+        document.addEventListener('constellation-ready', handler);
+        return () => document.removeEventListener('constellation-ready', handler);
+    }, []);
 
     // Blinking cursor effect
     useEffect(() => {
-        const timeout2 = setInterval(() => {
+        const interval = setInterval(() => {
             setBlink((prev) => !prev);
         }, 500);
-        return () => clearInterval(timeout2);
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
+        if (!hasStarted) return;
+
         if (index >= words.length) {
-            // Reset to beginning if we went past the last word (shouldn't happen with logic below, but safety)
             setIndex(0);
             return;
         }
@@ -24,7 +46,6 @@ export default function Typewriter({ words, typeSpeed = 100, deleteSpeed = 50, d
         const currentWord = words[index];
 
         if (subIndex === currentWord.length + 1 && !reverse) {
-            // Finished typing word, wait before deleting
             const timeout = setTimeout(() => {
                 setReverse(true);
             }, delay);
@@ -32,7 +53,6 @@ export default function Typewriter({ words, typeSpeed = 100, deleteSpeed = 50, d
         }
 
         if (subIndex === 0 && reverse) {
-            // Finished deleting, move to next word
             setReverse(false);
             setIndex((prev) => (prev + 1) % words.length);
             return;
@@ -43,7 +63,7 @@ export default function Typewriter({ words, typeSpeed = 100, deleteSpeed = 50, d
         }, reverse ? deleteSpeed : typeSpeed);
 
         return () => clearTimeout(timeout);
-    }, [subIndex, index, reverse, words, typeSpeed, deleteSpeed, delay]);
+    }, [subIndex, index, reverse, words, typeSpeed, deleteSpeed, delay, hasStarted]);
 
     return (
         <span className="inline-block relative">

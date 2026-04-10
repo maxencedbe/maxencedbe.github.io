@@ -32,7 +32,7 @@
 html.dark {
   --text-color: #ffffff;
   --card-background-color: rgba(0, 0, 0, 0.75);
-  --card-border-color: rgba(255, 255, 255, 0.35);
+  --card-border-color: rgba(255, 255, 255, 0.15);
   --card-box-shadow-1: rgba(255, 255, 255, 0);
   --card-box-shadow-2: rgba(255, 255, 255, 0);
   --card-label-color: #FFFFFF;
@@ -469,7 +469,7 @@ html.dark .card .card-github {
   background-color: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 html.dark .card .card-github img {
@@ -523,7 +523,7 @@ html.dark .filter-btn {
   background-color: rgba(0, 0, 0, 0.85) !important;
   backdrop-filter: blur(2px) !important;
   -webkit-backdrop-filter: blur(2px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
   color: #fff;
   box-shadow: none;
   /* Usually dark mode has less shadow */
