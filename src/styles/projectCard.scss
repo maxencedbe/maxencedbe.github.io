@@ -40,8 +40,8 @@ html.dark {
   --card-icon-background-color: rgba(255, 255, 255, 0.08);
   --card-icon-border-color: rgba(255, 255, 255, 0.12);
   --card-hover-border-color: rgba(255, 255, 255, 0.1);
-  --card-hover-box-shadow-1: rgba(255, 255, 255, 0.1);
-  --card-hover-box-shadow-2: rgba(255, 255, 255, 0.05);
+  --card-hover-box-shadow-1: rgba(255, 255, 255, 0.05);
+  --card-hover-box-shadow-2: rgba(255, 255, 255, 0.025);
   --card-hover-icon-color: #000000;
   --card-hover-icon-background-color: #ffffff;
   --card-hover-icon-border-color: rgba(255, 255, 255, 0.12);
@@ -74,47 +74,6 @@ html.dark {
     background-color: transparent;
   }
 
-  .card-github {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    z-index: 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-
-    /* Light Mode Skin */
-    html:not(.dark) & {
-      background-color: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-    }
-
-    transition: background-color 0.3s,
-    transform 0.2s;
-
-    img {
-      width: 20px;
-      height: 20px;
-      filter: brightness(0);
-      /* Force black in light mode */
-      transition: filter 0.3s;
-    }
-
-    /* Light Mode Hover */
-    html:not(.dark) &:hover {
-      background-color: #000;
-      border-color: #000;
-
-      img {
-        filter: brightness(0) invert(1);
-      }
-    }
-  }
 
   .card-image {
     flex: 0 0 140px;
@@ -224,7 +183,7 @@ html.dark {
     overflow: hidden;
 
     .tiles {
-      display: grid;
+      display: none; /* Animation temporairement désactivée : display: grid */
       grid-template-columns: repeat(4, 1fr);
       grid-template-rows: repeat(4, 1fr);
       width: 100%;
@@ -540,15 +499,19 @@ html .filter-btn.active {
 
 /* Standardized Glass Effect (Apple Style) */
 html:not(.dark) .card {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: saturate(180%) blur(20px) !important;
-  -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 10px 15px rgba(0, 0, 0, 0.05) !important;
+  isolation: isolate;
+  transform: translateZ(0);
 }
 
 html.dark .card {
-  background-color: rgba(0, 0, 0, 0.85) !important;
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
+  background-color: rgba(10, 10, 10, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+  isolation: isolate;
+  transform: translateZ(0);
 }

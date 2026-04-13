@@ -30,6 +30,13 @@ const roles = [
 
 const workExperience = [
   {
+    title: "ChemAI",
+    date: "Avr 2026 – Oct 2026",
+    role: "Stagiaire Data Science",
+    icon: "/ChemAI.png",
+    logoClass: "scale-[1.4]"
+  },
+  {
     title: "Batigere Maison Familiale",
     date: "Juil 2025 – Août 2025",
     role: "Stagiaire informatique",
@@ -54,7 +61,8 @@ const education = [
     title: "Télécom SudParis - Institut Polytechnique de Paris",
     date: "Sep 2023 – Présent",
     role: "Diplôme d'ingénieur en informatique et mathématiques appliquées",
-    icon: "/TSP.png"
+    icon: "/TSP.png",
+    logoClass: "scale-[1.2]"
   }
 ];
 ---
@@ -62,7 +70,7 @@ const education = [
 <Layout title="Maxence Debes · Portfolio">
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
-  <section id="home" class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-100px)] md:h-[calc(100svh-120px)]">
+  <section id="home" class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-130px)] md:h-[calc(100svh-120px)]">
     <div
       class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-8 md:gap-16 lg:gap-32 xl:gap-40"
     >
@@ -75,7 +83,7 @@ const education = [
           Maxence Debes
         </h1>
         <p
-          class="mt-3 sm:mt-5 text-lg sm:text-2xl md:text-3xl text-black dark:text-white flex flex-col sm:block items-center"
+          class="mt-1 sm:mt-5 text-lg sm:text-2xl md:text-3xl text-black dark:text-white flex flex-col sm:block items-center"
         >
           <span class="text-pink-400 font-semibold min-w-[280px] text-center sm:text-left inline-block">
             <Typewriter client:load words={roles} />
@@ -148,7 +156,7 @@ const education = [
       </h2>
 
       <p
-        class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white reveal-fade reveal-delay-200"
+        class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white reveal-up reveal-delay-200"
       >
         Je suis Maxence Debes, étudiant en Master de science des données avec de
         solides bases en mathématiques et en informatique. Je suis passionné par
@@ -251,7 +259,7 @@ const education = [
         </h2>
 
         <p
-          class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white reveal-fade reveal-delay-200"
+          class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white reveal-up reveal-delay-200"
         >
           Vous trouverez ici une sélection de projets sur lesquels j'ai travaillé,
           allant de la recherche académique à mes expériences personnelles et
@@ -270,53 +278,53 @@ const education = [
 
   <!-- ═══════════════════ CONTACT ═══════════════════ -->
   <section id="contact" class="pt-24 pb-0 min-h-svh flex flex-col justify-between section-bg-reveal">
-    <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center justify-start relative z-10">
+    <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center justify-start flex-grow relative z-10">
       <div class="mb-2 text-center reveal-up">
         <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">Contactez-moi</span>
       </div>
       <h2 class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-6 md:mb-12 text-center reveal-up reveal-delay-100">Contactez-moi</h2>
       
-      <div class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full mt-4 lg:mt-8">
+      <div class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full mt-12 md:mt-20 xl:mt-24 mb-auto pb-12 md:pb-0">
         
         {/* Left Column: Context & Status */}
         <div class="w-full md:w-1/2 flex flex-col justify-center reveal-right reveal-delay-200">
-          <p class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white/80 mb-8 max-w-lg">
+          <p class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white mb-8 max-w-lg">
             Que vous ayez une question, une idée de projet, ou que vous souhaitiez simplement échanger sur l'IA et l'évolution de la tech, ma messagerie est toujours ouverte. Je ferai de mon mieux pour vous répondre !
           </p>
           
-          <div class="flex items-center gap-3 bg-white/5 dark:bg-black/5 border border-black/10 dark:border-white/10 w-fit px-4 py-2 rounded-full shadow-sm">
+          <div class="flex items-center gap-3 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none w-fit px-4 py-2 rounded-full">
             <span class="relative flex h-3 w-3">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
             </span>
-            <span class="text-xs sm:text-sm font-semibold tracking-wide text-black/70 dark:text-white/70">
+            <span class="text-xs sm:text-sm font-semibold tracking-wide text-black/70 dark:text-white">
               À l'écoute d'opportunités
             </span>
           </div>
         </div>
 
         <div class="w-full md:w-1/2 max-w-lg mx-auto md:mx-0 reveal-left reveal-delay-400">
-          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="flex flex-col gap-5 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.35)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all">
+          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="flex flex-col gap-5 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all">
             <input type="hidden" name="access_key" value="b7a332b3-794a-40fe-999e-e85a68145764" />
             <input type="hidden" name="subject" value="Nouveau message depuis ton Portfolio" />
             <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
             
             <div class="flex flex-col gap-1.5">
-              <label for="name" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Nom</label>
-              <input type="text" id="name" name="name" required placeholder="Jean Dupont" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm" />
+              <label for="name" class="text-xs tracking-wide text-black dark:text-white ml-1">Nom</label>
+              <input type="text" id="name" name="name" required autocomplete="none" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white focus:outline-none transition-all font-medium text-sm" />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="email" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Email</label>
-              <input type="email" id="email" name="email" required placeholder="jean@exemple.com" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm" />
+              <label for="email" class="text-xs tracking-wide text-black dark:text-white ml-1">Email</label>
+              <input type="email" id="email" name="email" required autocomplete="none" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white focus:outline-none transition-all font-medium text-sm" />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="message" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Message</label>
-              <textarea id="message" name="message" required rows="4" placeholder="Bonjour Maxence, j'aimerais échanger au sujet de..." class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm resize-none"></textarea>
+              <label for="message" class="text-xs tracking-wide text-black dark:text-white ml-1">Message</label>
+              <textarea id="message" name="message" required autocomplete="none" rows="4" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white focus:outline-none transition-all font-medium text-sm resize-none"></textarea>
             </div>
 
-            <button id="submit-button" type="submit" class="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] hover:bg-black dark:hover:bg-white text-black dark:text-white hover:text-white dark:hover:text-black rounded-xl font-medium cursor-pointer text-sm transition-colors duration-300 active:scale-95 group">
+            <button id="submit-button" type="submit" class="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] hover:bg-pink-500 hover:border-pink-500 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(236,72,153,0.4)] hover:scale-105 rounded-xl font-medium cursor-pointer text-sm transition-all duration-300 active:scale-95 group transform-gpu">
               Envoyer le message
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
@@ -328,7 +336,7 @@ const education = [
       </div>
     </div>
 
-    <div class="flex-grow"></div>
+
 
     <div class="w-full mt-auto">
       <Footer client:load currentLocale={Astro.currentLocale} />
@@ -516,9 +524,6 @@ const education = [
         line-height: 1.7;
       }
 
-      h1 {
-        margin-bottom: 32px;
-      }
     }
 
     @media (max-width: 1024px) {
@@ -578,7 +583,7 @@ const education = [
               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
           `;
-          submitButton.classList.remove('hover:bg-black', 'dark:hover:bg-white', 'hover:text-white', 'dark:hover:text-black');
+          submitButton.classList.remove('hover:bg-pink-500', 'hover:border-pink-500', 'hover:text-white', 'dark:hover:text-white', 'hover:shadow-[0_4px_12px_rgba(236,72,153,0.4)]', 'hover:scale-105', 'active:scale-95');
           form.reset();
         } else {
           console.log(response);

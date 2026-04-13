@@ -79,10 +79,10 @@ const SideNav = ({ currentLocale = "en" }) => {
             transform: 'translateX(-50%)',
             top: `${firstDotCenter}px`,
             height: `${totalTrackHeight}px`,
-            width: '1.5px',
+            width: '1px',
             borderRadius: '1px',
           }}
-          className="bg-neutral-300/15 dark:bg-neutral-600/15"
+          className="bg-neutral-400 dark:bg-neutral-500"
         />
 
         {/* Progress line (animated) */}
@@ -93,7 +93,7 @@ const SideNav = ({ currentLocale = "en" }) => {
             transform: 'translateX(-50%)',
             top: `${firstDotCenter}px`,
             height: `${progressHeight}px`,
-            width: '1.5px',
+            width: '1px',
             borderRadius: '1px',
             transition: 'height 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
             background: 'linear-gradient(to bottom, rgba(236,72,153,0.4), rgba(236,72,153,0.8))',
@@ -169,7 +169,7 @@ const SideNav = ({ currentLocale = "en" }) => {
                     isActive
                       ? 'bg-pink-500'
                       : isPassed
-                        ? 'bg-pink-400/60'
+                        ? 'bg-pink-500'
                         : 'bg-neutral-400 dark:bg-neutral-500 group-hover:bg-neutral-300 dark:group-hover:bg-neutral-400'
                   }
                 />

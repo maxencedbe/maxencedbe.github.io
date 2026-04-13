@@ -69,12 +69,12 @@ html.lenis body {
 @layer base {
   html {
     font-family: "Poppins", sans-serif;
-    background-color: #ffffff;
+    background-color: #f5f5f5;
     scroll-padding-top: 0px;
   }
 
   html.dark {
-    background-color: #000000;
+    background-color: #121212;
   }
 
   body {
@@ -90,11 +90,11 @@ html.lenis body {
   }
 
   #background-pattern {
-    background-color: #ffffff;
+    background-color: #f5f5f5;
   }
 
   html.dark #background-pattern {
-    background-color: #000000;
+    background-color: #121212;
   }
 }
 
@@ -255,14 +255,7 @@ html {
 
   /* Shared Card Styles */
   .about-border {
-    position: absolute;
-    top: -1px;
-    left: -1px;
-    width: calc(100% + 2px);
-    height: calc(100% + 2px);
-    pointer-events: none;
-    z-index: 4;
-    overflow: visible;
+    display: none;
   }
 
   .about-border rect {
@@ -279,21 +272,25 @@ html {
 
 .glass-card {
   position: relative;
-  background-color: rgba(255, 255, 255, 0.9);
-  backdrop-filter: saturate(180%) blur(20px);
-  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 20px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05), 0 8px 15px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  isolation: isolate;
+  transform: translateZ(0);
 }
 
 .dark .glass-card {
-  background-color: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background-color: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: none;
+  isolation: isolate;
+  transform: translateZ(0);
 }
 
 .glass-card:hover {
@@ -301,12 +298,10 @@ html {
 }
 
 .dark .glass-card:hover {
-  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.1), 0 15px 25px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.05), 0 15px 25px rgba(255, 255, 255, 0.025);
 }
 
-.glass-card:hover .about-border rect {
-  stroke-dashoffset: 0;
-}
+  /* Hover animation removed */
 
 
 .liquid-glass {

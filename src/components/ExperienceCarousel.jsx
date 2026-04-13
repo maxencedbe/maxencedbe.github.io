@@ -56,7 +56,7 @@ const ExperienceCarousel = ({ items }) => {
                 <div className="flex-shrink-0 relative z-10">
                   {item.icon ? (
                     <div className="w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center">
-                      <img src={item.icon} alt={item.title} className="w-full h-full object-contain invert dark:invert-0" />
+                      <img src={item.icon} alt={item.title} className={`w-full h-full object-contain invert dark:invert-0 ${item.logoClass || ""}`} />
                     </div>
                   ) : (
                     <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-xl flex-shrink-0 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center border border-black/5">

@@ -24,23 +24,28 @@ const links = [
   },
 ];
 
-const roles = [
-  "Machine Learning Student"
-];
+const roles = ["Machine Learning Student"];
 
 const workExperience = [
+  {
+    title: "ChemAI",
+    date: "Apr 2026 – Oct 2026",
+    role: "Data Science Intern",
+    icon: "/ChemAI.png",
+    logoClass: "scale-[1.4]"
+  },
   {
     title: "Batigere Maison Familiale",
     date: "Jul 2025 – Aug 2025",
     role: "IT Intern",
-    icon: "/Batigere.png"
+    icon: "/Batigere.png",
   },
   {
     title: "Atos",
     date: "Jul 2024 – Aug 2024",
     role: "Java Programmer Intern",
-    icon: "/Atos.png"
-  }
+    icon: "/Atos.png",
+  },
 ];
 
 const education = [
@@ -48,21 +53,24 @@ const education = [
     title: "École Polytechnique - Polytechnic Institute of Paris",
     date: "Sep 2025 – Present",
     role: "MSc data science",
-    icon: "/X.png"
+    icon: "/X.png",
   },
   {
     title: "Télécom SudParis - Polytechnic Institute of Paris",
     date: "Sep 2023 – Present",
     role: "Master's degree in computer science and applied mathematics",
-    icon: "/TSP.png"
-  }
+    icon: "/TSP.png",
+    logoClass: "scale-[1.2]"
+  },
 ];
 ---
 
 <Layout title="Maxence Debes · Portfolio">
-
   <!-- ═══════════════════ HERO ═══════════════════ -->
-  <section id="home" class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-100px)] md:h-[calc(100svh-120px)]">
+  <section
+    id="home"
+    class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-130px)] md:h-[calc(100svh-120px)]"
+  >
     <div
       class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-8 md:gap-16 lg:gap-32 xl:gap-40"
     >
@@ -75,9 +83,11 @@ const education = [
           Maxence Debes
         </h1>
         <p
-          class="mt-3 sm:mt-5 text-lg sm:text-2xl md:text-3xl text-black dark:text-white flex flex-col sm:block items-center"
+          class="mt-1 sm:mt-5 text-lg sm:text-2xl md:text-3xl text-black dark:text-white flex flex-col sm:block items-center"
         >
-          <span class="text-pink-400 font-semibold min-w-[280px] text-center sm:text-left inline-block">
+          <span
+            class="text-pink-400 font-semibold min-w-[280px] text-center sm:text-left inline-block"
+          >
             <Typewriter client:load words={roles} />
           </span>
         </p>
@@ -102,7 +112,10 @@ const education = [
       <div class="contact-buttons">
         {
           links.map((link, index) => (
-            <div class="reveal-up reveal-early" style={{ transitionDelay: `${400 + index * 100}ms` }}>
+            <div
+              class="reveal-up reveal-early"
+              style={{ transitionDelay: `${400 + index * 100}ms` }}
+            >
               <a
                 href={link.url}
                 target="_blank"
@@ -119,18 +132,36 @@ const education = [
 
     {/* Scroll Indicator */}
     <div class="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2">
-      <div class="flex flex-col items-center gap-2 reveal-up reveal-early" style={{ transitionDelay: '800ms' }}>
-        <span class="text-xs font-bold tracking-widest text-black dark:text-white uppercase">Scroll</span>
-        
+      <div
+        class="flex flex-col items-center gap-2 reveal-up reveal-early"
+        style={{ transitionDelay: "800ms" }}
+      >
+        <span
+          class="text-xs font-bold tracking-widest text-black dark:text-white uppercase"
+          >Scroll</span
+        >
+
         {/* Scroll Mouse (Desktop) */}
-        <div class="hidden sm:flex w-[30px] h-[50px] border-2 border-neutral-400 dark:border-white/15 rounded-full justify-center p-1">
+        <div
+          class="hidden sm:flex w-[30px] h-[50px] border-2 border-neutral-400 dark:border-white/15 rounded-full justify-center p-1"
+        >
           <div class="w-1.5 h-3 bg-pink-500 rounded-full animate-bounce"></div>
         </div>
 
         {/* Scroll Arrow (Mobile) */}
         <div class="flex sm:hidden text-pink-500 animate-bounce mt-1">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="2.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M19.5 8.25l-7.5 7.5-7.5-7.5"></path>
           </svg>
         </div>
       </div>
@@ -138,10 +169,15 @@ const education = [
   </section>
 
   <!-- ═══════════════════ ABOUT ═══════════════════ -->
-  <section id="about" class="px-6 md:px-12 text-black dark:text-white pt-24 pb-20 mt-12 sm:mt-24 section-bg-reveal">
+  <section
+    id="about"
+    class="px-6 md:px-12 text-black dark:text-white pt-24 pb-20 mt-12 sm:mt-24 section-bg-reveal"
+  >
     <div class="max-w-[1100px] mx-auto">
       <div class="mb-2 text-center reveal-up">
-        <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">About me</span>
+        <span class="text-xs font-bold tracking-widest text-pink-500 uppercase"
+          >About me</span
+        >
       </div>
       <h2
         class="text-4xl font-bold text-black dark:text-white mb-8 md:mb-10 text-center reveal-up reveal-delay-100"
@@ -150,7 +186,7 @@ const education = [
       </h2>
 
       <p
-        class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white reveal-fade reveal-delay-200"
+        class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white reveal-up reveal-delay-200"
       >
         I am Maxence Debes, an MSc data science student with a strong background
         in mathematics and computer science. I am passionate about machine
@@ -160,8 +196,6 @@ const education = [
       </p>
     </div>
 
-
-
     <div class="max-w-[1100px] mx-auto mb-20">
       <h2
         class="text-2xl font-semibold mb-8 section-title text-black dark:text-white reveal-up reveal-delay-100"
@@ -170,7 +204,7 @@ const education = [
       </h2>
 
       <div class="reveal-up reveal-delay-200 w-full mb-16 md:mb-20">
-         <ExperienceCarousel client:load items={workExperience} />
+        <ExperienceCarousel client:load items={workExperience} />
       </div>
 
       <h2
@@ -182,46 +216,92 @@ const education = [
       <div class="flex flex-col lg:flex-row gap-6 items-stretch w-full">
         <div class="flex-1 w-full reveal-up reveal-delay-200">
           <div class="glass-card p-6 h-full">
-            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
+            <svg
+              class="about-border"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"
+              ></rect>
             </svg>
-            <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Data science & AI</h3>
+            <h3
+              class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10"
+            >
+              Data science & AI
+            </h3>
             <div class="flex flex-wrap gap-2 relative z-10">
-              {["Python", "PyTorch", "Transformers", "Scikit-learn", "Pandas"].map((skill) => (
-                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
-                  {skill}
-                </span>
-              ))}
+              {
+                [
+                  "Python",
+                  "PyTorch",
+                  "Transformers",
+                  "Scikit-learn",
+                  "Pandas",
+                ].map((skill) => (
+                  <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
+                    {skill}
+                  </span>
+                ))
+              }
             </div>
           </div>
         </div>
 
         <div class="flex-1 w-full reveal-up reveal-delay-300">
           <div class="glass-card p-6 h-full">
-            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
+            <svg
+              class="about-border"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"
+              ></rect>
             </svg>
-            <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Programming & tools</h3>
+            <h3
+              class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10"
+            >
+              Programming & tools
+            </h3>
             <div class="flex flex-wrap gap-2 relative z-10">
-              {["Java", "SQL", "Git", "Linux", "LaTeX"].map((skill) => (
-                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
-                  {skill}
-                </span>
-              ))}
+              {
+                ["Java", "SQL", "Git", "Linux", "LaTeX"].map((skill) => (
+                  <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
+                    {skill}
+                  </span>
+                ))
+              }
             </div>
           </div>
         </div>
 
         <div class="flex-1 w-full reveal-up reveal-delay-400">
           <div class="glass-card p-6 h-full">
-            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
+            <svg
+              class="about-border"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+            >
+              <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"
+              ></rect>
             </svg>
-            <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Languages</h3>
+            <h3
+              class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10"
+            >
+              Languages
+            </h3>
             <div class="flex flex-wrap gap-2 relative z-10">
-               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">French (Native)</span>
-               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">English (C1)</span>
-               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">German (A2)</span>
+              <span
+                class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5"
+                >French (Native)</span
+              >
+              <span
+                class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5"
+                >English (C1)</span
+              >
+              <span
+                class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5"
+                >German (A2)</span
+              >
             </div>
           </div>
         </div>
@@ -235,7 +315,7 @@ const education = [
       </h2>
 
       <div class="reveal-up reveal-delay-200 w-full">
-         <ExperienceCarousel client:load items={education} />
+        <ExperienceCarousel client:load items={education} />
       </div>
     </div>
   </section>
@@ -243,9 +323,14 @@ const education = [
   <!-- ═══════════════════ PROJECTS ═══════════════════ -->
   <section id="projects" class="pt-24 pb-20">
     <main class="flex flex-col items-center px-4 w-full mx-auto">
-      <div class="max-w-[1280px] lg:max-w-[1162px] mx-auto pb-6 px-4 sm:px-6 md:px-8">
+      <div
+        class="max-w-[1280px] lg:max-w-[1162px] mx-auto pb-6 px-4 sm:px-6 md:px-8"
+      >
         <div class="mb-2 text-center reveal-up">
-          <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">My projects</span>
+          <span
+            class="text-xs font-bold tracking-widest text-pink-500 uppercase"
+            >My projects</span
+          >
         </div>
         <h2
           class="text-4xl font-bold text-black dark:text-white text-center md:mb-10 mb-8 reveal-up reveal-delay-100"
@@ -254,83 +339,183 @@ const education = [
         </h2>
 
         <p
-          class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white reveal-fade reveal-delay-200"
+          class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white reveal-up reveal-delay-200"
         >
           Here you will find a selection of projects I have worked on, ranging
           from academic research to personal and professional experiences. Each
-          one reflects my interest in AI, data, and software development. Whenever
-          possible, I have included links to repositories so you can
+          one reflects my interest in AI, data, and software development.
+          Whenever possible, I have included links to repositories so you can
           explore the work in more detail. Some projects are still under
           development, as I am continuously improving them.
         </p>
       </div>
-      <div class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8 w-full">
+      <div
+        class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8 w-full"
+      >
         <ProjectGrid client:load />
       </div>
     </main>
   </section>
 
   <!-- ═══════════════════ CONTACT ═══════════════════ -->
-  <section id="contact" class="pt-24 pb-0 min-h-svh flex flex-col justify-between section-bg-reveal">
-    <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center justify-start relative z-10">
+  <section
+    id="contact"
+    class="pt-24 pb-0 min-h-svh flex flex-col justify-between section-bg-reveal"
+  >
+    <div
+      class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center justify-start flex-grow relative z-10"
+    >
       <div class="mb-2 text-center reveal-up">
-        <span class="text-xs font-bold tracking-widest text-pink-500 uppercase">Let's connect</span>
+        <span class="text-xs font-bold tracking-widest text-pink-500 uppercase"
+          >Let's connect</span
+        >
       </div>
-      <h2 class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-6 md:mb-12 text-center reveal-up reveal-delay-100">Let's connect</h2>
-      
-      <div class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full mt-4 lg:mt-8">
-        
+      <h2
+        class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-6 md:mb-12 text-center reveal-up reveal-delay-100"
+      >
+        Let's connect
+      </h2>
+
+      <div
+        class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full mt-12 md:mt-20 xl:mt-24 mb-auto pb-12 md:pb-0"
+      >
         {/* Left Column: Context & Status */}
-        <div class="w-full md:w-1/2 flex flex-col justify-center reveal-right reveal-delay-200">
-          <p class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white/80 mb-8 max-w-lg">
-            Whether you have a question, a project idea, or just want to chat about AI, software engineering, and the future of tech, my inbox is always open. I'll do my best to get back to you!
+        <div
+          class="w-full md:w-1/2 flex flex-col justify-center reveal-right reveal-delay-200"
+        >
+          <p
+            class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white mb-8 max-w-lg"
+          >
+            Whether you have a question, a project idea, or just want to chat
+            about AI, software engineering, and the future of tech, my inbox is
+            always open. I'll do my best to get back to you!
           </p>
-          
-          <div class="flex items-center gap-3 bg-white/5 dark:bg-black/5 border border-black/10 dark:border-white/10 w-fit px-4 py-2 rounded-full shadow-sm">
+
+          <div
+            class="flex items-center gap-3 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none w-fit px-4 py-2 rounded-full"
+          >
             <span class="relative flex h-3 w-3">
-              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+              <span
+                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"
+              ></span>
+              <span
+                class="relative inline-flex rounded-full h-3 w-3 bg-green-500"
+              ></span>
             </span>
-            <span class="text-xs sm:text-sm font-semibold tracking-wide text-black/70 dark:text-white/70">
+            <span
+              class="text-xs sm:text-sm font-semibold tracking-wide text-black/70 dark:text-white"
+            >
               Open to new opportunities
             </span>
           </div>
         </div>
 
-        <div class="w-full md:w-1/2 max-w-lg mx-auto md:mx-0 reveal-left reveal-delay-400">
-          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="flex flex-col gap-5 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.35)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all">
-            <input type="hidden" name="access_key" value="b7a332b3-794a-40fe-999e-e85a68145764" />
-            <input type="hidden" name="subject" value="New message from your Portfolio" />
-            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
-            
+        <div
+          class="w-full md:w-1/2 max-w-lg mx-auto md:mx-0 reveal-left reveal-delay-400"
+        >
+          <form
+            id="contact-form"
+            action="https://api.web3forms.com/submit"
+            method="POST"
+            class="flex flex-col gap-5 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all"
+          >
+            <input
+              type="hidden"
+              name="access_key"
+              value="b7a332b3-794a-40fe-999e-e85a68145764"
+            />
+            <input
+              type="hidden"
+              name="subject"
+              value="New message from your Portfolio"
+            />
+            <input
+              type="checkbox"
+              name="botcheck"
+              class="hidden"
+              style="display: none;"
+            />
+
             <div class="flex flex-col gap-1.5">
-              <label for="name" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Name</label>
-              <input type="text" id="name" name="name" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" placeholder="John Doe" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm" />
+              <label
+                for="name"
+                class="text-xs tracking-wide text-black dark:text-white ml-1"
+                >Name</label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                autocomplete="none"
+                oninvalid="this.setCustomValidity('Please fill out this field.')"
+                oninput="this.setCustomValidity('')"
+                class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm"
+              />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="email" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Email</label>
-              <input type="email" id="email" name="email" required oninvalid="this.setCustomValidity('Please enter a valid email address.')" oninput="this.setCustomValidity('')" placeholder="john@example.com" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm" />
+              <label
+                for="email"
+                class="text-xs tracking-wide text-black dark:text-white ml-1"
+                >Email</label
+              >
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                autocomplete="none"
+                oninvalid="this.setCustomValidity('Please enter a valid email address.')"
+                oninput="this.setCustomValidity('')"
+                class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm"
+              />
             </div>
 
             <div class="flex flex-col gap-1.5">
-              <label for="message" class="text-xs font-semibold tracking-wide text-black/60 dark:text-white ml-1">Message</label>
-              <textarea id="message" name="message" required oninvalid="this.setCustomValidity('Please fill out this field.')" oninput="this.setCustomValidity('')" rows="4" placeholder="Hello Maxence, I'd like to talk about..." class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all font-medium text-sm resize-none"></textarea>
+              <label
+                for="message"
+                class="text-xs tracking-wide text-black dark:text-white ml-1"
+                >Message</label
+              >
+              <textarea
+                id="message"
+                name="message"
+                required
+                autocomplete="none"
+                oninvalid="this.setCustomValidity('Please fill out this field.')"
+                oninput="this.setCustomValidity('')"
+                rows="4"
+                class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm resize-none"
+              ></textarea>
             </div>
 
-            <button id="submit-button" type="submit" class="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] hover:bg-black dark:hover:bg-white text-black dark:text-white hover:text-white dark:hover:text-black rounded-xl font-medium cursor-pointer text-sm transition-colors duration-300 active:scale-95 group">
+            <button
+              id="submit-button"
+              type="submit"
+              class="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] hover:bg-pink-500 hover:border-pink-500 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(236,72,153,0.4)] hover:scale-105 rounded-xl font-medium cursor-pointer text-sm transition-all duration-300 active:scale-95 group transform-gpu"
+            >
               Send message
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2.5"
+                stroke="currentColor"
+                class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path>
               </svg>
             </button>
           </form>
         </div>
-
       </div>
     </div>
 
-    <div class="flex-grow"></div>
+
 
     <div class="w-full mt-auto">
       <Footer client:load currentLocale={Astro.currentLocale} />
@@ -395,8 +580,6 @@ const education = [
     :global(.dark) .contact-button:hover img {
       filter: invert(0);
     }
-
-
 
     .resume-button {
       display: flex;
@@ -517,10 +700,6 @@ const education = [
         margin-right: auto;
         line-height: 1.7;
       }
-
-      h1 {
-        margin-bottom: 32px;
-      }
     }
 
     @media (max-width: 1024px) {
@@ -545,34 +724,36 @@ const education = [
 
 <script>
   // AJAX form submission for Web3Forms
-  const form = document.getElementById('contact-form') as HTMLFormElement;
-  const submitButton = document.getElementById('submit-button') as HTMLButtonElement;
-  
+  const form = document.getElementById("contact-form") as HTMLFormElement;
+  const submitButton = document.getElementById(
+    "submit-button",
+  ) as HTMLButtonElement;
+
   if (form && submitButton) {
-    form.addEventListener('submit', async function(e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
-      
+
       const originalButtonHtml = submitButton.innerHTML;
-      submitButton.innerHTML = 'Sending...';
+      submitButton.innerHTML = "Sending...";
       submitButton.disabled = true;
-      submitButton.classList.add('opacity-70', 'cursor-not-allowed');
-      
+      submitButton.classList.add("opacity-70", "cursor-not-allowed");
+
       const formData = new FormData(form);
       const object = Object.fromEntries(formData);
       const json = JSON.stringify(object);
-      
+
       try {
-        const response = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: json
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: json,
         });
-        
+
         const result = await response.json();
-        
+
         if (response.status == 200) {
           submitButton.innerHTML = `
             Message sent!
@@ -580,21 +761,34 @@ const education = [
               <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
             </svg>
           `;
-          submitButton.classList.remove('hover:bg-black', 'dark:hover:bg-white', 'hover:text-white', 'dark:hover:text-black');
+          submitButton.classList.remove(
+            "hover:bg-pink-500",
+            "hover:border-pink-500",
+            "hover:text-white",
+            "dark:hover:text-white",
+            "hover:shadow-[0_4px_12px_rgba(236,72,153,0.4)]",
+            "hover:scale-105",
+            "active:scale-95"
+          );
           form.reset();
         } else {
           console.log(response);
           submitButton.innerHTML = originalButtonHtml;
           submitButton.disabled = false;
-          submitButton.classList.remove('opacity-70', 'cursor-not-allowed');
-          alert(result.message || 'Something went wrong. Please try again or email me directly.');
+          submitButton.classList.remove("opacity-70", "cursor-not-allowed");
+          alert(
+            result.message ||
+              "Something went wrong. Please try again or email me directly.",
+          );
         }
       } catch (error) {
         console.log(error);
         submitButton.innerHTML = originalButtonHtml;
         submitButton.disabled = false;
-        submitButton.classList.remove('opacity-70', 'cursor-not-allowed');
-        alert('Something went wrong. Please check your connection and try again.');
+        submitButton.classList.remove("opacity-70", "cursor-not-allowed");
+        alert(
+          "Something went wrong. Please check your connection and try again.",
+        );
       }
     });
   }

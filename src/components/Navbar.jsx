@@ -111,150 +111,138 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
   const resumeUrl = activeLocale === 'fr' ? '/Maxence_Debes_Resume_Fra.pdf' : '/Maxence_Debes_Resume_Ang.pdf';
 
   return (
-    <nav className="fixed top-0 left-0 w-full px-6 py-4 z-[90] flex items-center justify-between">
-      {/* Dynamic Glass Background */}
+    <nav className="fixed top-0 left-0 w-full px-6 py-3 z-[90] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 lg:gap-0">
+      {/* Glass Background */}
       <div
         className="absolute inset-0 -z-10 bg-white/5 dark:bg-black/5 backdrop-blur-sm border-b-[0.5px] border-black/10 dark:border-white/10"
-        style={{
-          WebkitBackdropFilter: "blur(8px)",
-          backdropFilter: "blur(8px)",
-        }}
+        style={{ WebkitBackdropFilter: "blur(8px)", backdropFilter: "blur(8px)" }}
       />
 
-      {/* LEFT SIDE: Branding & Widgets */}
-      <div className="flex items-center gap-6">
-        {/* 1. Branding */}
-        <button
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-          className="text-black dark:text-white font-bold text-lg md:text-xl tracking-tight cursor-pointer transition-colors duration-300 hover:text-pink-400"
-        >
-          Maxence Debes
-        </button>
+      {/* ROW 1: Branding (left) + Lang & Theme (right) */}
+      <div className="flex items-center justify-between w-full">
 
-        {/* 2. Desktop Only Widgets */}
-        <div className="hidden lg:flex items-center gap-4 text-xs font-medium text-black/60 dark:text-white/60">
-
-          <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10"></div>
-
-          {/* Timezone */}
-          <div className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-            <span>Paris, FR — {time}</span>
-          </div>
-
-          <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10"></div>
-
-          {/* Resume Buttons */}
-          <div className="flex items-center gap-2">
-            <a
-              href={resumeUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 transition-all duration-300 hover:bg-pink-400 hover:text-white hover:border-pink-400 dark:hover:bg-pink-400/80 dark:hover:text-black dark:hover:border-pink-400/80 hover:scale-105 active:scale-95 hover:shadow-pink-400/20"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-colors duration-300">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                <circle cx="12" cy="12" r="3"></circle>
-              </svg>
-              <span>{activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}</span>
-            </a>
-
-            <a
-              href={resumeUrl}
-              download
-              className="group flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 transition-all duration-300 hover:bg-pink-400 hover:text-white hover:border-pink-400 dark:hover:bg-pink-400/80 dark:hover:text-black dark:hover:border-pink-400/80 hover:scale-105 active:scale-95 hover:shadow-pink-400/20"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-colors duration-300">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-              <span>{activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      {/* RIGHT SIDE: Lang & Theme */}
-      <div className="flex gap-2 md:gap-4 items-center">
-        <div className="relative" ref={langMenuRef}>
+        {/* LEFT: Branding & Desktop Widgets */}
+        <div className="flex items-center gap-6">
           <button
-            onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-            className={`text-black dark:text-white cursor-pointer font-medium text-sm transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-            aria-label="Open language menu"
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="text-black dark:text-white font-bold text-lg md:text-xl tracking-tight cursor-pointer transition-colors duration-300 hover:text-pink-400 whitespace-nowrap"
           >
-            {getLabel(activeLocale)}
-            <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
-              <ChevronDownIcon />
-            </div>
+            Maxence Debes
           </button>
 
-          <div
-            className={`absolute -top-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-white/70 dark:bg-black/75 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-50 ${isLangMenuOpen
-              ? "opacity-100 pointer-events-auto shadow-lg"
-              : "opacity-0 pointer-events-none"
-              }`}
-          >
+          {/* Desktop-only widgets */}
+          <div className="hidden lg:flex items-center gap-4 text-xs font-medium text-black/60 dark:text-white/60">
+            <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10"></div>
+            <div className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>Paris, FR — {time}</span>
+            </div>
+            <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10"></div>
+            <div className="flex items-center gap-2">
+              <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 transition-all duration-300 hover:bg-pink-500 hover:border-pink-500 hover:text-white dark:hover:text-white hover:scale-105 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span>{activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}</span>
+              </a>
+              <a href={resumeUrl} download className="group flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 transition-all duration-300 hover:bg-pink-500 hover:border-pink-500 hover:text-white dark:hover:text-white hover:scale-105 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span>{activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT: Lang & Theme */}
+        <div className="flex gap-3 md:gap-5 lg:gap-6 items-center">
+          <div className="relative" ref={langMenuRef}>
             <button
-              onClick={() => setIsLangMenuOpen(false)}
-              className="font-medium text-sm text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
-              aria-label="Close language menu"
+              onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
+              className={`text-black dark:text-white cursor-pointer font-medium text-sm transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+              aria-label="Open language menu"
             >
               {getLabel(activeLocale)}
               <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
                 <ChevronDownIcon />
               </div>
             </button>
-
-            {languages
-              .filter((lang) => lang.code !== activeLocale)
-              .map((lang) => {
-                return (
-                  <a
-                    key={lang.code}
-                    href={lang.code === "fr" ? "/fr" : "/"}
-                    onClick={(e) => handleLanguageSwitch(e, lang.code)}
-                    className="font-medium text-sm text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block pt-1"
-                  >
-                    {lang.label}
-                  </a>
-                );
-              })}
-          </div>
-        </div>
-
-        {/* iPhone Style Theme Slider - Refined Glassmorphism Version */}
-        <div
-          onClick={toggleTheme}
-          className="relative w-[72px] h-9 rounded-full bg-black/[0.05] dark:bg-white/[0.08] border border-black/10 dark:border-white/10 cursor-pointer transition-all duration-300 flex items-center"
-          role="button"
-          aria-label="Toggle theme"
-        >
-          {/* Background Icons - Perfectly tied to thumb coordinates */}
-          <div className="absolute inset-0 pointer-events-none opacity-30">
-            {/* Left position matches state theme==='light' */}
-            <div className="absolute top-[3px] left-[3px] w-7 h-7 flex items-center justify-center">
-              <div className="scale-[0.7] text-black dark:text-white"><SunIcon /></div>
-            </div>
-            {/* Right position matches state theme==='dark' */}
-            <div className="absolute top-[3px] left-[3px] w-7 h-7 translate-x-[36px] flex items-center justify-center">
-              <div className="scale-[0.7] text-black dark:text-white"><MoonIcon /></div>
+            <div
+              className={`absolute -top-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-white/70 dark:bg-black/75 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-50 ${isLangMenuOpen ? "opacity-100 pointer-events-auto shadow-lg" : "opacity-0 pointer-events-none"}`}
+            >
+              <button
+                onClick={() => setIsLangMenuOpen(false)}
+                className="font-medium text-sm text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
+                aria-label="Close language menu"
+              >
+                {getLabel(activeLocale)}
+                <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
+                  <ChevronDownIcon />
+                </div>
+              </button>
+              {languages.filter((lang) => lang.code !== activeLocale).map((lang) => (
+                <a
+                  key={lang.code}
+                  href={lang.code === "fr" ? "/fr" : "/"}
+                  onClick={(e) => handleLanguageSwitch(e, lang.code)}
+                  className="font-medium text-sm text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block pt-1"
+                >
+                  {lang.label}
+                </a>
+              ))}
             </div>
           </div>
 
-          {/* Sliding Thumb - Glassmorphism Effect */}
+          {/* Theme Slider */}
           <div
-            className={`absolute top-[3px] left-[3px] w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${theme === 'dark' ? 'translate-x-[36px]' : 'translate-x-0'}`}
-            style={{
-              WebkitBackdropFilter: "blur(12px)",
-              backdropFilter: "blur(12px)"
-            }}
+            onClick={toggleTheme}
+            className="relative w-[72px] h-9 rounded-full bg-black/[0.05] dark:bg-white/[0.08] border border-black/10 dark:border-white/10 cursor-pointer transition-all duration-300 flex items-center"
+            role="button"
+            aria-label="Toggle theme"
           >
-            <div className="text-black dark:text-white scale-[0.7] drop-shadow-sm">
-              {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+            <div className="absolute inset-0 pointer-events-none opacity-30">
+              <div className="absolute top-[3px] left-[3px] w-7 h-7 flex items-center justify-center">
+                <div className="scale-[0.7] text-black dark:text-white"><SunIcon /></div>
+              </div>
+              <div className="absolute top-[3px] left-[3px] w-7 h-7 translate-x-[36px] flex items-center justify-center">
+                <div className="scale-[0.7] text-black dark:text-white"><MoonIcon /></div>
+              </div>
+            </div>
+            <div
+              className={`absolute top-[3px] left-[3px] w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${theme === 'dark' ? 'translate-x-[36px]' : 'translate-x-0'}`}
+              style={{ WebkitBackdropFilter: "blur(12px)", backdropFilter: "blur(12px)" }}
+            >
+              <div className="text-black dark:text-white scale-[0.7] drop-shadow-sm">
+                {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+              </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* ROW 2 (mobile only): CV buttons */}
+      <div className="flex lg:hidden items-center justify-center gap-3 pb-1">
+        <a
+          href={resumeUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 text-xs font-medium transition-all duration-300 hover:bg-pink-500 hover:border-pink-500 hover:text-white dark:hover:text-white active:scale-95"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+          {activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}
+        </a>
+        <a
+          href={resumeUrl}
+          download
+          className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 text-xs font-medium transition-all duration-300 hover:bg-pink-500 hover:border-pink-500 hover:text-white dark:hover:text-white active:scale-95"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          {activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}
+        </a>
       </div>
     </nav>
   );
