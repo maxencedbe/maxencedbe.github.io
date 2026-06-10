@@ -162,14 +162,14 @@ const SideNav = ({ currentLocale = "en" }) => {
                     borderRadius: '50%',
                     transition: 'all 0.3s cubic-bezier(0.22, 1, 0.36, 1)',
                     boxShadow: isActive
-                      ? '0 0 12px rgba(236,72,153,0.8), 0 0 4px rgba(236,72,153,0.4)'
+                      ? '0 0 12px rgba(244,114,182,0.8), 0 0 4px rgba(244,114,182,0.4)'
                       : 'none',
                   }}
                   className={
                     isActive
-                      ? 'bg-pink-500'
+                      ? 'bg-pink-400'
                       : isPassed
-                        ? 'bg-pink-500'
+                        ? 'bg-pink-400'
                         : 'bg-neutral-400 dark:bg-neutral-500 group-hover:bg-neutral-300 dark:group-hover:bg-neutral-400'
                   }
                 />

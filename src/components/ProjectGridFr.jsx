@@ -138,7 +138,7 @@ export default function ProjectGridFr() {
                     <div key={filter} className="reveal-up" style={{ transitionDelay: `${index * 100}ms` }}>
                         <button
                             onClick={() => setActiveFilter(filter)}
-                            className={`px-4 py-2 rounded-full text-sm font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer transform-gpu antialiased ${activeFilter === filter ? "active" : ""}`}
+                            className={`px-4 py-2 rounded-full text-sm font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer transform-gpu antialiased ${activeFilter === filter ? "active" : ""}`}
                         >
                             {filter}
                         </button>
@@ -157,13 +157,11 @@ export default function ProjectGridFr() {
 
                             return (
                                 <motion.div
-                                    layout
-                                    initial={{ opacity: 0, y: 40 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true, margin: "-50px" }}
-                                    exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                                    key={project.title}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0, transition: { duration: 0.15 } }}
+                                    transition={{ duration: 0.25 }}
+                                    key={project.title + activeFilter}
                                     className="flex flex-col items-center w-full"
                                 >
                                     <ProjectCard
@@ -187,7 +185,7 @@ export default function ProjectGridFr() {
                             transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
                             className="overflow-hidden flex flex-col items-center w-[calc(100%+60px)] px-[30px]"
                         >
-                            <div className="flex flex-col gap-8 md:gap-16 w-full items-center pt-8 md:pt-16 pb-8 md:pb-12">
+                            <div className="flex flex-col gap-8 md:gap-16 w-full items-center pt-8 md:pt-16 pb-4 md:pb-8">
                                 {displayedProjects.slice(3).map((project, index) => (
                                     <div
                                         key={project.title}
@@ -212,10 +210,10 @@ export default function ProjectGridFr() {
 
                 {/* Show More / Show Less Buttons */}
                 {activeFilter === "Tous" && displayedProjects.length > 3 && (
-                    <div className="mt-8 md:mt-12 flex justify-center reveal-fade">
+                    <div className={`${showAll ? "mt-8" : "mt-12 md:mt-16"} flex justify-center reveal-fade`}>
                         <button 
                             onClick={handleToggleExpand} 
-                            className="px-8 py-3 rounded-full text-sm sm:text-base font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 hover:scale-105 active:scale-95 cursor-pointer transform-gpu antialiased"
+                            className="px-8 py-3 rounded-full text-sm sm:text-base font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer transform-gpu antialiased"
                         >
                             {showAll ? 'Voir moins' : 'Voir plus de projets'}
                         </button>

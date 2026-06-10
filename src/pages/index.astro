@@ -145,11 +145,11 @@ const education = [
         <div
           class="hidden sm:flex w-[30px] h-[50px] border-2 border-neutral-400 dark:border-white/15 rounded-full justify-center p-1"
         >
-          <div class="w-1.5 h-3 bg-pink-500 rounded-full animate-bounce"></div>
+          <div class="w-1.5 h-3 bg-pink-400 rounded-full animate-bounce"></div>
         </div>
 
         {/* Scroll Arrow (Mobile) */}
-        <div class="flex sm:hidden text-pink-500 animate-bounce mt-1">
+        <div class="flex sm:hidden text-pink-400 animate-bounce mt-1">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -175,7 +175,7 @@ const education = [
   >
     <div class="max-w-[1100px] mx-auto">
       <div class="mb-2 text-center reveal-up">
-        <span class="text-xs font-bold tracking-widest text-pink-500 uppercase"
+        <span class="text-xs font-bold tracking-widest text-pink-400 uppercase"
           >About me</span
         >
       </div>
@@ -328,7 +328,7 @@ const education = [
       >
         <div class="mb-2 text-center reveal-up">
           <span
-            class="text-xs font-bold tracking-widest text-pink-500 uppercase"
+            class="text-xs font-bold tracking-widest text-pink-400 uppercase"
             >My projects</span
           >
         </div>
@@ -360,13 +360,13 @@ const education = [
   <!-- ═══════════════════ CONTACT ═══════════════════ -->
   <section
     id="contact"
-    class="pt-24 pb-0 min-h-svh flex flex-col justify-between section-bg-reveal"
+    class="pt-24 pb-0 min-h-svh flex flex-col section-bg-reveal"
   >
     <div
-      class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center justify-start flex-grow relative z-10"
+      class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center flex-grow relative z-10"
     >
       <div class="mb-2 text-center reveal-up">
-        <span class="text-xs font-bold tracking-widest text-pink-500 uppercase"
+        <span class="text-xs font-bold tracking-widest text-pink-400 uppercase"
           >Let's connect</span
         >
       </div>
@@ -376,8 +376,10 @@ const education = [
         Let's connect
       </h2>
 
+      <div class="flex-1"></div>
+      <div class="w-full py-8">
       <div
-        class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full mt-12 md:mt-20 xl:mt-24 mb-auto pb-12 md:pb-0"
+        class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full"
       >
         {/* Left Column: Context & Status */}
         <div
@@ -392,7 +394,7 @@ const education = [
           </p>
 
           <div
-            class="flex items-center gap-3 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none w-fit px-4 py-2 rounded-full"
+            class="flex items-center gap-3 flex w-fit"
           >
             <span class="relative flex h-3 w-3">
               <span
@@ -417,7 +419,7 @@ const education = [
             id="contact-form"
             action="https://api.web3forms.com/submit"
             method="POST"
-            class="flex flex-col gap-5 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all"
+            class="flex flex-col gap-5 bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all"
           >
             <input
               type="hidden"
@@ -493,7 +495,7 @@ const education = [
             <button
               id="submit-button"
               type="submit"
-              class="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] hover:bg-pink-500 hover:border-pink-500 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(236,72,153,0.4)] hover:scale-105 rounded-xl font-medium cursor-pointer text-sm transition-all duration-300 active:scale-95 group transform-gpu"
+              class="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(10,10,10,0.88)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.15)] hover:bg-pink-400 hover:border-pink-400 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(244,114,182,0.4)] hover:scale-[1.01] rounded-xl font-medium cursor-pointer text-sm transition-all duration-300 active:scale-95 group transform-gpu"
             >
               Send message
               <svg
@@ -513,11 +515,11 @@ const education = [
           </form>
         </div>
       </div>
+      </div>
+      <div class="flex-1"></div>
     </div>
 
-
-
-    <div class="w-full mt-auto">
+    <div class="w-full">
       <Footer client:load currentLocale={Astro.currentLocale} />
     </div>
   </section>
@@ -545,16 +547,16 @@ const education = [
 
     :global(.dark) .contact-button {
       border: 1px solid rgba(255, 255, 255, 0.15);
-      background-color: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
+      background-color: rgba(10, 10, 10, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
       box-shadow: none;
     }
 
     .contact-button:hover {
       background-color: #000000;
       border-color: #000000;
-      transform: scale(1.1);
+      transform: scale(1.02);
     }
 
     :global(.dark) .contact-button:hover {
@@ -762,12 +764,12 @@ const education = [
             </svg>
           `;
           submitButton.classList.remove(
-            "hover:bg-pink-500",
-            "hover:border-pink-500",
+            "hover:bg-pink-400",
+            "hover:border-pink-400",
             "hover:text-white",
             "dark:hover:text-white",
-            "hover:shadow-[0_4px_12px_rgba(236,72,153,0.4)]",
-            "hover:scale-105",
+            "hover:shadow-[0_4px_12px_rgba(244,114,182,0.4)]",
+            "hover:scale-[1.01]",
             "active:scale-95"
           );
           form.reset();

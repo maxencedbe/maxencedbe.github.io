@@ -88,9 +88,9 @@ const ExperienceCarousel = ({ items }) => {
       {/* Navigation Buttons */}
       <button
         className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
-          bg-white/50 dark:bg-black/75 backdrop-blur-sm border border-black/10 dark:border-white/10 shadow-lg
+          bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-sm dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
           text-black dark:text-white transition-all duration-300 z-10
-          ${!prevBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-110'}
+          ${!prevBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-[1.02]'}
           hidden sm:flex
         `}
         onClick={scrollPrev}
@@ -104,9 +104,9 @@ const ExperienceCarousel = ({ items }) => {
 
       <button
         className={`absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
-          bg-white/50 dark:bg-black/75 backdrop-blur-sm border border-black/10 dark:border-white/10 shadow-lg
+          bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-sm dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
           text-black dark:text-white transition-all duration-300 z-10
-          ${!nextBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-110'}
+          ${!nextBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-[1.02]'}
           hidden sm:flex
         `}
         onClick={scrollNext}
@@ -124,7 +124,7 @@ const ExperienceCarousel = ({ items }) => {
           <button
             key={index}
             className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-300 
-              ${index === selectedIndex ? 'w-6 bg-pink-500' : 'bg-neutral-300 dark:bg-white/30 hover:bg-neutral-400 dark:hover:bg-white/50'}
+              ${index === selectedIndex ? 'w-6 bg-pink-400' : 'bg-neutral-300 dark:bg-white/30 hover:bg-neutral-400 dark:hover:bg-white/50'}
             `}
             onClick={() => scrollTo(index)}
             aria-label={`Go to slide ${index + 1}`}

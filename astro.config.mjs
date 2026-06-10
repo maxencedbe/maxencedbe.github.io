@@ -13,6 +13,11 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      fs: {
+        allow: ['/Users/maxencedebes/Cours/Portfolio'],
+      },
+    },
   },
 
   integrations: [react()],

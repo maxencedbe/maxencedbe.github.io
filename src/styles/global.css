@@ -272,7 +272,7 @@ html {
 
 .glass-card {
   position: relative;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: rgba(240, 240, 240, 0.93);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 0, 0, 0.08);

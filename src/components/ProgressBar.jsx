@@ -92,7 +92,7 @@ export default function ProgressBar() {
         };
     }, [dims]);
 
-    if (!isReady || dims.w === 0) return null;
+    if (!isReady || dims.w === 0 || dims.w < 768) return null;
 
     const strokeWidth = 3; // Set back to 3px
     const inset = strokeWidth / 2;

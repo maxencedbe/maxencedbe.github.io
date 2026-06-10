@@ -131,23 +131,22 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
           </button>
 
           {/* Desktop-only widgets */}
-          <div className="hidden lg:flex items-center gap-4 text-xs font-medium text-black/60 dark:text-white/60">
-            <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10"></div>
-            <div className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5">
+          <div className="hidden lg:flex items-center gap-4">
+            <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
+            <span className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              <span>Paris, FR — {time}</span>
-            </div>
-            <div className="w-[1px] h-4 bg-black/10 dark:bg-white/10"></div>
-            <div className="flex items-center gap-2">
-              <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="group flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 transition-all duration-300 hover:bg-pink-500 hover:border-pink-500 hover:text-white dark:hover:text-white hover:scale-105 active:scale-95">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                <span>{activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}</span>
-              </a>
-              <a href={resumeUrl} download className="group flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 transition-all duration-300 hover:bg-pink-500 hover:border-pink-500 hover:text-white dark:hover:text-white hover:scale-105 active:scale-95">
-                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                <span>{activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}</span>
-              </a>
-            </div>
+              Paris, FR — {time}
+            </span>
+            <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
+            <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              {activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}
+            </a>
+            <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
+            <a href={resumeUrl} download className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              {activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}
+            </a>
           </div>
         </div>
 
@@ -165,7 +164,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               </div>
             </button>
             <div
-              className={`absolute -top-2 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-white/70 dark:bg-black/75 backdrop-blur-md border border-black/10 dark:border-white/10 rounded-xl p-2 min-w-[60px] z-50 ${isLangMenuOpen ? "opacity-100 pointer-events-auto shadow-lg" : "opacity-0 pointer-events-none"}`}
+              className={`absolute -top-[9px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] rounded-xl p-2 min-w-[60px] z-50 shadow-none ${isLangMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             >
               <button
                 onClick={() => setIsLangMenuOpen(false)}
@@ -193,7 +192,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
           {/* Theme Slider */}
           <div
             onClick={toggleTheme}
-            className="relative w-[72px] h-9 rounded-full bg-black/[0.05] dark:bg-white/[0.08] border border-black/10 dark:border-white/10 cursor-pointer transition-all duration-300 flex items-center"
+            className="relative w-[72px] h-9 rounded-full bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] shadow-none cursor-pointer transition-all duration-300 flex items-center"
             role="button"
             aria-label="Toggle theme"
           >
@@ -217,30 +216,21 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
         </div>
       </div>
 
-      {/* ROW 2 (mobile only): CV buttons */}
-      <div className="flex lg:hidden items-center justify-center gap-3 pb-1">
+      {/* ROW 2 (mobile only): CV links */}
+      <div className="flex lg:hidden items-center justify-center gap-6 pb-1">
         <a
           href={resumeUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 text-xs font-medium transition-all duration-300 hover:bg-pink-500 hover:border-pink-500 hover:text-white dark:hover:text-white active:scale-95"
+          className="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-            <circle cx="12" cy="12" r="3"></circle>
-          </svg>
           {activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}
         </a>
         <a
           href={resumeUrl}
           download
-          className="flex items-center gap-1.5 bg-black/5 dark:bg-white/5 text-black dark:text-white px-3 py-1.5 rounded-full border border-black/5 dark:border-white/5 text-xs font-medium transition-all duration-300 hover:bg-pink-500 hover:border-pink-500 hover:text-white dark:hover:text-white active:scale-95"
+          className="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-            <polyline points="7 10 12 15 17 10"></polyline>
-            <line x1="12" y1="15" x2="12" y2="3"></line>
-          </svg>
           {activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}
         </a>
       </div>

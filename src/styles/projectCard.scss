@@ -15,7 +15,6 @@
   --card-icon-border-color: rgba(0, 0, 0, 0.1);
   --card-shine-opacity: .1;
   --card-line-color: rgba(244, 114, 181, 0.50);
-  --card-tile-color: rgba(244, 114, 182, 0.15);
   --card-hover-border-color: rgba(0, 0, 0, 0.2);
   --card-hover-box-shadow-1: rgba(0, 0, 0, 0.04);
   --card-hover-box-shadow-1-y: 5px;
@@ -56,7 +55,7 @@ html.dark {
   min-width: 300px;
   padding: 28px 28px;
   border: 1px solid var(--card-border-color);
-  border-radius: 15px;
+  border-radius: 20px;
   gap: 16px;
   position: relative;
   transition: box-shadow .25s, transform .25s ease-in-out;
@@ -70,7 +69,7 @@ html.dark {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 15px;
+    border-radius: 20px;
     background-color: transparent;
   }
 
@@ -182,101 +181,6 @@ html.dark {
     inset: 0;
     overflow: hidden;
 
-    .tiles {
-      display: none; /* Animation temporairement désactivée : display: grid */
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(4, 1fr);
-      width: 100%;
-      height: 100%;
-      opacity: 0;
-      transition: opacity 2s ease;
-
-      .tile {
-        width: 100%;
-        height: 100%;
-        background-color: var(--card-tile-color);
-        animation: tile 12s infinite;
-        opacity: 0;
-
-        &:nth-child(1) {
-          animation-delay: -6s;
-        }
-
-        &:nth-child(2) {
-          animation-delay: -3.5s;
-        }
-
-        &:nth-child(3) {
-          animation-delay: -8s;
-        }
-
-        &:nth-child(4) {
-          animation-delay: -2.5s;
-        }
-
-        &:nth-child(5) {
-          animation-delay: -5s;
-        }
-
-        &:nth-child(6) {
-          animation-delay: -9.5s;
-        }
-
-        &:nth-child(7) {
-          animation-delay: -4s;
-        }
-
-        &:nth-child(8) {
-          animation-delay: -7s;
-        }
-
-        &:nth-child(9) {
-          animation-delay: -2s;
-        }
-
-        &:nth-child(10) {
-          animation-delay: -8.5s;
-        }
-
-        &:nth-child(11) {
-          animation-delay: -4.5s;
-        }
-
-        &:nth-child(12) {
-          animation-delay: -9s;
-        }
-
-        &:nth-child(13) {
-          animation-delay: -5.5s;
-        }
-
-        &:nth-child(14) {
-          animation-delay: -3s;
-        }
-
-        &:nth-child(15) {
-          animation-delay: -7.5s;
-        }
-
-        &:nth-child(16) {
-          animation-delay: -6.5s;
-        }
-      }
-    }
-
-    @keyframes tile {
-
-      0%,
-      12.5%,
-      100% {
-        opacity: 1;
-      }
-
-      25%,
-      82.5% {
-        opacity: 0;
-      }
-    }
   }
 
   .about-border {
@@ -334,14 +238,6 @@ html.dark {
     transition-duration: .5s;
   }
 
-  .background .tiles {
-    opacity: 1;
-    transition-duration: .25s;
-
-    .tile {
-      animation-duration: 8s;
-    }
-  }
 }
 
 @media (max-width: 768px) {
@@ -470,7 +366,7 @@ html.dark .card .icon svg {
 
 /* Light Mode Skin */
 html:not(.dark) .filter-btn {
-  background-color: rgba(255, 255, 255, 0.9) !important;
+  background-color: rgba(240, 240, 240, 0.93) !important;
   backdrop-filter: saturate(180%) blur(20px) !important;
   -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
@@ -479,13 +375,12 @@ html:not(.dark) .filter-btn {
 /* Dark Mode Skin */
 /* Dark Mode Skin */
 html.dark .filter-btn {
-  background-color: rgba(0, 0, 0, 0.85) !important;
-  backdrop-filter: blur(2px) !important;
-  -webkit-backdrop-filter: blur(2px) !important;
+  background-color: rgba(10, 10, 10, 0.88) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   color: #fff;
   box-shadow: none;
-  /* Usually dark mode has less shadow */
 }
 
 /* Hover & Active States (High Specificity to override skins) */
@@ -499,7 +394,7 @@ html .filter-btn.active {
 
 /* Standardized Glass Effect (Apple Style) */
 html:not(.dark) .card {
-  background-color: rgba(255, 255, 255, 0.95) !important;
+  background-color: rgba(240, 240, 240, 0.93) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
@@ -509,9 +404,10 @@ html:not(.dark) .card {
 }
 
 html.dark .card {
-  background-color: rgba(10, 10, 10, 0.88) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
+  background-color: rgba(10, 10, 10, 0.75) !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
   isolation: isolate;
   transform: translateZ(0);
 }
