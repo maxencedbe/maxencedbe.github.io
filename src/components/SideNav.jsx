@@ -1,17 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+
+const DOT_SIZE = 16;
+const GAP_SIZE = 24;
+const DOT_SPACING = DOT_SIZE + GAP_SIZE;
+const PAD_TOP = 4;
+const FIRST_DOT_CENTER = PAD_TOP + DOT_SIZE / 2;
 
 const SideNav = ({ currentLocale = "en" }) => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredId, setHoveredId] = useState(null);
+  const activeSectionRef = useRef('home');
 
-  const links = [
+  const links = useMemo(() => [
     { id: 'home', label: currentLocale === 'fr' ? 'Accueil' : 'Home' },
     { id: 'about', label: currentLocale === 'fr' ? 'À propos' : 'About' },
     { id: 'projects', label: currentLocale === 'fr' ? 'Projets' : 'Projects' },
     { id: 'contact', label: 'Contact' }
-  ];
+  ], [currentLocale]);
 
   const activeIndex = links.findIndex(l => l.id === activeSection);
+
+  useEffect(() => {
+    activeSectionRef.current = activeSection;
+  }, [activeSection]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,14 +38,12 @@ const SideNav = ({ currentLocale = "en" }) => {
         };
       }).filter(Boolean);
 
-      const current = sections.find(section => {
-        return scrollPosition >= section.top - 200 && scrollPosition < section.bottom - 200;
-      });
+      const current = sections.find(section =>
+        scrollPosition >= section.top - 200 && scrollPosition < section.bottom - 200
+      );
 
       if (current) {
-        if (activeSection !== current.id) {
-          setActiveSection(current.id);
-        }
+        if (activeSectionRef.current !== current.id) setActiveSection(current.id);
       } else if (scrollPosition < 100) {
         setActiveSection('home');
       }
@@ -44,7 +53,7 @@ const SideNav = ({ currentLocale = "en" }) => {
     handleScroll();
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [activeSection, links]);
+  }, [links]);
 
   const handleClick = (e, id) => {
     e.preventDefault();
@@ -58,15 +67,8 @@ const SideNav = ({ currentLocale = "en" }) => {
     }
   };
 
-  // Spacing between dot centers (gap-6 = 24px + dot area)
-  // Each dot's clickable area is 16px tall, gap between = 24px → center-to-center = 40px
-  const dotSize = 16; // h-4 = 16px
-  const gapSize = 24; // gap between dots
-  const dotSpacing = dotSize + gapSize; // 40px center-to-center
-  const padTop = 4; // py-1 = 4px
-  const firstDotCenter = padTop + dotSize / 2; // center of first dot
-  const totalTrackHeight = (links.length - 1) * dotSpacing;
-  const progressHeight = activeIndex * dotSpacing;
+  const totalTrackHeight = (links.length - 1) * DOT_SPACING;
+  const progressHeight = activeIndex * DOT_SPACING;
 
   return (
     <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex">
@@ -77,10 +79,11 @@ const SideNav = ({ currentLocale = "en" }) => {
             position: 'absolute',
             left: '50%',
             transform: 'translateX(-50%)',
-            top: `${firstDotCenter}px`,
+            top: `${FIRST_DOT_CENTER}px`,
             height: `${totalTrackHeight}px`,
             width: '1px',
             borderRadius: '1px',
+            transition: 'background-color 0.3s ease',
           }}
           className="bg-neutral-400 dark:bg-neutral-500"
         />
@@ -91,7 +94,7 @@ const SideNav = ({ currentLocale = "en" }) => {
             position: 'absolute',
             left: '50%',
             transform: 'translateX(-50%)',
-            top: `${firstDotCenter}px`,
+            top: `${FIRST_DOT_CENTER}px`,
             height: `${progressHeight}px`,
             width: '1px',
             borderRadius: '1px',
@@ -102,7 +105,7 @@ const SideNav = ({ currentLocale = "en" }) => {
         />
 
         {/* Dots */}
-        <div className="flex flex-col items-center" style={{ gap: `${gapSize}px` }}>
+        <div className="flex flex-col items-center" style={{ gap: `${GAP_SIZE}px` }}>
           {links.map((link, i) => {
             const isActive = activeSection === link.id;
             const isHovered = hoveredId === link.id;
@@ -166,11 +169,9 @@ const SideNav = ({ currentLocale = "en" }) => {
                       : 'none',
                   }}
                   className={
-                    isActive
+                    isPassed
                       ? 'bg-pink-400'
-                      : isPassed
-                        ? 'bg-pink-400'
-                        : 'bg-neutral-400 dark:bg-neutral-500 group-hover:bg-neutral-300 dark:group-hover:bg-neutral-400'
+                      : isHovered ? 'bg-neutral-600 dark:bg-neutral-300' : 'bg-neutral-400 dark:bg-neutral-500'
                   }
                 />
               </a>

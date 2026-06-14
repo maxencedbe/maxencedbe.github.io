@@ -5,7 +5,7 @@ import ProjectCard from "./ProjectCard.jsx";
 const projectsData = [
     {
         title: "Hi! PARIS Hi!ckathon 2025 (2nd place)",
-        description: "Ranked 2nd out of 80+ teams in the 2025 edition of the Hi!Paris data science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds. Engineered a Gated Model (router composed of two XGBoost regressors), achieving an R² score of 0.79 on the final test set.",
+        description: "Ranked 2nd out of 80+ teams in the 2025 edition of the Hi!Paris Data Science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds. Engineered a Gated Model (router composed of two XGBoost regressors), achieving an R² score of 0.79 on the final test set.",
         imageUrl: "/HiParis.png",
         githubUrl: "https://github.com/maxencedbe/hi_paris_2025",
         category: ["Machine Learning"]
@@ -54,9 +54,6 @@ const projectsData = [
     }
 ];
 
-const allCategories = ["All", ...Array.from(new Set(projectsData.flatMap(p => p.category)))];
-
-
 const filters = ["All", "Deep Learning", "Machine Learning", "Web dev"];
 
 export default function ProjectGrid() {
@@ -68,8 +65,6 @@ export default function ProjectGrid() {
         if (activeFilter === "All") return projectsData;
         return projectsData.filter(project => project.category.includes(activeFilter));
     }, [activeFilter]);
-
-    const displayedProjects = filteredProjects;
 
     React.useEffect(() => {
         if (typeof window === "undefined" || !containerRef.current) return;
@@ -99,7 +94,7 @@ export default function ProjectGrid() {
         });
 
         return () => observer.disconnect();
-    }, [displayedProjects]);
+    }, [filteredProjects]);
 
     const smoothScrollTo = (element, duration = 800, onComplete) => {
         const start = window.scrollY;
@@ -137,7 +132,7 @@ export default function ProjectGrid() {
     return (
         <div className="w-full" ref={containerRef}>
 
-            <div className="flex flex-wrap justify-center gap-3 mb-12">
+            <div className="flex flex-wrap justify-center gap-5 mb-12">
                 {filters.map((filter, index) => (
                     <div key={filter} className="reveal-up" style={{ transitionDelay: `${index * 100}ms` }}>
                         <button
@@ -155,17 +150,18 @@ export default function ProjectGrid() {
                 <div className="flex flex-col gap-8 md:gap-16 w-full items-center">
                     {/* Always visible ones */}
                     <AnimatePresence mode="popLayout">
-                        {displayedProjects.map((project, index) => {
+                        {filteredProjects.map((project, index) => {
                             const isHiddenByDefault = activeFilter === "All" && index >= 3;
                             if (isHiddenByDefault) return null;
 
                             return (
                                 <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0, transition: { duration: 0.15 } }}
-                                    transition={{ duration: 0.25 }}
                                     key={project.title + activeFilter}
+                                    initial={{ opacity: 0, y: 40 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, transition: { duration: 0.2 } }}
+                                    viewport={{ once: false, margin: "0px 0px -60px 0px" }}
+                                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
                                     className="flex flex-col items-center w-full"
                                 >
                                     <ProjectCard
@@ -181,7 +177,7 @@ export default function ProjectGrid() {
                 </div>
                 {/* Smooth Expandable Wrapper for items > 3 */}
                 <AnimatePresence initial={false}>
-                    {activeFilter === "All" && displayedProjects.length > 3 && showAll && (
+                    {activeFilter === "All" && filteredProjects.length > 3 && showAll && (
                         <motion.div 
                             initial={{ height: 0, opacity: 0 }}
                             animate={{ height: "auto", opacity: 1 }}
@@ -190,9 +186,13 @@ export default function ProjectGrid() {
                             className="overflow-hidden flex flex-col items-center w-[calc(100%+60px)] px-[30px]"
                         >
                             <div className="flex flex-col gap-8 md:gap-16 w-full items-center pt-8 md:pt-16 pb-4 md:pb-8">
-                                {displayedProjects.slice(3).map((project, index) => (
-                                    <div
+                                {filteredProjects.slice(3).map((project, index) => (
+                                    <motion.div
                                         key={project.title}
+                                        initial={{ opacity: 0, y: 40 }}
+                                        whileInView={{ opacity: 1, y: 0 }}
+                                        viewport={{ once: false, margin: "0px 0px -60px 0px" }}
+                                        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
                                         className="flex flex-col items-center w-full"
                                     >
                                         <ProjectCard
@@ -201,19 +201,19 @@ export default function ProjectGrid() {
                                             imageUrl={project.imageUrl}
                                             githubUrl={project.githubUrl}
                                         />
-                                    </div>
+                                    </motion.div>
                                 ))}
                             </div>
                         </motion.div>
                     )}
                 </AnimatePresence>
 
-                {displayedProjects.length === 0 && (
+                {filteredProjects.length === 0 && (
                     <p className="text-center text-gray-500 mt-10">No projects found in this category.</p>
                 )}
 
                 {/* Show More / Show Less Buttons */}
-                {activeFilter === "All" && displayedProjects.length > 3 && (
+                {activeFilter === "All" && filteredProjects.length > 3 && (
                     <div className={`${showAll ? "mt-8" : "mt-12 md:mt-16"} flex justify-center reveal-fade`}>
                         <button 
                             onClick={handleToggleExpand} 

@@ -10,7 +10,7 @@ export default function ProjectCard({ title, description, imageUrl, githubUrl })
           href={githubUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="absolute top-[12px] right-[12px] z-[3] flex items-center justify-center w-[36px] h-[36px] rounded-full bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.75)] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] backdrop-blur-[20px] dark:backdrop-blur-[8px] transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:bg-black dark:hover:bg-white hover:border-black dark:hover:border-white group"
+          className="absolute top-[12px] right-[12px] z-[3] flex items-center justify-center w-[36px] h-[36px] rounded-full bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.75)] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] backdrop-blur-[20px] dark:backdrop-blur-[8px] transition-all duration-300 hover:scale-[1.02] active:scale-95 hover:bg-black dark:hover:bg-white hover:border-black dark:hover:border-white group"
         >
           <img src="/icons/github.svg" alt="GitHub" className="w-[20px] h-[20px] filter brightness-0 dark:invert transition-all duration-300 group-hover:invert dark:group-hover:invert-0" />
         </a>

@@ -2,7 +2,7 @@ export default function Footer({ currentLocale = 'en' }) {
   const links = [
     { name: "LinkedIn", url: "https://www.linkedin.com/in/maxence-debes", label: "LinkedIn" },
     { name: "GitHub", url: "https://github.com/maxencedbe", label: "GitHub" },
-    { name: "Mail", url: "mailto:maxence.debes@polytechnique.edu", label: currentLocale === 'fr' ? 'Email' : 'Email' },
+    { name: "Mail", url: "mailto:maxence.debes@polytechnique.edu", label: 'Email' },
   ];
 
   return (
@@ -34,7 +34,7 @@ export default function Footer({ currentLocale = 'en' }) {
             href={link.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors"
+            className="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300"
             aria-label={link.name}
           >
             {link.label}

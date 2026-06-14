@@ -52,13 +52,13 @@ const education = [
   {
     title: "École Polytechnique - Polytechnic Institute of Paris",
     date: "Sep 2025 – Present",
-    role: "MSc data science",
+    role: "MSc Data Science",
     icon: "/X.png",
   },
   {
     title: "Télécom SudParis - Polytechnic Institute of Paris",
     date: "Sep 2023 – Present",
-    role: "Master's degree in computer science and applied mathematics",
+    role: "Master's degree in Computer Science and Applied Mathematics",
     icon: "/TSP.png",
     logoClass: "scale-[1.2]"
   },
@@ -69,7 +69,7 @@ const education = [
   <!-- ═══════════════════ HERO ═══════════════════ -->
   <section
     id="home"
-    class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-130px)] md:h-[calc(100svh-120px)]"
+    class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-65px)] md:h-[calc(100svh-120px)]"
   >
     <div
       class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-8 md:gap-16 lg:gap-32 xl:gap-40"
@@ -97,7 +97,7 @@ const education = [
         class="flex justify-center items-center mt-2 lg:mt-0 reveal-scale reveal-delay-200"
       >
         <div
-          class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border-1 border-black dark:border-white overflow-hidden"
+          class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border border-black/20 dark:border-white/20 overflow-hidden"
         >
           <img
             src="/Profile_picture.jpg"
@@ -188,11 +188,10 @@ const education = [
       <p
         class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white reveal-up reveal-delay-200"
       >
-        I am Maxence Debes, an MSc data science student with a strong background
-        in mathematics and computer science. I am passionate about machine
-        learning, software development, and how technology can drive digital
-        transformation. I am currently looking for a 6-month end-of-studies
-        internship in AI/ML for spring–summer 2026.
+        I am Maxence Debes, an MSc Data Science student with a strong background
+        in Mathematics and Computer Science. I am passionate about Machine
+        Learning, software development, and how technology can drive digital
+        transformation.
       </p>
     </div>
 
@@ -227,7 +226,7 @@ const education = [
             <h3
               class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10"
             >
-              Data science & AI
+              Data Science & AI
             </h3>
             <div class="flex flex-wrap gap-2 relative z-10">
               {
@@ -376,7 +375,6 @@ const education = [
         Let's connect
       </h2>
 
-      <div class="flex-1"></div>
       <div class="w-full py-8">
       <div
         class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full"
@@ -394,7 +392,7 @@ const education = [
           </p>
 
           <div
-            class="flex items-center gap-3 flex w-fit"
+            class="flex items-center gap-3 w-fit"
           >
             <span class="relative flex h-3 w-3">
               <span
@@ -419,7 +417,7 @@ const education = [
             id="contact-form"
             action="https://api.web3forms.com/submit"
             method="POST"
-            class="flex flex-col gap-5 bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all"
+            class="flex flex-col gap-5 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all"
           >
             <input
               type="hidden"
@@ -539,8 +537,8 @@ const education = [
       border-radius: 50%;
       border: 1px solid rgba(0, 0, 0, 0.1);
       background-color: rgba(255, 255, 255, 0.9);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       cursor: pointer;
       transition: all 0.3s ease;
     }
@@ -583,82 +581,6 @@ const education = [
       filter: invert(0);
     }
 
-    .resume-button {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 12px 28px;
-      border-radius: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.05),
-        0 8px 15px rgba(0, 0, 0, 0.1);
-      font-size: 18px;
-      font-weight: 500;
-      color: #000;
-      cursor: pointer;
-      text-align: left;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      transform: translate3d(0, 0, 0);
-      backface-visibility: hidden;
-      perspective: 1000px;
-      will-change: transform;
-      transition:
-        color 0.5s,
-        background-color 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-    }
-
-    .resume-button::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background-color: transparent;
-      transition: background-color 0.5s;
-    }
-
-    :global(.dark) .resume-button {
-      background-color: rgba(0, 0, 0, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      color: #fff;
-      box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.2),
-        0 8px 15px rgba(0, 0, 0, 0.4);
-    }
-
-    :global(.dark) .resume-button::before {
-      background-color: transparent;
-    }
-
-    .resume-button:hover {
-      color: #fff;
-      box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.04),
-        0 15px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .resume-button:hover::before {
-      background-color: #000;
-    }
-
-    :global(.dark) .resume-button:hover {
-      color: #000;
-      background-color: #fff;
-    }
-
-    :global(.dark) .resume-button:hover::before {
-      background-color: #fff;
-    }
-
     .section-title {
       text-align: left;
     }
@@ -674,26 +596,6 @@ const education = [
       .contact-button img {
         width: 25px;
         height: 25px;
-      }
-
-      .about-card {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-        max-width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        gap: 8px;
-      }
-
-      .resume-buttons {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .resume-button {
-        width: 100%;
-        justify-content: center;
       }
 
       .mobile-narrow {

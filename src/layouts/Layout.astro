@@ -67,6 +67,15 @@ const isLockedPage = isLocked;
         }
 
         requestAnimationFrame(raf);
+
+        if (document.body.classList.contains('is-loading')) {
+          lenis.stop();
+          const onStaggerComplete = () => {
+            lenis.start();
+            document.removeEventListener('stagger-complete', onStaggerComplete);
+          };
+          document.addEventListener('stagger-complete', onStaggerComplete);
+        }
       };
 
       initLenis();
@@ -153,8 +162,13 @@ const isLockedPage = isLocked;
       /* Navbar, SideNav, ProgressBar & Content get smooth fade-ins */
       #content-wrapper,
       #navbar-wrapper-el,
-      #sidenav-wrapper-el,
+      #sidenav-wrapper-el {
+        transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      /* Explicit stacking context so opacity transition never puts ProgressBar behind navbar */
       #progressbar-wrapper-el {
+        position: relative;
+        z-index: 9999;
         transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
       }
     </style>
@@ -171,7 +185,6 @@ const isLockedPage = isLocked;
         <div id="navbar-wrapper-el">
           <Navbar
             client:load
-            transition:persist="navbar"
             currentPath={Astro.url.pathname}
             currentLocale={Astro.currentLocale}
           />
@@ -179,7 +192,7 @@ const isLockedPage = isLocked;
       )
     }
     <div
-      class="w-full h-[100px] md:h-[120px]"
+      class="w-full h-[65px] md:h-[120px]"
     >
     </div>
     <div id="content-wrapper" class="flex-1 flex flex-col">
@@ -195,7 +208,7 @@ const isLockedPage = isLocked;
     </div>
     <ScrollObserver client:only="react" />
     <div id="progressbar-wrapper-el">
-      <ProgressBar client:load transition:persist="progressbar" />
+      <ProgressBar client:load />
     </div>
     <script>
       // Track real Astro client-side navigations vs F5 reloads

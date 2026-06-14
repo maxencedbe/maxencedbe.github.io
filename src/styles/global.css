@@ -4,6 +4,12 @@
   --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
 }
 
+[data-theme-transition]::view-transition-old(root),
+[data-theme-transition]::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}
+
 html.lenis,
 html.lenis body {
   height: auto;
@@ -78,10 +84,10 @@ html.lenis body {
   }
 
   body {
-    font-family: "Poppins", sans-serif;
     background-color: transparent;
     color: #000000;
     transition: background-color 0.3s, color 0.3s;
+    overflow-x: hidden;
   }
 
   html.dark body {
@@ -272,7 +278,7 @@ html {
 
 .glass-card {
   position: relative;
-  background-color: rgba(240, 240, 240, 0.93);
+  background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 0, 0, 0.08);

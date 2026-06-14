@@ -1,106 +1,146 @@
 import React, { useEffect, useRef, useState } from "react";
 
-export default function ProgressBar() {
-    const rectRef = useRef(null);
-    const [dims, setDims] = useState({ w: 0, h: 0 });
-    const [isReady, setIsReady] = useState(false);
+const STROKE = 3.5;
+const SNAKE = 500;
+const COLOR = "#f472b6";
 
-    // Wait for intro to finish before showing
+function drawSnake(canvas, progress) {
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width;
+    const h = canvas.height;
+    const dpr = window.devicePixelRatio || 1;
+    const t = Math.max(1, Math.round(STROKE * dpr));
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = COLOR;
+
+    const perimeter = 2 * (w + h);
+    const snakeEnd = progress * perimeter;
+    const snakeStart = Math.max(0, snakeEnd - SNAKE * dpr);
+
+    const sides = [
+        [w, (a, b) => ctx.fillRect(Math.round(a), 0, Math.round(b) - Math.round(a), t)],
+        [h, (a, b) => ctx.fillRect(w - t, Math.round(a), t, Math.round(b) - Math.round(a))],
+        [w, (a, b) => ctx.fillRect(Math.round(w - b), h - t, Math.round(w - a) - Math.round(w - b), t)],
+        [h, (a, b) => ctx.fillRect(0, Math.round(h - b), t, Math.round(h - a) - Math.round(h - b))],
+    ];
+
+    let pos = 0;
+    for (const [len, fill] of sides) {
+        const a = Math.max(snakeStart - pos, 0);
+        const b = Math.min(snakeEnd - pos, len);
+        if (b > a) fill(a, b);
+        pos += len;
+    }
+}
+
+function easeInOut(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+export default function ProgressBar() {
+    const canvasRef = useRef(null);
+    const [dims, setDims] = useState({ w: 0, h: 0, dpr: 1 });
+    const stateRef = useRef({ current: 0, animRaf: null, scrollRaf: null });
+
     useEffect(() => {
-        if (!document.body.classList.contains('is-loading')) {
-            setIsReady(true);
-            return;
-        }
-        const handleReady = () => {
-            // Delay to let layout fully stabilize after intro
-            setTimeout(() => setIsReady(true), 500);
-        };
-        document.addEventListener('stagger-complete', handleReady);
-        return () => document.removeEventListener('stagger-complete', handleReady);
+        const update = () =>
+            setDims({
+                w: document.documentElement.clientWidth,
+                h: window.innerHeight,
+                dpr: window.devicePixelRatio || 1,
+            });
+        window.addEventListener("resize", update);
+        update();
+        return () => window.removeEventListener("resize", update);
     }, []);
 
     useEffect(() => {
-        if (!isReady) return;
-        const updateDims = () => setDims({ w: document.documentElement.clientWidth, h: window.innerHeight });
-        window.addEventListener("resize", updateDims);
-        updateDims();
-        return () => window.removeEventListener("resize", updateDims);
-    }, [isReady]);
+        if (dims.w === 0) return;
 
-    useEffect(() => {
-        let requestDisplay;
+        const state = stateRef.current;
 
-        const handleScroll = () => {
-            if (!rectRef.current || dims.w === 0) return;
-
-            const scrollTop = window.scrollY;
+        const getProgress = () => {
             const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (docHeight <= 0) return 0;
+            return Math.min(Math.max(window.scrollY / docHeight, 0), 1);
+        };
 
-            if (docHeight <= 0) return;
-
-            const head = Math.min(Math.max(scrollTop / docHeight, 0), 1);
-
-            const visibleThickness = 3;
-
-            const strokeWidth = 3;
-            const perimeter = 2 * ((dims.w - strokeWidth) + (dims.h - strokeWidth));
-            const snakeLengthPx = 500; // Fixed size in pixels
-
-            if (requestDisplay) cancelAnimationFrame(requestDisplay);
-
-            requestDisplay = requestAnimationFrame(() => {
-                const dashLength = snakeLengthPx;
-                const gapLength = perimeter; // Gap large enough so it doesn't wrap
-
-                if (rectRef.current) {
-                    rectRef.current.style.strokeDasharray = `${dashLength} ${gapLength}`;
-                    const shift = head * perimeter - dashLength;
-                    rectRef.current.style.strokeDashoffset = -shift;
-                }
+        // Instant draw for scroll events
+        const handleScroll = () => {
+            if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
+            state.scrollRaf = requestAnimationFrame(() => {
+                const progress = getProgress();
+                state.current = progress;
+                if (canvasRef.current) drawSnake(canvasRef.current, progress);
             });
         };
 
-        const resizeObserver = new ResizeObserver(() => {
-            handleScroll();
-        });
-        resizeObserver.observe(document.body);
+        // Animated glide when page height changes (filter / show more)
+        const animateTo = (target) => {
+            if (state.animRaf) cancelAnimationFrame(state.animRaf);
+            const start = state.current;
+            const startTime = performance.now();
+            const duration = 700;
 
-        window.addEventListener("scroll", handleScroll, { passive: true });
-
-        const handlePageSwap = () => {
-            if (rectRef.current) {
-                rectRef.current.style.transition = 'stroke-dashoffset 1.2s cubic-bezier(0.22, 1, 0.36, 1)';
-                // We use 1300ms to give it a generous padding to finish before removing smooth scrolling
-                setTimeout(() => {
-                    if (rectRef.current) rectRef.current.style.transition = 'none';
-                }, 1300);
-            }
-            // Trigger an immediate recalculation when swap happens to start the animation
-            handleScroll();
+            const step = (now) => {
+                const t = Math.min((now - startTime) / duration, 1);
+                state.current = start + (target - start) * easeInOut(t);
+                if (canvasRef.current) drawSnake(canvasRef.current, state.current);
+                if (t < 1) {
+                    state.animRaf = requestAnimationFrame(step);
+                } else {
+                    state.current = target;
+                    state.animRaf = null;
+                }
+            };
+            state.animRaf = requestAnimationFrame(step);
         };
-        document.addEventListener('astro:after-swap', handlePageSwap);
 
-        // Initial setup on mount
-        const initialTimeout = setTimeout(handleScroll, 50);
+        let lastDocHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const handleResize = () => {
+            const newDocHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const delta = newDocHeight - lastDocHeight;
+            lastDocHeight = newDocHeight;
+
+            if (delta > 200) {
+                // Filter change (large jump) → glide to new position
+                animateTo(getProgress());
+            } else if (delta > 0) {
+                // Expand (show more): follow in real time
+                if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
+                state.scrollRaf = requestAnimationFrame(() => {
+                    const progress = getProgress();
+                    state.current = progress;
+                    if (canvasRef.current) drawSnake(canvasRef.current, progress);
+                });
+            }
+            // delta < 0 (collapse/show less): do nothing — let scroll position hold
+        };
+
+        const resizeObserver = new ResizeObserver(handleResize);
+        resizeObserver.observe(document.body);
+        window.addEventListener("scroll", handleScroll, { passive: true });
+        document.addEventListener("astro:after-swap", handleScroll);
+
+        setTimeout(handleScroll, 50);
 
         return () => {
             resizeObserver.disconnect();
             window.removeEventListener("scroll", handleScroll);
-            document.removeEventListener('astro:after-swap', handlePageSwap);
-            clearTimeout(initialTimeout);
-            if (requestDisplay) cancelAnimationFrame(requestDisplay);
+            document.removeEventListener("astro:after-swap", handleScroll);
+            if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
+            if (state.animRaf) cancelAnimationFrame(state.animRaf);
         };
     }, [dims]);
 
-    if (!isReady || dims.w === 0 || dims.w < 768) return null;
-
-    const strokeWidth = 3; // Set back to 3px
-    const inset = strokeWidth / 2;
-    const rectWidth = dims.w - strokeWidth;
-    const color = "#ec4899"; // pink-400
+    if (dims.w === 0 || dims.w < 768) return null;
 
     return (
-        <div
+        <canvas
+            ref={canvasRef}
+            width={Math.round(dims.w * dims.dpr)}
+            height={Math.round(dims.h * dims.dpr)}
             style={{
                 position: "fixed",
                 top: 0,
@@ -109,30 +149,7 @@ export default function ProgressBar() {
                 height: dims.h,
                 zIndex: 9999,
                 pointerEvents: "none",
-                overflow: "hidden" 
             }}
-        >
-            <svg
-                width={dims.w}
-                height={dims.h}
-                style={{ overflow: "visible" }}
-            >
-                <rect
-                    ref={rectRef}
-                    x={inset}
-                    y={inset}
-                    width={rectWidth}
-                    height={dims.h - strokeWidth}
-                    fill="none"
-                    stroke={color}
-                    strokeWidth={strokeWidth}
-                    strokeLinecap="square" // Fills the tiny 1.5px gap perfectly to the edge
-                    style={{
-                        strokeDasharray: "0 99999",
-                        filter: "drop-shadow(0 0 8px rgba(236,72,153,0.8))",
-                    }}
-                />
-            </svg>
-        </div>
+        />
     );
 }

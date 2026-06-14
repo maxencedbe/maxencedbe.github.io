@@ -1,10 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { navigate } from "astro:transitions/client";
 
-const languages = [
-  { code: "en", label: "ANG" },
-  { code: "fr", label: "FRA" },
-];
+const LOCALE_LABEL = { en: "ANG", fr: "FRA" };
+
+const parisFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: "Europe/Paris",
+  hour: "2-digit",
+  minute: "2-digit",
+  hour12: false,
+});
 
 const SunIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -32,35 +36,57 @@ const ChevronDownIcon = () => (
   </svg>
 );
 
+const HamburgerIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <line x1="3" y1="6" x2="21" y2="6"></line>
+    <line x1="3" y1="12" x2="21" y2="12"></line>
+    <line x1="3" y1="18" x2="21" y2="18"></line>
+  </svg>
+);
+
 export default function Navbar({ currentPath, currentLocale = "en" }) {
   const [activeLocale, setActiveLocale] = useState(currentLocale);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const [theme, setTheme] = useState("dark");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [theme, setTheme] = useState(() =>
+    typeof document !== "undefined" && document.documentElement.classList.contains("dark") ? "dark" : "light"
+  );
   const [time, setTime] = useState("");
 
+  const navRef = useRef(null);
   const langMenuRef = useRef(null);
+  const menuContentRef = useRef(null);
+  const menuPanelRef = useRef(null);
+  const [menuHeight, setMenuHeight] = useState(0);
 
   useEffect(() => {
-    const handlePageLoad = () => {
-      const lang = document.documentElement.lang || "en";
-      setActiveLocale(lang);
-    };
-    handlePageLoad();
-    document.addEventListener("astro:page-load", handlePageLoad);
-    return () => document.removeEventListener("astro:page-load", handlePageLoad);
-  }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const isDark = document.documentElement.classList.contains("dark");
-      setTheme(isDark ? "dark" : "light");
+    if (menuContentRef.current) {
+      setMenuHeight(menuContentRef.current.scrollHeight);
     }
   }, []);
 
   useEffect(() => {
+    const lang = document.documentElement.lang || "en";
+    setActiveLocale(lang);
+  }, []);
+
+  useEffect(() => {
+    const close = () => {
+      setIsMobileMenuOpen(false);
+      if (menuPanelRef.current) {
+        menuPanelRef.current.style.transition = 'none';
+        menuPanelRef.current.style.height = '0';
+      }
+    };
+    document.addEventListener('astro:before-swap', close);
+    return () => document.removeEventListener('astro:before-swap', close);
+  }, []);
+
+  useEffect(() => {
     const handleClickOutside = (event) => {
-      if (langMenuRef.current && !langMenuRef.current.contains(event.target)) {
+      if (navRef.current && !navRef.current.contains(event.target)) {
         setIsLangMenuOpen(false);
+        setIsMobileMenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -68,17 +94,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
   }, []);
 
   useEffect(() => {
-    const updateTime = () => {
-      const now = new Date();
-      setTime(
-        new Intl.DateTimeFormat("en-US", {
-          timeZone: "Europe/Paris",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        }).format(now)
-      );
-    };
+    const updateTime = () => setTime(parisFormatter.format(new Date()));
     updateTime();
     const interval = setInterval(updateTime, 10000);
     return () => clearInterval(interval);
@@ -86,22 +102,30 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
 
   const toggleTheme = () => {
     const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    if (newTheme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("theme", newTheme);
+    const apply = () => {
+      setTheme(newTheme);
+      if (newTheme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+      localStorage.setItem("theme", newTheme);
+    };
+    if (!document.startViewTransition) { apply(); return; }
+    document.documentElement.dataset.themeTransition = "";
+    const t = document.startViewTransition(apply);
+    t.finished.finally(() => { delete document.documentElement.dataset.themeTransition; });
   };
 
-  const getLabel = (locale) => {
-    const found = languages.find(l => l.code === locale);
-    return found ? found.label : "ANG";
-  };
+  const getLabel = (locale) => LOCALE_LABEL[locale] ?? "ANG";
 
   const handleLanguageSwitch = (e, newLocale) => {
     e.preventDefault();
+    if (menuPanelRef.current) {
+      menuPanelRef.current.style.transition = 'none';
+      menuPanelRef.current.style.height = '0';
+    }
+    setIsMobileMenuOpen(false);
     if (typeof window !== "undefined") {
       sessionStorage.setItem('langScroll', window.scrollY);
     }
@@ -111,18 +135,26 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
   const resumeUrl = activeLocale === 'fr' ? '/Maxence_Debes_Resume_Fra.pdf' : '/Maxence_Debes_Resume_Ang.pdf';
 
   return (
-    <nav className="fixed top-0 left-0 w-full px-6 py-3 z-[90] flex flex-col lg:flex-row lg:items-center lg:justify-between gap-2 lg:gap-0">
+    <nav ref={navRef} className="fixed top-0 left-0 w-full z-[90]">
       {/* Glass Background */}
       <div
         className="absolute inset-0 -z-10 bg-white/5 dark:bg-black/5 backdrop-blur-sm border-b-[0.5px] border-black/10 dark:border-white/10"
         style={{ WebkitBackdropFilter: "blur(8px)", backdropFilter: "blur(8px)" }}
       />
 
-      {/* ROW 1: Branding (left) + Lang & Theme (right) */}
-      <div className="flex items-center justify-between w-full">
-
+      {/* Main row */}
+      <div className="flex items-center justify-between px-6 py-3">
         {/* LEFT: Branding & Desktop Widgets */}
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4">
+          {/* Hamburger - mobile only */}
+          <button
+            className="lg:hidden flex items-center justify-center text-black dark:text-white cursor-pointer"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            <HamburgerIcon />
+          </button>
+
           <button
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
             className="text-black dark:text-white font-bold text-lg md:text-xl tracking-tight cursor-pointer transition-colors duration-300 hover:text-pink-400 whitespace-nowrap"
@@ -138,21 +170,22 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               Paris, FR — {time}
             </span>
             <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
-            <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors">
+            <a href={resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
               {activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}
             </a>
             <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
-            <a href={resumeUrl} download className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors">
+            <a href={resumeUrl} download className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               {activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}
             </a>
           </div>
         </div>
 
-        {/* RIGHT: Lang & Theme */}
-        <div className="flex gap-3 md:gap-5 lg:gap-6 items-center">
-          <div className="relative" ref={langMenuRef}>
+        {/* RIGHT: Controls */}
+        <div className="flex items-center gap-3 md:gap-5 lg:gap-6">
+          {/* Lang dropdown - desktop only */}
+          <div className="hidden lg:block relative" ref={langMenuRef}>
             <button
               onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
               className={`text-black dark:text-white cursor-pointer font-medium text-sm transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
@@ -164,7 +197,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               </div>
             </button>
             <div
-              className={`absolute -top-[9px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] rounded-xl p-2 min-w-[60px] z-50 shadow-none ${isLangMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+              className={`absolute -top-[9px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] rounded-xl p-2 min-w-[60px] z-50 shadow-none ${isLangMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
             >
               <button
                 onClick={() => setIsLangMenuOpen(false)}
@@ -176,14 +209,14 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
                   <ChevronDownIcon />
                 </div>
               </button>
-              {languages.filter((lang) => lang.code !== activeLocale).map((lang) => (
+              {Object.entries(LOCALE_LABEL).filter(([code]) => code !== activeLocale).map(([code, label]) => (
                 <a
-                  key={lang.code}
-                  href={lang.code === "fr" ? "/fr" : "/"}
-                  onClick={(e) => handleLanguageSwitch(e, lang.code)}
+                  key={code}
+                  href={code === "fr" ? "/fr" : "/"}
+                  onClick={(e) => handleLanguageSwitch(e, code)}
                   className="font-medium text-sm text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block pt-1"
                 >
-                  {lang.label}
+                  {label}
                 </a>
               ))}
             </div>
@@ -192,7 +225,7 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
           {/* Theme Slider */}
           <div
             onClick={toggleTheme}
-            className="relative w-[72px] h-9 rounded-full bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] shadow-none cursor-pointer transition-all duration-300 flex items-center"
+            className="relative w-[72px] h-9 rounded-full bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] shadow-none cursor-pointer transition-all duration-300 flex items-center"
             role="button"
             aria-label="Toggle theme"
           >
@@ -213,27 +246,61 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
               </div>
             </div>
           </div>
+
         </div>
       </div>
 
-      {/* ROW 2 (mobile only): CV links */}
-      <div className="flex lg:hidden items-center justify-center gap-6 pb-1">
-        <a
-          href={resumeUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors"
-        >
-          {activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}
-        </a>
-        <a
-          href={resumeUrl}
-          download
-          className="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors"
-        >
-          {activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}
-        </a>
+      {/* Mobile Menu Panel */}
+      <div
+        ref={menuPanelRef}
+        className="lg:hidden absolute left-0 right-0 top-full overflow-hidden bg-white/5 dark:bg-black/5 border-b-[0.5px] border-black/10 dark:border-white/10"
+        style={{
+          height: isMobileMenuOpen ? menuHeight : 0,
+          transition: 'height 0.35s cubic-bezier(0.22,1,0.36,1)',
+          WebkitBackdropFilter: 'blur(8px)',
+          backdropFilter: 'blur(8px)',
+        }}
+      >
+        <div ref={menuContentRef}>
+          <div className="px-6 pt-3 pb-5 flex flex-col border-t border-black/8 dark:border-white/8">
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-3 py-3 text-sm font-semibold text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              {activeLocale === 'fr' ? 'Voir le CV' : 'View resume'}
+            </a>
+            <a
+              href={resumeUrl}
+              download
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="flex items-center gap-3 py-3 text-sm font-semibold text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              {activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume'}
+            </a>
+            <div className="mt-2 pt-3 border-t border-black/8 dark:border-white/8 flex gap-2">
+              {Object.entries(LOCALE_LABEL).map(([code, label]) => (
+                <button
+                  key={code}
+                  onClick={(e) => code === activeLocale ? setIsMobileMenuOpen(false) : handleLanguageSwitch(e, code)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer ${
+                    activeLocale === code
+                      ? 'bg-pink-400 text-white'
+                      : 'text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </nav>
+
   );
 }

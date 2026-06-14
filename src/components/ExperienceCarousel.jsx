@@ -5,7 +5,6 @@ const ExperienceCarousel = ({ items }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'center',
     containScroll: 'trimSnaps',
-    watchDrag: false // Disable dragging
   });
 
   const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
@@ -39,14 +38,14 @@ const ExperienceCarousel = ({ items }) => {
   return (
     <div className="relative max-w-4xl mx-auto px-4 sm:px-12">
       {/* Carousel Viewport - Added py-12 for deep shadow space */}
-      <div className="overflow-hidden py-12 -my-12" ref={emblaRef}>
+      <div className="overflow-hidden py-12 -my-12" ref={emblaRef} data-lenis-prevent>
         <div className="flex touch-pan-y">
           {items.map((item, index) => (
             <div
               key={index}
               className="flex-[0_0_100%] min-w-0 px-6 sm:px-10"
             >
-              <div className="glass-card group p-5 sm:p-6 h-full flex flex-row items-center gap-6 sm:gap-10">
+              <div className="glass-card group p-5 sm:p-6 sm:h-full flex flex-col items-center text-center sm:flex-row sm:text-left gap-4 sm:gap-10">
                 {/* SVG Border Effect */}
                 <svg className="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
@@ -68,11 +67,11 @@ const ExperienceCarousel = ({ items }) => {
                 </div>
 
                 {/* Right: Info */}
-                <div className="flex flex-col relative z-10 text-left">
+                <div className="flex flex-col relative z-10 text-center sm:text-left">
                   <h3 className="text-lg sm:text-xl font-bold text-black dark:text-white leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0">
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-2">
                     {item.date}
                   </p>
                   <p className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 font-medium mt-1.5 sm:mt-2">
@@ -88,7 +87,7 @@ const ExperienceCarousel = ({ items }) => {
       {/* Navigation Buttons */}
       <button
         className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
-          bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-sm dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
+          bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
           text-black dark:text-white transition-all duration-300 z-10
           ${!prevBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-[1.02]'}
           hidden sm:flex
@@ -104,7 +103,7 @@ const ExperienceCarousel = ({ items }) => {
 
       <button
         className={`absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
-          bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-sm dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
+          bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
           text-black dark:text-white transition-all duration-300 z-10
           ${!nextBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-[1.02]'}
           hidden sm:flex

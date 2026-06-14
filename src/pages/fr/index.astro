@@ -54,7 +54,7 @@ const education = [
   {
     title: "École Polytechnique - Institut Polytechnique de Paris",
     date: "Sep 2025 – Présent",
-    role: "Master en science des données",
+    role: "Master en Data Science",
     icon: "/X.png"
   },
   {
@@ -70,7 +70,7 @@ const education = [
 <Layout title="Maxence Debes · Portfolio">
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
-  <section id="home" class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-130px)] md:h-[calc(100svh-120px)]">
+  <section id="home" class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-65px)] md:h-[calc(100svh-120px)]">
     <div
       class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-8 md:gap-16 lg:gap-32 xl:gap-40"
     >
@@ -95,7 +95,7 @@ const education = [
         class="flex justify-center items-center mt-2 lg:mt-0 reveal-scale reveal-delay-200"
       >
         <div
-          class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border-1 border-black dark:border-white overflow-hidden"
+          class="w-40 sm:w-50 md:w-60 lg:w-72 aspect-square rounded-full border border-black/20 dark:border-white/20 overflow-hidden"
         >
           <img
             src="/Profile_picture.jpg"
@@ -158,12 +158,10 @@ const education = [
       <p
         class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white reveal-up reveal-delay-200"
       >
-        Je suis Maxence Debes, étudiant en Master de science des données avec de
+        Je suis Maxence Debes, étudiant en Master de Data Science avec de
         solides bases en mathématiques et en informatique. Je suis passionné par
-        l'apprentissage automatique, le développement logiciel et la manière
-        dont la technologie peut conduire la transformation numérique. Je suis
-        actuellement à la recherche d'un stage de fin d'études de 6 mois en
-        IA/ML pour le printemps-été 2026.
+        le Machine Learning, le développement logiciel et la manière
+        dont la technologie peut conduire la transformation numérique.
       </p>
     </div>
 
@@ -190,7 +188,7 @@ const education = [
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
             </svg>
-            <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Data science & IA</h3>
+            <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Data Science & IA</h3>
             <div class="flex flex-wrap gap-2 relative z-10">
               {["Python", "PyTorch", "Transformers", "Scikit-learn", "Pandas"].map((skill) => (
                 <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
@@ -284,7 +282,6 @@ const education = [
       </div>
       <h2 class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-6 md:mb-12 text-center reveal-up reveal-delay-100">Contactez-moi</h2>
 
-      <div class="flex-1"></div>
       <div class="w-full py-8">
       <div class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full">
         
@@ -294,7 +291,7 @@ const education = [
             Que vous ayez une question, une idée de projet, ou que vous souhaitiez simplement échanger sur l'IA et l'évolution de la tech, ma messagerie est toujours ouverte. Je ferai de mon mieux pour vous répondre !
           </p>
           
-          <div class="flex items-center gap-3 flex w-fit">
+          <div class="flex items-center gap-3 w-fit">
             <span class="relative flex h-3 w-3">
               <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
@@ -306,7 +303,7 @@ const education = [
         </div>
 
         <div class="w-full md:w-1/2 max-w-lg mx-auto md:mx-0 reveal-left reveal-delay-400">
-          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="flex flex-col gap-5 bg-[rgba(240,240,240,0.93)] dark:bg-[rgba(0,0,0,0.85)] backdrop-filter backdrop-saturate-[180%] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all">
+          <form id="contact-form" action="https://api.web3forms.com/submit" method="POST" class="flex flex-col gap-5 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(0,0,0,0.85)] backdrop-blur-[20px] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_3px_6px_rgba(0,0,0,0.05),0_8px_15px_rgba(0,0,0,0.1)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all">
             <input type="hidden" name="access_key" value="b7a332b3-794a-40fe-999e-e85a68145764" />
             <input type="hidden" name="subject" value="Nouveau message depuis ton Portfolio" />
             <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
@@ -360,8 +357,8 @@ const education = [
       border-radius: 50%;
       border: 1px solid rgba(0, 0, 0, 0.1);
       background-color: rgba(255, 255, 255, 0.9);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       cursor: pointer;
       transition: all 0.3s ease;
     }
@@ -406,82 +403,6 @@ const education = [
 
 
 
-    .resume-button {
-      display: flex;
-      justify-content: flex-start;
-      align-items: center;
-      padding: 12px 28px;
-      border-radius: 15px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.05),
-        0 8px 15px rgba(0, 0, 0, 0.1);
-      font-size: 18px;
-      font-weight: 500;
-      color: #000;
-      cursor: pointer;
-      text-align: left;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      transform: translate3d(0, 0, 0);
-      backface-visibility: hidden;
-      perspective: 1000px;
-      will-change: transform;
-      transition:
-        color 0.5s,
-        background-color 0.3s ease,
-        box-shadow 0.3s ease,
-        border-color 0.3s ease;
-    }
-
-    .resume-button::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: -1;
-      background-color: transparent;
-      transition: background-color 0.5s;
-    }
-
-    :global(.dark) .resume-button {
-      background-color: rgba(0, 0, 0, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      color: #fff;
-      box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.2),
-        0 8px 15px rgba(0, 0, 0, 0.4);
-    }
-
-    :global(.dark) .resume-button::before {
-      background-color: transparent;
-    }
-
-    .resume-button:hover {
-      color: #fff;
-      box-shadow:
-        0 5px 15px rgba(0, 0, 0, 0.04),
-        0 15px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .resume-button:hover::before {
-      background-color: #000;
-    }
-
-    :global(.dark) .resume-button:hover {
-      color: #000;
-      background-color: #fff;
-    }
-
-    :global(.dark) .resume-button:hover::before {
-      background-color: #fff;
-    }
-
     .section-title {
       text-align: left;
     }
@@ -497,26 +418,6 @@ const education = [
       .contact-button img {
         width: 25px;
         height: 25px;
-      }
-
-      .about-card {
-        flex-direction: column;
-        text-align: center;
-        align-items: center;
-        max-width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-        gap: 8px;
-      }
-
-      .resume-buttons {
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .resume-button {
-        width: 100%;
-        justify-content: center;
       }
 
       .mobile-narrow {
