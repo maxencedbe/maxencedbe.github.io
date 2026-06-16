@@ -37,8 +37,15 @@ const ExperienceCarousel = ({ items }) => {
 
   return (
     <div className="relative max-w-4xl mx-auto px-4 sm:px-12">
-      {/* Carousel Viewport - Added py-12 for deep shadow space */}
-      <div className="overflow-hidden py-12 -my-12" ref={emblaRef} data-lenis-prevent>
+      <div
+        className="overflow-hidden py-12 -my-12"
+        ref={emblaRef}
+        data-lenis-prevent
+        style={{
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
+          maskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
+        }}
+      >
         <div className="flex touch-pan-y">
           {items.map((item, index) => (
             <div
@@ -54,9 +61,15 @@ const ExperienceCarousel = ({ items }) => {
                 {/* Left: Icon */}
                 <div className="flex-shrink-0 relative z-10">
                   {item.icon ? (
-                    <div className="w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center">
-                      <img src={item.icon} alt={item.title} className={`w-full h-full object-contain invert dark:invert-0 ${item.logoClass || ""}`} />
-                    </div>
+                    item.url ? (
+                      <a href={item.url} target="_blank" rel="noopener noreferrer" className="w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center opacity-80 hover:opacity-100 transition-opacity duration-300">
+                        <img src={item.icon} alt={item.title} className={`w-full h-full object-contain invert dark:invert-0 ${item.logoClass || ""}`} />
+                      </a>
+                    ) : (
+                      <div className="w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center">
+                        <img src={item.icon} alt={item.title} className={`w-full h-full object-contain invert dark:invert-0 ${item.logoClass || ""}`} />
+                      </div>
+                    )
                   ) : (
                     <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-xl flex-shrink-0 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center border border-black/5">
                       <span className="text-2xl sm:text-4xl font-bold text-neutral-400">
@@ -71,7 +84,7 @@ const ExperienceCarousel = ({ items }) => {
                   <h3 className="text-lg sm:text-xl font-bold text-black dark:text-white leading-snug">
                     {item.title}
                   </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-2">
+                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">
                     {item.date}
                   </p>
                   <p className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 font-medium mt-1.5 sm:mt-2">
@@ -118,7 +131,7 @@ const ExperienceCarousel = ({ items }) => {
       </button>
 
       {/* Pagination Dots */}
-      <div className="flex justify-center gap-2 mt-8">
+      <div className="relative z-10 flex justify-center gap-2 mt-5">
         {scrollSnaps.map((_, index) => (
           <button
             key={index}

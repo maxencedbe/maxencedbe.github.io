@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { navigate } from "astro:transitions/client";
 
-const LOCALE_LABEL = { en: "ANG", fr: "FRA" };
+const LOCALE_LABEL = { en: "EN", fr: "FR" };
 
 const parisFormatter = new Intl.DateTimeFormat("en-US", {
   timeZone: "Europe/Paris",
@@ -30,12 +30,6 @@ const MoonIcon = () => (
   </svg>
 );
 
-const ChevronDownIcon = () => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <polyline points="6 9 12 15 18 9"></polyline>
-  </svg>
-);
-
 const HamburgerIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -46,15 +40,20 @@ const HamburgerIcon = () => (
 
 export default function Navbar({ currentPath, currentLocale = "en" }) {
   const [activeLocale, setActiveLocale] = useState(currentLocale);
-  const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [bubbleLocale, setBubbleLocale] = useState(() => {
+    if (typeof sessionStorage !== 'undefined') {
+      const from = sessionStorage.getItem('langSwitch');
+      if (from) return from;
+    }
+    return currentLocale;
+  });
   const [theme, setTheme] = useState(() =>
     typeof document !== "undefined" && document.documentElement.classList.contains("dark") ? "dark" : "light"
   );
   const [time, setTime] = useState("");
 
   const navRef = useRef(null);
-  const langMenuRef = useRef(null);
   const menuContentRef = useRef(null);
   const menuPanelRef = useRef(null);
   const [menuHeight, setMenuHeight] = useState(0);
@@ -68,6 +67,14 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
   useEffect(() => {
     const lang = document.documentElement.lang || "en";
     setActiveLocale(lang);
+  }, []);
+
+  useEffect(() => {
+    if (typeof sessionStorage === 'undefined') return;
+    const from = sessionStorage.getItem('langSwitch');
+    if (!from) return;
+    sessionStorage.removeItem('langSwitch');
+    setTimeout(() => setBubbleLocale(currentLocale), 50);
   }, []);
 
   useEffect(() => {
@@ -85,7 +92,6 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (navRef.current && !navRef.current.contains(event.target)) {
-        setIsLangMenuOpen(false);
         setIsMobileMenuOpen(false);
       }
     };
@@ -116,8 +122,6 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
     const t = document.startViewTransition(apply);
     t.finished.finally(() => { delete document.documentElement.dataset.themeTransition; });
   };
-
-  const getLabel = (locale) => LOCALE_LABEL[locale] ?? "ANG";
 
   const handleLanguageSwitch = (e, newLocale) => {
     e.preventDefault();
@@ -184,41 +188,34 @@ export default function Navbar({ currentPath, currentLocale = "en" }) {
 
         {/* RIGHT: Controls */}
         <div className="flex items-center gap-3 md:gap-5 lg:gap-6">
-          {/* Lang dropdown - desktop only */}
-          <div className="hidden lg:block relative" ref={langMenuRef}>
-            <button
-              onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
-              className={`text-black dark:text-white cursor-pointer font-medium text-sm transition-opacity duration-200 flex items-center justify-center gap-1 min-w-[60px] ${isLangMenuOpen ? "opacity-0 pointer-events-none" : "opacity-100"}`}
-              aria-label="Open language menu"
-            >
-              {getLabel(activeLocale)}
-              <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
-                <ChevronDownIcon />
+          {/* Lang toggle - desktop only */}
+          <div
+            onClick={() => {
+              const newLocale = activeLocale === 'en' ? 'fr' : 'en';
+              if (typeof window !== "undefined") {
+                sessionStorage.setItem('langSwitch', activeLocale);
+              }
+              navigate(newLocale === "fr" ? "/fr" : "/");
+            }}
+            className="hidden lg:flex relative w-[72px] h-9 rounded-full bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] cursor-pointer items-center"
+            role="button"
+            aria-label="Switch language"
+          >
+            <div className="absolute inset-0 pointer-events-none opacity-30 flex">
+              <div className="w-1/2 h-full flex items-center justify-center">
+                <span className="text-xs font-semibold text-black dark:text-white">EN</span>
               </div>
-            </button>
+              <div className="w-1/2 h-full flex items-center justify-center">
+                <span className="text-xs font-semibold text-black dark:text-white">FR</span>
+              </div>
+            </div>
             <div
-              className={`absolute -top-[9px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 transition-all duration-200 ease-in-out bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] rounded-xl p-2 min-w-[60px] z-50 shadow-none ${isLangMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+              className={`absolute top-[3px] left-[3px] w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${bubbleLocale === 'fr' ? 'translate-x-[36px]' : 'translate-x-0'}`}
+              style={{ WebkitBackdropFilter: "blur(12px)", backdropFilter: "blur(12px)" }}
             >
-              <button
-                onClick={() => setIsLangMenuOpen(false)}
-                className="font-medium text-sm text-black dark:text-white flex items-center gap-1 justify-center w-full cursor-pointer transition-colors"
-                aria-label="Close language menu"
-              >
-                {getLabel(activeLocale)}
-                <div className={`transition-transform duration-200 ${isLangMenuOpen ? "rotate-180" : "rotate-0"}`}>
-                  <ChevronDownIcon />
-                </div>
-              </button>
-              {Object.entries(LOCALE_LABEL).filter(([code]) => code !== activeLocale).map(([code, label]) => (
-                <a
-                  key={code}
-                  href={code === "fr" ? "/fr" : "/"}
-                  onClick={(e) => handleLanguageSwitch(e, code)}
-                  className="font-medium text-sm text-black/50 dark:text-white/50 hover:text-pink-400 active:text-pink-400 transition-colors cursor-pointer w-full text-center block pt-1"
-                >
-                  {label}
-                </a>
-              ))}
+              <span className="text-xs font-semibold text-black dark:text-white">
+                {activeLocale === 'fr' ? 'FR' : 'EN'}
+              </span>
             </div>
           </div>
 

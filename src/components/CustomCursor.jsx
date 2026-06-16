@@ -1,112 +1,139 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 
+const isPinkElement = (el) => {
+    let node = el;
+    while (node && node !== document.body) {
+        const classes = [...node.classList];
+        if (classes.some(c =>
+            c === "filter-btn" ||
+            c.startsWith("bg-pink") ||
+            c.startsWith("hover:bg-pink") ||
+            c.startsWith("hover:text-pink")
+        )) return true;
+        // Catch elements already rendered with a pink background (e.g. active state via JS)
+        const bg = window.getComputedStyle(node).backgroundColor;
+        const m = bg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+        if (m && +m[1] > 180 && +m[2] < 140 && +m[3] > 100 && +m[1] > +m[2] + 80) return true;
+        node = node.parentElement;
+    }
+    return false;
+};
+
 export default function CustomCursor() {
-    const cursorRef = useRef(null); // The small dot
-    const followerRef = useRef(null); // The lagging ring
-    const [isHovering, setIsHovering] = useState(false);
+    const cursorRef = useRef(null);
+    const followerRef = useRef(null);
+    const [state, setState] = useState("default"); // "default" | "hover" | "hover-pink"
+    const [isDark, setIsDark] = useState(() =>
+        typeof document !== "undefined" && document.documentElement.classList.contains("dark")
+    );
+
+    useEffect(() => {
+        const obs = new MutationObserver(() => {
+            setIsDark(document.documentElement.classList.contains("dark"));
+        });
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+        return () => obs.disconnect();
+    }, []);
 
     useEffect(() => {
         if (typeof window === "undefined") return;
 
         const cursor = cursorRef.current;
         const follower = followerRef.current;
-        let mouseX = 0;
-        let mouseY = 0;
-        let posX = 0;
-        let posY = 0;
+        let mouseX = 0, mouseY = 0, posX = 0, posY = 0;
 
-        // Initial position
         gsap.set(cursor, { xPercent: -50, yPercent: -50 });
         gsap.set(follower, { xPercent: -50, yPercent: -50 });
 
         const onMouseMove = (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-
-            // Move dot instantly
-            gsap.to(cursor, {
-                x: mouseX,
-                y: mouseY,
-                duration: 0.1,
-                ease: "power2.out"
-            });
+            gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1, ease: "power2.out" });
         };
 
-        // Animation loop for follower (smooth lag)
         const loop = () => {
             posX += (mouseX - posX) / 8;
             posY += (mouseY - posY) / 8;
-
-            gsap.set(follower, {
-                x: posX,
-                y: posY
-            });
-
+            gsap.set(follower, { x: posX, y: posY });
             requestAnimationFrame(loop);
         };
-
         loop();
 
         window.addEventListener("mousemove", onMouseMove);
 
-        // Hover detection
+        const onMouseLeave = () => gsap.set([cursor, follower], { opacity: 0 });
+        const onMouseEnter = () => gsap.set([cursor, follower], { opacity: 1 });
+        document.addEventListener("mouseleave", onMouseLeave);
+        document.addEventListener("mouseenter", onMouseEnter);
+
         const handleMouseOver = (e) => {
-            if (
-                e.target.tagName === "A" ||
-                e.target.tagName === "BUTTON" ||
-                e.target.closest("a") ||
-                e.target.closest("button") ||
-                e.target.classList.contains("cursor-pointer")
-            ) {
-                setIsHovering(true);
+            const el = e.target;
+            const isClickable =
+                el.tagName === "A" || el.tagName === "BUTTON" ||
+                el.closest("a") || el.closest("button") ||
+                el.classList.contains("cursor-pointer") || el.closest(".cursor-pointer");
+
+            const isNoHighlight =
+                el.classList.contains("no-cursor-highlight") || el.closest(".no-cursor-highlight");
+
+            if (!isClickable || isNoHighlight) {
+                setState("default");
+            } else if (isPinkElement(el)) {
+                setState("hover-pink");
             } else {
-                setIsHovering(false);
+                setState("hover");
             }
         };
 
         document.addEventListener("mouseover", handleMouseOver);
-        document.body.style.cursor = "none";
+
+        const styleEl = document.createElement("style");
+        styleEl.textContent = "* { cursor: none !important; }";
+        document.head.appendChild(styleEl);
 
         return () => {
             window.removeEventListener("mousemove", onMouseMove);
             document.removeEventListener("mouseover", handleMouseOver);
-            document.body.style.cursor = "auto";
+            document.removeEventListener("mouseleave", onMouseLeave);
+            document.removeEventListener("mouseenter", onMouseEnter);
+            document.head.removeChild(styleEl);
         };
     }, []);
 
     useEffect(() => {
+        const cursor = cursorRef.current;
         const follower = followerRef.current;
-        if (isHovering) {
-            gsap.to(follower, {
-                scale: 1.5,
-                borderColor: "#F472B6", // Tailwind pink-400
-                backgroundColor: "rgba(244, 114, 182, 0.1)",
-                duration: 0.3,
-                ease: "power2.out"
-            });
+        const color = isDark ? "#ffffff" : "#000000";
+        const isHover = state === "hover" || state === "hover-pink";
+
+        gsap.to(follower, {
+            width: isHover ? 40 : 24,
+            height: isHover ? 40 : 24,
+            duration: 0.3,
+            ease: "power2.out",
+        });
+
+        if (state === "hover-pink") {
+            gsap.to([cursor, follower], { mixBlendMode: "normal", duration: 0 });
+            gsap.to(cursor, { backgroundColor: color, duration: 0.15 });
+            gsap.to(follower, { borderColor: color, duration: 0.15 });
         } else {
-            gsap.to(follower, {
-                scale: 1,
-                borderColor: "currentColor", // Resets to inherited color (text-black/white)
-                backgroundColor: "transparent",
-                duration: 0.3,
-                ease: "power2.out"
-            });
+            gsap.to([cursor, follower], { mixBlendMode: "difference", duration: 0 });
+            gsap.to(cursor, { backgroundColor: "#ffffff", duration: 0.15 });
+            gsap.to(follower, { borderColor: "#ffffff", duration: 0.15 });
         }
-    }, [isHovering]);
+    }, [state, isDark]);
 
     return (
         <>
-            {/* Small Dot */}
             <div
                 ref={cursorRef}
-                className="fixed top-0 left-0 w-2 h-2 bg-black dark:bg-white rounded-full pointer-events-none z-[9999] hidden md:block"
+                className="fixed top-0 left-0 w-[3px] h-[3px] bg-white rounded-full pointer-events-none z-[9999] hidden md:block mix-blend-difference"
             />
-            {/* Lagging Ring */}
             <div
                 ref={followerRef}
-                className="fixed top-0 left-0 w-10 h-10 border border-black/30 dark:border-white/30 rounded-full pointer-events-none z-[9998] hidden md:block transition-colors duration-300 box-border"
+                className="fixed top-0 left-0 w-6 h-6 border border-white rounded-full pointer-events-none z-[9998] hidden md:block box-border mix-blend-difference"
             />
         </>
     );

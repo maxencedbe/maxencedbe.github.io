@@ -55,19 +55,21 @@ const education = [
     title: "École Polytechnique - Institut Polytechnique de Paris",
     date: "Sep 2025 – Présent",
     role: "Master en Data Science",
-    icon: "/X.png"
+    icon: "/X.png",
+    url: "https://www.ip-paris.fr/education/masters/mention-mathematiques-appliquees-statistique/master-year-2-data-science",
   },
   {
     title: "Télécom SudParis - Institut Polytechnique de Paris",
     date: "Sep 2023 – Présent",
     role: "Diplôme d'ingénieur en informatique et mathématiques appliquées",
     icon: "/TSP.png",
-    logoClass: "scale-[1.2]"
+    logoClass: "scale-[1.2]",
+    url: "https://www.telecom-sudparis.eu/formation/modelisations-statistiques-et-applications/",
   }
 ];
 ---
 
-<Layout title="Maxence Debes · Portfolio">
+<Layout title="Maxence Debes">
 
   <!-- ═══════════════════ HERO ═══════════════════ -->
   <section id="home" class="relative flex flex-col items-center justify-center w-full px-4 sm:px-6 md:px-8 lg:px-12 h-[calc(100svh-65px)] md:h-[calc(100svh-120px)]">
@@ -75,7 +77,7 @@ const education = [
       class="flex flex-col lg:flex-row items-center justify-center w-full max-w-6xl gap-8 md:gap-16 lg:gap-32 xl:gap-40"
     >
       <div
-        class="flex flex-col items-center lg:items-start text-center lg:text-left reveal-up"
+        class="w-full lg:w-auto flex flex-col items-stretch lg:items-start text-center lg:text-left reveal-up"
       >
         <h1
           class="text-3xl sm:text-5xl md:text-6xl font-bold text-black dark:text-white"
@@ -83,9 +85,9 @@ const education = [
           Maxence Debes
         </h1>
         <p
-          class="mt-1 sm:mt-5 text-lg sm:text-2xl md:text-3xl text-black dark:text-white flex flex-col sm:block items-center"
+          class="mt-1 sm:mt-5 text-lg sm:text-2xl md:text-3xl text-black dark:text-white lg:pl-[2px]"
         >
-          <span class="text-pink-400 font-semibold min-w-[280px] text-center sm:text-left inline-block">
+          <span class="text-pink-400 font-semibold">
             <Typewriter client:load words={roles} />
           </span>
         </p>
@@ -131,8 +133,8 @@ const education = [
         <span class="text-xs font-bold tracking-widest text-black dark:text-white uppercase">Défiler</span>
         
         {/* Scroll Mouse (Desktop) */}
-        <div class="hidden sm:flex w-[30px] h-[50px] border-2 border-neutral-400 dark:border-white/15 rounded-full justify-center p-1">
-          <div class="w-1.5 h-3 bg-pink-400 rounded-full animate-bounce"></div>
+        <div class="hidden sm:flex w-[30px] h-[50px] border-[1.5px] border-black/10 dark:border-white/15 rounded-full justify-center p-1">
+          <div class="w-1 h-2.5 bg-pink-400 rounded-full animate-bounce"></div>
         </div>
 
         {/* Scroll Arrow (Mobile) */}
@@ -183,32 +185,52 @@ const education = [
       </h2>
 
       <div class="flex flex-col lg:flex-row gap-6 items-stretch w-full">
-        <div class="flex-1 w-full reveal-up reveal-delay-200">
+        <div class="flex-[1.1] w-full reveal-up reveal-delay-200">
           <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
             </svg>
             <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Data Science & IA</h3>
             <div class="flex flex-wrap gap-2 relative z-10">
-              {["Python", "PyTorch", "Transformers", "Scikit-learn", "Pandas"].map((skill) => (
-                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
-                  {skill}
+              {[
+                { name: "Python", icon: "https://cdn.simpleicons.org/python" },
+                { name: "PyTorch", icon: "https://cdn.simpleicons.org/pytorch" },
+                { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
+                { name: "Transformers", icon: "https://cdn.simpleicons.org/huggingface" },
+                { name: "Scikit-learn", icon: "https://cdn.simpleicons.org/scikitlearn" },
+              ].map((skill) => (
+                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+                  <img src={skill.icon} alt="" class="w-3.5 h-3.5 grayscale" aria-hidden="true" />
+                  {skill.name}
                 </span>
               ))}
             </div>
           </div>
         </div>
 
-        <div class="flex-1 w-full reveal-up reveal-delay-300">
+        <div class="flex-[0.85] w-full reveal-up reveal-delay-300">
           <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
             </svg>
             <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Ingénierie & outils</h3>
             <div class="flex flex-wrap gap-2 relative z-10">
-              {["Java", "SQL", "Git", "Linux", "LaTeX"].map((skill) => (
-                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">
-                  {skill}
+              {[
+                { name: "Linux", icon: "https://cdn.simpleicons.org/linux" },
+                { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg" },
+                { name: "Git", icon: "https://cdn.simpleicons.org/git" },
+                { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
+                { name: "SQL", icon: "inline-db" },
+              ].map((skill) => (
+                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+                  {skill.icon === "inline-db" ? (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                    </svg>
+                  ) : skill.icon ? (
+                    <img src={skill.icon} alt="" class="w-3.5 h-3.5 grayscale" aria-hidden="true" />
+                  ) : null}
+                  {skill.name}
                 </span>
               ))}
             </div>
@@ -222,9 +244,9 @@ const education = [
             </svg>
             <h3 class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Langues</h3>
             <div class="flex flex-wrap gap-2 relative z-10">
-               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">Français (Maternel)</span>
-               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">Anglais (C1)</span>
-               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5">Allemand (A2)</span>
+               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5"><span class="grayscale">🇫🇷</span> Français (Maternel)</span>
+               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5"><span class="grayscale">🇬🇧</span> Anglais (C1)</span>
+               <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5"><span class="grayscale">🇩🇪</span> Allemand (A2)</span>
             </div>
           </div>
         </div>

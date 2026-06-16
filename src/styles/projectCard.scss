@@ -58,7 +58,7 @@ html.dark {
   border-radius: 20px;
   gap: 16px;
   position: relative;
-  transition: box-shadow .25s, transform .25s ease-in-out;
+  transition: box-shadow .25s;
   box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2);
   overflow: hidden;
 
@@ -195,7 +195,6 @@ html.dark {
 /* Hover effects for the card */
 .card:hover {
   box-shadow: 0 var(--card-hover-box-shadow-1-y) var(--card-hover-box-shadow-1-blur) var(--card-hover-box-shadow-1), 0 var(--card-hover-box-shadow-2-y) var(--card-hover-box-shadow-2-blur) var(--card-hover-box-shadow-2);
-  transform: translateY(-2px);
 
   .icon {
     &::after {
@@ -376,6 +375,10 @@ html:not(.dark) .card {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 10px 15px rgba(0, 0, 0, 0.05) !important;
 }
 
+html:not(.dark) .card:hover {
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.04), 0 15px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
 html.dark .card {
   background-color: rgba(10, 10, 10, 0.75) !important;
   backdrop-filter: none !important;
@@ -383,4 +386,8 @@ html.dark .card {
   box-shadow: none !important;
   isolation: isolate;
   transform: translateZ(0);
+}
+
+html.dark .card:hover {
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.05), 0 15px 25px rgba(255, 255, 255, 0.025) !important;
 }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 
 const DOT_SIZE = 16;
-const GAP_SIZE = 24;
+const GAP_SIZE = 36;
 const DOT_SPACING = DOT_SIZE + GAP_SIZE;
 const PAD_TOP = 4;
 const FIRST_DOT_CENTER = PAD_TOP + DOT_SIZE / 2;
@@ -9,6 +9,7 @@ const FIRST_DOT_CENTER = PAD_TOP + DOT_SIZE / 2;
 const SideNav = ({ currentLocale = "en" }) => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredId, setHoveredId] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
   const activeSectionRef = useRef('home');
 
   const links = useMemo(() => [
@@ -23,6 +24,22 @@ const SideNav = ({ currentLocale = "en" }) => {
   useEffect(() => {
     activeSectionRef.current = activeSection;
   }, [activeSection]);
+
+  useEffect(() => {
+    if (!document.body.classList.contains('is-loading')) {
+      setIsVisible(true);
+      return;
+    }
+    let t;
+    const observer = new MutationObserver(() => {
+      if (!document.body.classList.contains('is-loading')) {
+        observer.disconnect();
+        t = setTimeout(() => setIsVisible(true), 50);
+      }
+    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    return () => { observer.disconnect(); clearTimeout(t); };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,6 +86,8 @@ const SideNav = ({ currentLocale = "en" }) => {
 
   const totalTrackHeight = (links.length - 1) * DOT_SPACING;
   const progressHeight = activeIndex * DOT_SPACING;
+  const hoveredIndex = links.findIndex(l => l.id === hoveredId);
+  const hoverPreviewHeight = hoveredIndex >= 0 ? hoveredIndex * DOT_SPACING : progressHeight;
 
   return (
     <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex">
@@ -80,12 +99,28 @@ const SideNav = ({ currentLocale = "en" }) => {
             left: '50%',
             transform: 'translateX(-50%)',
             top: `${FIRST_DOT_CENTER}px`,
-            height: `${totalTrackHeight}px`,
+            height: isVisible ? `${totalTrackHeight}px` : '0px',
             width: '1px',
             borderRadius: '1px',
-            transition: 'background-color 0.3s ease',
+            transition: 'height 0.8s linear, background-color 0.3s ease',
           }}
-          className="bg-neutral-400 dark:bg-neutral-500"
+          className="bg-neutral-300 dark:bg-neutral-500"
+        />
+
+        {/* Hover preview line */}
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            top: `${FIRST_DOT_CENTER}px`,
+            height: `${hoverPreviewHeight}px`,
+            width: '1px',
+            borderRadius: '1px',
+            opacity: hoveredId ? 1 : 0,
+            transition: 'height 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease',
+          }}
+          className="bg-neutral-400 dark:bg-neutral-300"
         />
 
         {/* Progress line (animated) */}
@@ -110,6 +145,7 @@ const SideNav = ({ currentLocale = "en" }) => {
             const isActive = activeSection === link.id;
             const isHovered = hoveredId === link.id;
             const isPassed = i <= activeIndex;
+            const isInHoverPath = hoveredIndex > activeIndex && i > activeIndex && i <= hoveredIndex;
 
             return (
               <a
@@ -120,6 +156,11 @@ const SideNav = ({ currentLocale = "en" }) => {
                 onMouseLeave={() => setHoveredId(null)}
                 className="group relative flex items-center justify-center w-4 h-4 focus:outline-none"
                 aria-label={`Scroll to ${link.label}`}
+                style={{
+                  opacity: isVisible ? 1 : 0,
+                  transform: isVisible ? 'scale(1)' : 'scale(0.4)',
+                  transition: `opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1) ${(i * 0.27).toFixed(2)}s, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) ${(i * 0.27).toFixed(2)}s`,
+                }}
               >
                 {/* Tooltip */}
                 <span
@@ -171,7 +212,7 @@ const SideNav = ({ currentLocale = "en" }) => {
                   className={
                     isPassed
                       ? 'bg-pink-400'
-                      : isHovered ? 'bg-neutral-600 dark:bg-neutral-300' : 'bg-neutral-400 dark:bg-neutral-500'
+                      : (isHovered || isInHoverPath) ? 'bg-neutral-400 dark:bg-neutral-300' : 'bg-neutral-300 dark:bg-neutral-500'
                   }
                 />
               </a>

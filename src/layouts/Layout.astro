@@ -6,6 +6,7 @@ import ScrollObserver from "../components/ScrollObserver.jsx";
 import { ClientRouter } from "astro:transitions";
 import ProgressBar from "../components/ProgressBar.jsx";
 import SideNav from "../components/SideNav.jsx";
+import CustomCursor from "../components/CustomCursor.jsx";
 import "../styles/global.css";
 
 const { title, showNavbar = true, isLocked = false } = Astro.props;
@@ -25,7 +26,7 @@ const isLockedPage = isLocked;
     <meta name="description" content="Maxence Debes Portfolio" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
-    <link rel="icon" href="/Neural_network_black.svg" type="image/svg" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <ClientRouter />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -113,6 +114,12 @@ const isLockedPage = isLocked;
         overflow-x: hidden;
       }
 
+      @media (min-width: 768px) {
+        body {
+          cursor: none;
+        }
+      }
+
       #footer-wrapper {
         width: 100%;
         pointer-events: auto;
@@ -145,10 +152,13 @@ const isLockedPage = isLocked;
     <style>
       /* Hide content during constellation intro */
       body.is-loading #content-wrapper,
-      body.is-loading #navbar-wrapper-el,
       body.is-loading #sidenav-wrapper-el,
       body.is-loading #progressbar-wrapper-el {
         opacity: 0;
+        pointer-events: none;
+      }
+      body.is-loading #navbar-wrapper-el {
+        transform: translateY(-100px);
         pointer-events: none;
       }
       /* Dot pattern fades in during the constellation build */
@@ -159,11 +169,16 @@ const isLockedPage = isLocked;
       #background-pattern.dots-visible {
         opacity: 1;
       }
-      /* Navbar, SideNav, ProgressBar & Content get smooth fade-ins */
-      #content-wrapper,
-      #navbar-wrapper-el,
-      #sidenav-wrapper-el {
+      /* Content & SideNav fade */
+      #content-wrapper {
         transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      #sidenav-wrapper-el {
+        transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      /* Navbar slides down from above the viewport */
+      #navbar-wrapper-el {
+        transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
       }
       /* Explicit stacking context so opacity transition never puts ProgressBar behind navbar */
       #progressbar-wrapper-el {
@@ -203,10 +218,11 @@ const isLockedPage = isLocked;
     </main>
     </div>
     <BackToTop client:load />
-    <div id="sidenav-wrapper-el">
+<div id="sidenav-wrapper-el">
       <SideNav client:load currentLocale={Astro.currentLocale} />
     </div>
     <ScrollObserver client:only="react" />
+    <CustomCursor client:only="react" />
     <div id="progressbar-wrapper-el">
       <ProgressBar client:load />
     </div>
@@ -255,27 +271,30 @@ const isLockedPage = isLocked;
           })
           .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
 
-        // 1. Strip is-visible from above-fold elements
-        aboveFoldEls.forEach(el => el.classList.remove('is-visible'));
+        // 1. Snap above-fold elements to their hidden state (no transition)
+        aboveFoldEls.forEach(el => {
+          el.style.transition = 'none';
+          el.classList.remove('is-visible');
+        });
 
-        // 2. Make content wrapper visible instantly (no transition)
+        // 2. Force reflow so the instant reset is committed before transitions are restored
+        document.body.offsetHeight;
+
+        // 3. Restore transitions, then reveal the content wrapper
+        aboveFoldEls.forEach(el => { el.style.transition = ''; });
         document.body.classList.remove('is-loading');
 
-        // 3. Two rAFs to guarantee browser has painted with elements at opacity:0
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            // 4. Stagger re-adding is-visible, 150ms between each element
-            const staggerDelay = 150;
-            aboveFoldEls.forEach((el, i) => {
-              setTimeout(() => el.classList.add('is-visible'), i * staggerDelay);
-            });
-            // 5. After the last element has animated in, re-enable ScrollObserver
-            const totalStaggerTime = aboveFoldEls.length * staggerDelay + 1500; // +1.5s for last transition
-            setTimeout(() => {
-              document.dispatchEvent(new CustomEvent('stagger-complete'));
-            }, totalStaggerTime);
+        // 4. Small delay to guarantee the browser paints elements at opacity:0 before stagger
+        setTimeout(() => {
+          const staggerDelay = 150;
+          aboveFoldEls.forEach((el, i) => {
+            setTimeout(() => el.classList.add('is-visible'), i * staggerDelay);
           });
-        });
+          const totalStaggerTime = aboveFoldEls.length * staggerDelay + 1500;
+          setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('stagger-complete'));
+          }, totalStaggerTime);
+        }, 50);
       });
 
       // On Astro internal navigation only (NOT F5), immediately show content
