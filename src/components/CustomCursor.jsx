@@ -1,55 +1,118 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+
+const isPinkish = (rgb) => {
+    const m = rgb && rgb.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    return m && +m[1] > 180 && +m[2] < 150 && +m[3] > 100 && +m[1] > +m[2] + 60;
+};
 
 const isPinkElement = (el) => {
     let node = el;
     while (node && node !== document.body) {
-        const classes = [...node.classList];
-        if (classes.some(c =>
-            c === "filter-btn" ||
-            c.startsWith("bg-pink") ||
-            c.startsWith("hover:bg-pink") ||
-            c.startsWith("hover:text-pink")
-        )) return true;
-        // Catch elements already rendered with a pink background (e.g. active state via JS)
-        const bg = window.getComputedStyle(node).backgroundColor;
-        const m = bg.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-        if (m && +m[1] > 180 && +m[2] < 140 && +m[3] > 100 && +m[1] > +m[2] + 80) return true;
+        if (node.classList) {
+            const classes = [...node.classList];
+            if (classes.some(c =>
+                c === "filter-btn" ||
+                c === "carousel-dot" ||
+                c.startsWith("bg-pink") ||
+                c.startsWith("text-pink") ||
+                c.startsWith("border-pink") ||
+                c.startsWith("hover:bg-pink") ||
+                c.startsWith("hover:text-pink")
+            )) return true;
+        }
+        const style = window.getComputedStyle(node);
+        if (isPinkish(style.backgroundColor) || isPinkish(style.color) || isPinkish(style.borderTopColor)) return true;
         node = node.parentElement;
     }
     return false;
 };
 
+const DOT_R = 2;
+const RING_R = 12;
+const OFFSETS = [[0, 0], [DOT_R, 0], [-DOT_R, 0], [0, DOT_R], [0, -DOT_R], [RING_R, 0], [-RING_R, 0], [0, RING_R], [0, -RING_R]];
+
 export default function CustomCursor() {
     const cursorRef = useRef(null);
     const followerRef = useRef(null);
-    const [state, setState] = useState("default"); // "default" | "hover" | "hover-pink"
-    const [isDark, setIsDark] = useState(() =>
-        typeof document !== "undefined" && document.documentElement.classList.contains("dark")
-    );
 
     useEffect(() => {
-        const obs = new MutationObserver(() => {
-            setIsDark(document.documentElement.classList.contains("dark"));
-        });
-        obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-        return () => obs.disconnect();
-    }, []);
-
-    useEffect(() => {
-        if (typeof window === "undefined") return;
+        if (window.matchMedia('(hover: none)').matches) return;
 
         const cursor = cursorRef.current;
         const follower = followerRef.current;
-        let mouseX = 0, mouseY = 0, posX = 0, posY = 0;
 
-        gsap.set(cursor, { xPercent: -50, yPercent: -50 });
-        gsap.set(follower, { xPercent: -50, yPercent: -50 });
+        const isDarkRef = { current: document.documentElement.classList.contains("dark") };
+        const obs = new MutationObserver(() => {
+            isDarkRef.current = document.documentElement.classList.contains("dark");
+        });
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+        gsap.set(cursor, { xPercent: -50, yPercent: -50, opacity: 0 });
+        gsap.set(follower, { xPercent: -50, yPercent: -50, opacity: 0, width: 24, height: 24 });
+        gsap.set([cursor, follower], { mixBlendMode: "difference" });
+        gsap.set(cursor, { backgroundColor: "#ffffff" });
+        gsap.set(follower, { borderColor: "#ffffff" });
+
+        let mouseX = 0, mouseY = 0, posX = 0, posY = 0;
+        let currentState = "default";
+        let exitPinkTimer = null;
+
+        const setCursorState = (next) => {
+            if (next === currentState) return;
+            currentState = next;
+            const color = isDarkRef.current ? "#ffffff" : "#000000";
+            const isHover = next === "hover" || next === "hover-pink";
+            const isNormal = next === "default-pink" || next === "hover-pink";
+
+            gsap.to(follower, { width: isHover ? 40 : 24, height: isHover ? 40 : 24, duration: 0.3, ease: "power2.out" });
+            gsap.set([cursor, follower], { mixBlendMode: isNormal ? "normal" : "difference" });
+            gsap.set(cursor, { backgroundColor: isNormal ? color : "#ffffff" });
+            gsap.set(follower, { borderColor: isNormal ? color : "#ffffff" });
+        };
 
         const onMouseMove = (e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
             gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1, ease: "power2.out" });
+
+            const centerEl = document.elementFromPoint(mouseX, mouseY);
+            if (!centerEl || centerEl === cursor || centerEl === follower) return;
+
+            const isClickable =
+                centerEl.tagName === "A" || centerEl.tagName === "BUTTON" ||
+                centerEl.closest?.("a") || centerEl.closest?.("button") ||
+                centerEl.classList?.contains("cursor-pointer") || centerEl.closest?.(".cursor-pointer");
+            const isNoHighlight =
+                centerEl.classList?.contains("no-cursor-highlight") || centerEl.closest?.(".no-cursor-highlight");
+            const clickable = isClickable && !isNoHighlight;
+
+            // Check all 5 points (center + 4 ring-edge) for pink
+            let pink = false;
+            for (const [dx, dy] of OFFSETS) {
+                const el = dx === 0 && dy === 0 ? centerEl : document.elementFromPoint(mouseX + dx, mouseY + dy);
+                if (el && el !== cursor && el !== follower && isPinkElement(el)) { pink = true; break; }
+            }
+
+            const next = pink && clickable ? "hover-pink"
+                : pink ? "default-pink"
+                : clickable ? "hover"
+                : "default";
+
+            if (next.includes("pink")) {
+                if (exitPinkTimer) { clearTimeout(exitPinkTimer); exitPinkTimer = null; }
+                setCursorState(next);
+            } else if (currentState.includes("pink")) {
+                if (!exitPinkTimer) {
+                    const target = next;
+                    exitPinkTimer = setTimeout(() => {
+                        exitPinkTimer = null;
+                        setCursorState(target);
+                    }, 30);
+                }
+            } else {
+                setCursorState(next);
+            }
         };
 
         const loop = () => {
@@ -67,73 +130,29 @@ export default function CustomCursor() {
         document.addEventListener("mouseleave", onMouseLeave);
         document.addEventListener("mouseenter", onMouseEnter);
 
-        const handleMouseOver = (e) => {
-            const el = e.target;
-            const isClickable =
-                el.tagName === "A" || el.tagName === "BUTTON" ||
-                el.closest("a") || el.closest("button") ||
-                el.classList.contains("cursor-pointer") || el.closest(".cursor-pointer");
-
-            const isNoHighlight =
-                el.classList.contains("no-cursor-highlight") || el.closest(".no-cursor-highlight");
-
-            if (!isClickable || isNoHighlight) {
-                setState("default");
-            } else if (isPinkElement(el)) {
-                setState("hover-pink");
-            } else {
-                setState("hover");
-            }
-        };
-
-        document.addEventListener("mouseover", handleMouseOver);
-
         const styleEl = document.createElement("style");
         styleEl.textContent = "* { cursor: none !important; }";
         document.head.appendChild(styleEl);
 
         return () => {
             window.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseover", handleMouseOver);
             document.removeEventListener("mouseleave", onMouseLeave);
             document.removeEventListener("mouseenter", onMouseEnter);
+            obs.disconnect();
+            if (exitPinkTimer) clearTimeout(exitPinkTimer);
             document.head.removeChild(styleEl);
         };
     }, []);
-
-    useEffect(() => {
-        const cursor = cursorRef.current;
-        const follower = followerRef.current;
-        const color = isDark ? "#ffffff" : "#000000";
-        const isHover = state === "hover" || state === "hover-pink";
-
-        gsap.to(follower, {
-            width: isHover ? 40 : 24,
-            height: isHover ? 40 : 24,
-            duration: 0.3,
-            ease: "power2.out",
-        });
-
-        if (state === "hover-pink") {
-            gsap.to([cursor, follower], { mixBlendMode: "normal", duration: 0 });
-            gsap.to(cursor, { backgroundColor: color, duration: 0.15 });
-            gsap.to(follower, { borderColor: color, duration: 0.15 });
-        } else {
-            gsap.to([cursor, follower], { mixBlendMode: "difference", duration: 0 });
-            gsap.to(cursor, { backgroundColor: "#ffffff", duration: 0.15 });
-            gsap.to(follower, { borderColor: "#ffffff", duration: 0.15 });
-        }
-    }, [state, isDark]);
 
     return (
         <>
             <div
                 ref={cursorRef}
-                className="fixed top-0 left-0 w-[3px] h-[3px] bg-white rounded-full pointer-events-none z-[9999] hidden md:block mix-blend-difference"
+                className="fixed top-0 left-0 w-[3px] h-[3px] bg-white rounded-full pointer-events-none z-[9999] hidden md:block"
             />
             <div
                 ref={followerRef}
-                className="fixed top-0 left-0 w-6 h-6 border border-white rounded-full pointer-events-none z-[9998] hidden md:block box-border mix-blend-difference"
+                className="fixed top-0 left-0 border border-white rounded-full pointer-events-none z-[9998] hidden md:block box-border"
             />
         </>
     );

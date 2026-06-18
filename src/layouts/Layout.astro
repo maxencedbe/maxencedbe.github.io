@@ -35,23 +35,14 @@ const isLockedPage = isLocked;
       rel="stylesheet"
     />
     <script is:inline>
-      /* ... theme script ... */
       (function () {
-        const getTheme = () => {
-          if (
-            typeof localStorage !== "undefined" &&
-            localStorage.getItem("theme")
-          ) {
-            return localStorage.getItem("theme");
-          }
-          return "light";
-        };
-        const theme = getTheme();
-        if (theme === "dark") {
-          document.documentElement.classList.add("dark");
-        } else {
-          document.documentElement.classList.remove("dark");
-        }
+        const theme = typeof localStorage !== "undefined" && localStorage.getItem("theme") ? localStorage.getItem("theme") : "light";
+        if (theme === "dark") document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
+
+        const locale = typeof localStorage !== "undefined" ? (localStorage.getItem("locale") || "en") : "en";
+        document.documentElement.lang = locale;
+        document.documentElement.setAttribute("data-locale", locale);
       })();
     </script>
     <script>
@@ -59,6 +50,7 @@ const isLockedPage = isLocked;
       import Lenis from "lenis";
 
       const initLenis = () => {
+        if (window.matchMedia('(hover: none)').matches) return;
         const lenis = new Lenis();
         (window as any).lenis = lenis;
 
@@ -95,11 +87,19 @@ const isLockedPage = isLocked;
 
       document.addEventListener("astro:before-swap", (ev) => {
         const theme = getTheme();
-        if (theme === "dark") {
-          ev.newDocument.documentElement.classList.add("dark");
-        } else {
-          ev.newDocument.documentElement.classList.remove("dark");
-        }
+        if (theme === "dark") ev.newDocument.documentElement.classList.add("dark");
+        else ev.newDocument.documentElement.classList.remove("dark");
+
+        const locale = localStorage.getItem("locale") || "en";
+        ev.newDocument.documentElement.lang = locale;
+        ev.newDocument.documentElement.setAttribute("data-locale", locale);
+      });
+
+      document.addEventListener("astro:after-swap", () => {
+        const locale = localStorage.getItem("locale") || "en";
+        document.documentElement.lang = locale;
+        document.documentElement.setAttribute("data-locale", locale);
+        document.dispatchEvent(new CustomEvent("locale-change", { detail: { locale } }));
       });
     </script>
 
@@ -193,6 +193,19 @@ const isLockedPage = isLocked;
   >
 
     <div id="background-pattern" class="fixed inset-0 -z-50 pointer-events-none bg-dots"></div>
+    <!-- SVG clip-path defs for wave section transitions (3 repeating periods for flowing animation) -->
+    <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" transition:persist="wave-clip-defs" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none">
+      <defs>
+        <!-- Entry wave: fills below the S-curve (3 periods) -->
+        <clipPath id="wave-clip-top" clipPathUnits="objectBoundingBox">
+          <path d="M0,0.5 C0.083,1 0.25,0 0.333,0.5 C0.417,1 0.583,0 0.667,0.5 C0.75,1 0.917,0 1,0.5 L1,1 L0,1 Z" />
+        </clipPath>
+        <!-- Exit wave: fills above the S-curve (3 periods, reversed) -->
+        <clipPath id="wave-clip-bottom" clipPathUnits="objectBoundingBox">
+          <path d="M0,0 L1,0 L1,0.5 C0.917,0 0.75,1 0.667,0.5 C0.583,0 0.417,1 0.333,0.5 C0.25,0 0.083,1 0,0.5 Z" />
+        </clipPath>
+      </defs>
+    </svg>
 
     <AnimatedBackground client:only="react" transition:persist="background" />
     {
@@ -219,7 +232,7 @@ const isLockedPage = isLocked;
     </div>
     <BackToTop client:load />
 <div id="sidenav-wrapper-el">
-      <SideNav client:load currentLocale={Astro.currentLocale} />
+      <SideNav client:load />
     </div>
     <ScrollObserver client:only="react" />
     <CustomCursor client:only="react" />

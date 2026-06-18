@@ -123,10 +123,62 @@ html {
 
   .section-bg-reveal {
     background-color: rgba(0, 0, 0, 0.07);
+    position: relative;
   }
 
   html.dark .section-bg-reveal {
     background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  @keyframes wave-flow {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-33.333%); }
+  }
+
+  .section-bg-reveal::before {
+    content: '';
+    position: absolute;
+    top: -72px;
+    left: 0;
+    width: 300%;
+    height: 72px;
+    background-color: rgba(0, 0, 0, 0.07);
+    clip-path: url(#wave-clip-top);
+    pointer-events: none;
+    animation: wave-flow 3s linear infinite;
+  }
+
+  html.dark .section-bg-reveal::before {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  .wave-exit {
+    z-index: 1;
+    margin-bottom: 72px;
+  }
+
+  .wave-exit::after {
+    content: '';
+    position: absolute;
+    bottom: -72px;
+    left: 0;
+    width: 300%;
+    height: 72px;
+    background-color: rgba(0, 0, 0, 0.07);
+    clip-path: url(#wave-clip-bottom);
+    pointer-events: none;
+    animation: wave-flow 4s linear infinite reverse;
+  }
+
+  html.dark .wave-exit::after {
+    background-color: rgba(255, 255, 255, 0.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .section-bg-reveal::before,
+    .wave-exit::after {
+      animation: none;
+    }
   }
 
   /* Premium Reveals */

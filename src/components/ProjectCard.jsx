@@ -23,8 +23,8 @@ export default function ProjectCard({ title, description, imageUrl, githubUrl })
 
 
       <div className="card-content">
-        <h4>{title}</h4>
-        <p>{description}</p>
+        <h4 data-locale-fade>{title}</h4>
+        <p data-locale-fade>{description}</p>
       </div>
 
 

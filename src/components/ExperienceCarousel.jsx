@@ -1,7 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
+import { useLocale } from './useLocale.js';
 
-const ExperienceCarousel = ({ items }) => {
+const ExperienceCarousel = ({ itemsEn, itemsFr, items }) => {
+  const locale = useLocale();
+  const currentItems = itemsEn && itemsFr ? (locale === 'fr' ? itemsFr : itemsEn) : (items || []);
+
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'center',
     containScroll: 'trimSnaps',
@@ -28,15 +32,18 @@ const ExperienceCarousel = ({ items }) => {
     onInit();
     emblaApi.on('reInit', onInit);
     emblaApi.on('select', onSelect);
-
     function onInit() {
       setScrollSnaps(emblaApi.scrollSnapList());
       onSelect();
     }
   }, [emblaApi, onSelect]);
 
+  useEffect(() => {
+    if (emblaApi) emblaApi.reInit();
+  }, [locale, emblaApi]);
+
   return (
-    <div className="relative max-w-4xl mx-auto px-4 sm:px-12">
+    <div className="relative max-w-[960px] mx-auto px-4 sm:px-12">
       <div
         className="overflow-hidden py-12 -my-12"
         ref={emblaRef}
@@ -47,18 +54,12 @@ const ExperienceCarousel = ({ items }) => {
         }}
       >
         <div className="flex touch-pan-y">
-          {items.map((item, index) => (
-            <div
-              key={index}
-              className="flex-[0_0_100%] min-w-0 px-6 sm:px-10"
-            >
+          {currentItems.map((item, index) => (
+            <div key={index} className="flex-[0_0_100%] min-w-0 px-6 sm:px-10">
               <div className="glass-card group p-5 sm:p-6 sm:h-full flex flex-col items-center text-center sm:flex-row sm:text-left gap-4 sm:gap-10">
-                {/* SVG Border Effect */}
                 <svg className="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect>
                 </svg>
-
-                {/* Left: Icon */}
                 <div className="flex-shrink-0 relative z-10">
                   {item.icon ? (
                     item.url ? (
@@ -72,24 +73,14 @@ const ExperienceCarousel = ({ items }) => {
                     )
                   ) : (
                     <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-xl flex-shrink-0 bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center border border-black/5">
-                      <span className="text-2xl sm:text-4xl font-bold text-neutral-400">
-                        {item.title.charAt(0)}
-                      </span>
+                      <span className="text-2xl sm:text-4xl font-bold text-neutral-400">{item.title.charAt(0)}</span>
                     </div>
                   )}
                 </div>
-
-                {/* Right: Info */}
                 <div className="flex flex-col relative z-10 text-center sm:text-left">
-                  <h3 className="text-lg sm:text-xl font-bold text-black dark:text-white leading-snug">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">
-                    {item.date}
-                  </p>
-                  <p className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 font-medium mt-1.5 sm:mt-2">
-                    {item.role}
-                  </p>
+                  <h3 data-locale-fade className="text-lg sm:text-xl font-bold text-black dark:text-white leading-snug">{item.title}</h3>
+                  <p data-locale-fade className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium mt-0.5">{item.date}</p>
+                  <p data-locale-fade className="text-sm sm:text-base text-neutral-700 dark:text-neutral-300 font-medium mt-1.5 sm:mt-2">{item.role}</p>
                 </div>
               </div>
             </div>
@@ -97,17 +88,13 @@ const ExperienceCarousel = ({ items }) => {
         </div>
       </div>
 
-      {/* Navigation Buttons */}
       <button
         className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
           bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
           text-black dark:text-white transition-all duration-300 z-10
           ${!prevBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-[1.02]'}
-          hidden sm:flex
-        `}
-        onClick={scrollPrev}
-        disabled={!prevBtnEnabled}
-        aria-label="Previous slide"
+          hidden sm:flex`}
+        onClick={scrollPrev} disabled={!prevBtnEnabled} aria-label="Previous slide"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
@@ -119,25 +106,20 @@ const ExperienceCarousel = ({ items }) => {
           bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
           text-black dark:text-white transition-all duration-300 z-10
           ${!nextBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-[1.02]'}
-          hidden sm:flex
-        `}
-        onClick={scrollNext}
-        disabled={!nextBtnEnabled}
-        aria-label="Next slide"
+          hidden sm:flex`}
+        onClick={scrollNext} disabled={!nextBtnEnabled} aria-label="Next slide"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
       </button>
 
-      {/* Pagination Dots */}
       <div className="relative z-10 flex justify-center gap-2 mt-5">
         {scrollSnaps.map((_, index) => (
           <button
             key={index}
-            className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-300 
-              ${index === selectedIndex ? 'w-6 bg-pink-400' : 'bg-neutral-300 dark:bg-white/30 hover:bg-neutral-400 dark:hover:bg-white/50'}
-            `}
+            className={`carousel-dot w-2 h-2 rounded-full cursor-pointer transition-all duration-300
+              ${index === selectedIndex ? 'w-6 bg-pink-400' : 'bg-neutral-300 dark:bg-white/30 hover:bg-neutral-400 dark:hover:bg-white/50'}`}
             onClick={() => scrollTo(index)}
             aria-label={`Go to slide ${index + 1}`}
           />
