@@ -146,7 +146,7 @@ export default function Navbar() {
             <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
             <span className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              Paris, FR — {time}
+              Paris, France - {time}
             </span>
             <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
             <a data-locale-fade href={resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300">
@@ -172,10 +172,10 @@ export default function Navbar() {
           >
             <div className="absolute inset-0 pointer-events-none opacity-30 flex">
               <div className="w-1/2 h-full flex items-center justify-center">
-                <span className="text-xs font-normal text-black dark:text-white">EN</span>
+                <span className="text-xs font-normal text-black dark:text-white -translate-y-px">EN</span>
               </div>
               <div className="w-1/2 h-full flex items-center justify-center">
-                <span className="text-xs font-normal text-black dark:text-white">FR</span>
+                <span className="text-xs font-normal text-black dark:text-white -translate-y-px">FR</span>
               </div>
             </div>
             <div

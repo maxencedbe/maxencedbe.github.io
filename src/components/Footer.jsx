@@ -1,4 +1,7 @@
-export default function Footer({ currentLocale = 'en' }) {
+import { useLocale } from './useLocale.js';
+
+export default function Footer() {
+  const locale = useLocale();
   const links = [
     { name: "LinkedIn", url: "https://www.linkedin.com/in/maxence-debes", label: "LinkedIn" },
     { name: "GitHub", url: "https://github.com/maxencedbe", label: "GitHub" },
@@ -18,8 +21,8 @@ export default function Footer({ currentLocale = 'en' }) {
 
       {/* LEFT OF CENTER: Copyright */}
       <div className="flex-1 flex sm:justify-end justify-center mb-4 sm:mb-0 pr-0 sm:pr-6">
-        <p className="text-sm font-semibold tracking-wide text-black dark:text-white text-center sm:text-right">
-          &copy; {new Date().getFullYear()} Maxence Debes. All rights reserved.
+        <p data-locale-fade className="text-sm font-semibold tracking-wide text-black dark:text-white text-center sm:text-right">
+          &copy; {new Date().getFullYear()} Maxence Debes. {locale === 'fr' ? 'Tous droits réservés.' : 'All rights reserved.'}
         </p>
       </div>
 

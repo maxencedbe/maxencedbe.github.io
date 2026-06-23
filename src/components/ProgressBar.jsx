@@ -41,7 +41,7 @@ function easeInOut(t) {
 export default function ProgressBar() {
     const canvasRef = useRef(null);
     const [dims, setDims] = useState({ w: 0, h: 0, dpr: 1 });
-    const stateRef = useRef({ current: 0, animRaf: null, scrollRaf: null });
+    const stateRef = useRef({ current: 0, animRaf: null, scrollRaf: null, localeChanging: false });
 
     useEffect(() => {
         const update = () =>
@@ -66,8 +66,7 @@ export default function ProgressBar() {
             return Math.min(Math.max(window.scrollY / docHeight, 0), 1);
         };
 
-        // Instant draw for scroll events
-        const handleScroll = () => {
+        const drawCurrent = () => {
             if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
             state.scrollRaf = requestAnimationFrame(() => {
                 const progress = getProgress();
@@ -76,7 +75,23 @@ export default function ProgressBar() {
             });
         };
 
-        // Animated glide when page height changes (filter / show more)
+        const handleScroll = () => {
+            // Ignore scroll events fired by the locale switch scroll correction
+            if (state.localeChanging) return;
+            if (state.animRaf) { cancelAnimationFrame(state.animRaf); state.animRaf = null; }
+            drawCurrent();
+        };
+
+        const handleLocaleChange = () => {
+            state.localeChanging = true;
+            // Wait for the scroll correction (2 rAFs ~33ms) + layout settle before animating
+            setTimeout(() => {
+                state.localeChanging = false;
+                animateTo(getProgress());
+            }, 100);
+        };
+
+        // Animated glide when page expands (show more — progress drops suddenly)
         const animateTo = (target) => {
             if (state.animRaf) cancelAnimationFrame(state.animRaf);
             const start = state.current;
@@ -100,28 +115,25 @@ export default function ProgressBar() {
         let lastDocHeight = document.documentElement.scrollHeight - window.innerHeight;
         const handleResize = () => {
             const newDocHeight = document.documentElement.scrollHeight - window.innerHeight;
+            if (state.localeChanging) { lastDocHeight = newDocHeight; return; }
             const delta = newDocHeight - lastDocHeight;
             lastDocHeight = newDocHeight;
 
             if (delta > 200) {
-                // Filter change (large jump) → glide to new position
+                // Page expanded a lot (show more): animate the bar backward smoothly
                 animateTo(getProgress());
-            } else if (delta > 0) {
-                // Expand (show more): follow in real time
-                if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
-                state.scrollRaf = requestAnimationFrame(() => {
-                    const progress = getProgress();
-                    state.current = progress;
-                    if (canvasRef.current) drawSnake(canvasRef.current, progress);
-                });
+            } else {
+                // Small expansion or collapse: track instantly so state.current stays
+                // in sync — prevents teleport if the user scrolls right after collapse
+                drawCurrent();
             }
-            // delta < 0 (collapse/show less): do nothing — let scroll position hold
         };
 
         const resizeObserver = new ResizeObserver(handleResize);
         resizeObserver.observe(document.body);
         window.addEventListener("scroll", handleScroll, { passive: true });
         document.addEventListener("astro:after-swap", handleScroll);
+        document.addEventListener("locale-change", handleLocaleChange);
 
         setTimeout(handleScroll, 50);
 
@@ -129,6 +141,7 @@ export default function ProgressBar() {
             resizeObserver.disconnect();
             window.removeEventListener("scroll", handleScroll);
             document.removeEventListener("astro:after-swap", handleScroll);
+            document.removeEventListener("locale-change", handleLocaleChange);
             if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
             if (state.animRaf) cancelAnimationFrame(state.animRaf);
         };

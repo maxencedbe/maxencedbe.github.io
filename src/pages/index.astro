@@ -73,9 +73,9 @@ const educationFr = [
         <h1 class="text-3xl sm:text-5xl md:text-6xl font-bold text-black dark:text-white">
           Maxence Debes
         </h1>
-        <p class="mt-1 sm:mt-5 text-lg sm:text-2xl md:text-3xl text-black dark:text-white lg:pl-[2px]">
+        <p class="mt-1 sm:mt-3 text-lg sm:text-2xl md:text-3xl text-black dark:text-white lg:pl-[1.5px]">
           <span data-locale-fade class="text-pink-400 font-semibold">
-            <Typewriter client:load wordsEn={["Machine Learning Student"]} wordsFr={["Étudiant en Machine Learning"]} />
+            <Typewriter client:load wordsEn={["Data Science Student"]} wordsFr={["Étudiant en Data Science"]} />
           </span>
         </p>
       </div>
@@ -153,12 +153,12 @@ const educationFr = [
               {[
                 { name: "Python", icon: "https://cdn.simpleicons.org/python" },
                 { name: "PyTorch", icon: "https://cdn.simpleicons.org/pytorch" },
-                { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg", darkClass: "dark:invert" },
-                { name: "Transformers", icon: "https://cdn.simpleicons.org/huggingface", darkClass: "dark:brightness-[2]" },
+                { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
+                { name: "Transformers", icon: "https://cdn.simpleicons.org/huggingface" },
                 { name: "Scikit-learn", icon: "https://cdn.simpleicons.org/scikitlearn" },
               ].map((skill) => (
                 <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
-                  <img src={skill.icon} alt="" class={`w-3.5 h-3.5 grayscale brightness-75 dark:brightness-100 ${skill.darkClass || ''}`} aria-hidden="true" />
+                  <img src={skill.icon} alt="" class="w-3.5 h-3.5 brightness-0 dark:invert" aria-hidden="true" />
                   {skill.name}
                 </span>
               ))}
@@ -172,8 +172,8 @@ const educationFr = [
             <h3 data-i18n="skills.prog" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Programming & tools</h3>
             <div class="flex flex-wrap gap-2 relative z-10">
               {[
-                { name: "Linux", icon: "https://cdn.simpleicons.org/linux", darkClass: "dark:brightness-[2]" },
-                { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg", darkClass: "dark:invert" },
+                { name: "Linux", icon: "https://cdn.simpleicons.org/linux" },
+                { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg" },
                 { name: "Git", icon: "https://cdn.simpleicons.org/git" },
                 { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
                 { name: "SQL", icon: "inline-db" },
@@ -184,7 +184,7 @@ const educationFr = [
                       <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
                     </svg>
                   ) : skill.icon ? (
-                    <img src={skill.icon} alt="" class={`w-3.5 h-3.5 grayscale brightness-75 dark:brightness-100 ${skill.darkClass || ''}`} aria-hidden="true" />
+                    <img src={skill.icon} alt="" class="w-3.5 h-3.5 brightness-0 dark:invert" aria-hidden="true" />
                   ) : null}
                   {skill.name}
                 </span>
@@ -198,15 +198,15 @@ const educationFr = [
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
             <h3 data-i18n="skills.lang" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Languages</h3>
             <div class="flex flex-wrap gap-2 relative z-10">
-              <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+              <span data-locale-fade class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
                 <span class="grayscale">🇫🇷</span>
                 <span data-i18n="lang.french">French (native)</span>
               </span>
-              <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+              <span data-locale-fade class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
                 <span class="grayscale">🇬🇧</span>
                 <span data-i18n="lang.english">English (C1)</span>
               </span>
-              <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+              <span data-locale-fade class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
                 <span class="grayscale">🇩🇪</span>
                 <span data-i18n="lang.german">German (A2)</span>
               </span>
@@ -247,22 +247,23 @@ const educationFr = [
 
   <!-- ═══════════════════ CONTACT ═══════════════════ -->
   <section id="contact" class="pt-24 pb-0 min-h-svh flex flex-col section-bg-reveal mt-[72px]">
-    <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center flex-grow relative z-10">
+    <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center relative z-10">
       <div class="mb-2 text-center reveal-up">
         <span data-i18n="contact.label" class="text-xs font-bold tracking-widest text-pink-400 uppercase">Let's connect</span>
       </div>
-      <h2 data-i18n="contact.heading" class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-6 md:mb-12 text-center reveal-up reveal-delay-100">
+      <h2 data-i18n="contact.heading" class="text-4xl md:text-5xl font-bold text-black dark:text-white mb-0 text-center reveal-up reveal-delay-100">
         Let's connect
       </h2>
+    </div>
 
-      <div class="flex-1 flex items-center w-full">
-        <div class="flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20 w-full">
+    <div class="flex-1 flex items-center w-full relative z-10">
+      <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20">
           <div class="w-full md:w-1/2 flex flex-col justify-center reveal-up reveal-delay-200">
             <p data-i18n="contact.desc" class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white mb-8 max-w-lg">
               Whether you have a question, a project idea, or just want to chat about AI, software engineering, and the future of tech, my inbox is always open. I'll do my best to get back to you!
             </p>
             <div class="flex items-center gap-3 w-fit">
-              <span class="relative flex h-3 w-3">
+              <span data-locale-fade class="relative flex h-3 w-3">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
               </span>
@@ -301,7 +302,7 @@ const educationFr = [
                 class="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(10,10,10,0.88)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.15)] hover:bg-pink-400 hover:border-pink-400 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(244,114,182,0.4)] hover:scale-[1.01] rounded-xl font-medium cursor-pointer text-sm transition-all duration-300 active:scale-95 group transform-gpu"
               >
                 <span data-i18n="contact.send">Send message</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
+                <svg data-locale-fade xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path>
                 </svg>
               </button>
@@ -309,7 +310,6 @@ const educationFr = [
           </div>
         </div>
       </div>
-    </div>
 
     <div class="w-full">
       <Footer client:load />
@@ -394,7 +394,7 @@ const educationFr = [
       'skills.data': 'Data Science & IA',
       'skills.prog': 'Ingénierie & outils',
       'skills.lang': 'Langues',
-      'lang.french': 'Français (Maternel)',
+      'lang.french': 'Français (maternel)',
       'lang.english': 'Anglais (C1)',
       'lang.german': 'Allemand (A2)',
       'about.education': 'Formation',
@@ -508,6 +508,8 @@ const educationFr = [
     await new Promise(r => setTimeout(r, 650));
     els.forEach(el => {
       el.style.transition = '';
+      el.style.opacity = '';
+      el.style.filter = '';
     });
   };
 

@@ -142,7 +142,7 @@ export default function ProjectGrid() {
         if (entry.isIntersecting) entry.target.classList.add("is-visible");
         else entry.target.classList.remove("is-visible");
       });
-    }, { root: null, rootMargin: "0px 0px -50px 0px", threshold: 0.1 });
+    }, { root: null, rootMargin: "0px 0px -150px 0px", threshold: 0.1 });
     const elements = containerRef.current.querySelectorAll("[class*='reveal-']");
     elements.forEach((el) => { el.classList.remove("is-visible"); observer.observe(el); });
     return () => observer.disconnect();
@@ -167,7 +167,13 @@ export default function ProjectGrid() {
   const handleToggleExpand = () => {
     if (showAll) {
       const el = document.getElementById('projects');
-      if (el) smoothScrollTo(el, 800, () => setShowAll(false));
+      if (!el) return;
+      const lenis = window.lenis;
+      if (lenis) {
+        lenis.scrollTo(el, { offset: 0, duration: 1.5, onComplete: () => setShowAll(false) });
+      } else {
+        smoothScrollTo(el, 1500, () => setShowAll(false));
+      }
     } else {
       setShowAll(true);
     }
@@ -198,10 +204,10 @@ export default function ProjectGrid() {
               return (
                 <motion.div
                   key={index + '-' + activeFilter}
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
+                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                  viewport={{ once: false, margin: "0px 0px -60px 0px" }}
+                  viewport={{ once: false, margin: "0px 0px -200px 0px" }}
                   transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
                   className="flex flex-col items-center w-full"
                 >
@@ -232,7 +238,7 @@ export default function ProjectGrid() {
                     key={project.title}
                     initial={{ opacity: 0, y: 40 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, margin: "0px 0px -60px 0px" }}
+                    viewport={{ once: false, margin: "0px 0px -200px 0px" }}
                     transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
                     className="flex flex-col items-center w-full"
                   >
@@ -254,7 +260,7 @@ export default function ProjectGrid() {
         )}
 
         {activeFilter === "All" && filteredProjects.length > 3 && (
-          <div className={`${showAll ? "mt-8" : "mt-12 md:mt-16"} flex justify-center reveal-fade`}>
+          <div className={`${showAll ? "mt-8" : "mt-12 md:mt-16"} flex justify-center reveal-up`}>
             <button
               onClick={handleToggleExpand}
               className="px-8 py-3 rounded-full text-sm sm:text-base font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer transform-gpu antialiased"
