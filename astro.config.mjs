@@ -15,7 +15,7 @@ export default defineConfig({
     plugins: [tailwindcss()],
     server: {
       fs: {
-        allow: ['/Users/maxencedebes/Cours/Portfolio'],
+        allow: ['.'],
       },
     },
   },

@@ -106,7 +106,7 @@ const educationFr = [
     <div class="absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2">
       <div class="flex flex-col items-center gap-2 reveal-up reveal-early" style={{ transitionDelay: "800ms" }}>
         <span data-i18n="scroll" class="text-xs font-bold tracking-widest text-black dark:text-white uppercase">Scroll</span>
-        <div class="hidden sm:flex w-[30px] h-[50px] border-[1.5px] border-black/10 dark:border-white/15 rounded-full justify-center p-1">
+        <div class="hidden sm:flex w-[30px] h-[50px] border-[1.5px] border-black dark:border-white rounded-full justify-center p-1">
           <div class="w-1 h-2.5 bg-pink-400 rounded-full animate-bounce"></div>
         </div>
         <div class="flex sm:hidden text-pink-400 animate-bounce mt-1">
@@ -429,7 +429,28 @@ const educationFr = [
   }
 
   window.switchLocale = async (newLocale: string) => {
-    const els = [...document.querySelectorAll('[data-i18n], [data-locale-fade]')] as HTMLElement[];
+    const els = [
+      ...document.querySelectorAll('[data-i18n], [data-locale-fade]'),
+      ...document.querySelectorAll('.card'),
+    ] as HTMLElement[];
+
+    // Pick the section closest to the top of the viewport as scroll anchor
+    const sections = [...document.querySelectorAll('section')] as HTMLElement[];
+    const anchor = sections.reduce((best, s) => {
+      const top = s.getBoundingClientRect().top;
+      const bestTop = best.getBoundingClientRect().top;
+      return Math.abs(top) < Math.abs(bestTop) ? s : best;
+    }, sections[0]);
+
+    sections.forEach(s => {
+      // section-bg-reveal sections have a ::before wave pseudo-element positioned
+      // at top:-72px. Locking overflow:hidden clips it, and changing the inline
+      // height style can restart the infinite CSS animation. Skip those sections
+      // and let the scroll-correction handle any positional delta.
+      if (s.classList.contains('section-bg-reveal')) return;
+      s.style.height = s.offsetHeight + 'px';
+      s.style.overflow = 'hidden';
+    });
 
     els.forEach(el => {
       el.style.transition = 'opacity 0.25s ease-in, filter 0.25s ease-in';
@@ -443,6 +464,30 @@ const educationFr = [
     document.documentElement.lang = newLocale;
     document.documentElement.setAttribute('data-locale', newLocale);
     document.dispatchEvent(new CustomEvent('locale-change', { detail: { locale: newLocale } }));
+
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    // Capture anchor position now (after React re-renders, sections still locked)
+    // so the reference is fresh and not stale from before the 250ms fade-out.
+    const anchorTopBefore = anchor.getBoundingClientRect().top;
+
+    // Stop Lenis during correction so it can't override the scroll in the same frame
+    const lenis = (window as any).lenis;
+    if (lenis) lenis.stop();
+
+    // Release + measure + correct scroll in one synchronous block — no paint between them
+    sections.forEach(s => { s.style.height = ''; s.style.overflow = ''; });
+    const delta = anchor.getBoundingClientRect().top - anchorTopBefore;
+    if (delta !== 0) {
+      window.scrollBy({ top: delta, behavior: 'instant' });
+    }
+
+    // Sync Lenis's virtual position and resume
+    if (lenis) {
+      lenis.targetScroll = window.scrollY;
+      lenis.animatedScroll = window.scrollY;
+      lenis.start();
+    }
 
     await new Promise(r => setTimeout(r, 50));
 
