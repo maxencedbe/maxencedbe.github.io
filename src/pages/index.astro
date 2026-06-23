@@ -452,6 +452,12 @@ const educationFr = [
       s.style.overflow = 'hidden';
     });
 
+    // Lock widths before fade-out to prevent layout shift
+    els.forEach(el => {
+      const w = el.getBoundingClientRect().width;
+      if (w > 0) { el.style.width = w + 'px'; el.style.boxSizing = 'border-box'; }
+    });
+
     els.forEach(el => {
       el.style.transition = 'opacity 0.25s ease-in, filter 0.25s ease-in';
       el.style.opacity = '0';
@@ -464,6 +470,9 @@ const educationFr = [
     document.documentElement.lang = newLocale;
     document.documentElement.setAttribute('data-locale', newLocale);
     document.dispatchEvent(new CustomEvent('locale-change', { detail: { locale: newLocale } }));
+
+    // Release width locks while invisible — layout reflows here, unseen
+    els.forEach(el => { el.style.width = ''; el.style.boxSizing = ''; });
 
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
