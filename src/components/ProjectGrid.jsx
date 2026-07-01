@@ -6,32 +6,32 @@ import { useLocale } from "./useLocale.js";
 const projectsData = {
   en: [
     {
-      title: "Hi! PARIS Hi!ckathon 2025 (2nd place)",
+      title: "Hi! PARIS Hi!ckathon 2025 (Finalist)",
       description: "Ranked 2nd out of 80+ teams in the 2025 edition of the Hi!Paris Data Science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds. Engineered a Gated Model (router composed of two XGBoost regressors), achieving an R² score of 0.79 on the final test set.",
       imageUrl: "/HiParis.png",
       githubUrl: "https://github.com/maxencedbe/hi_paris_2025",
       category: ["Machine Learning"]
     },
     {
-      title: "Molecular graph captioning (active Kaggle competition)",
-      description: "Development of a retrieval-based architecture using contrastive learning to align molecular graph embeddings with natural language descriptions in a joint latent space. Implementation of a dedicated graph neural network encoder using PyTorch Geometric, optimized for semantic alignment through BERTScore and BLEU-4 metrics.",
+      title: "Molecular graph captioning - Kaggle competition",
+      description: "Development of a retrieval-based architecture using contrastive learning to align molecular graph embeddings with natural language descriptions in a joint latent space. Implementation of a dedicated Graph Neural Network encoder using PyTorch Geometric, optimized for semantic alignment through BERTScore and BLEU-4 metrics.",
       imageUrl: "/GraphMolecular.png",
       githubUrl: "https://github.com/maxencedbe/molecular_graph_captioning",
-      category: ["Deep Learning"]
+      category: ["Machine Learning"]
     },
     {
-      title: "DragonLLM - LLM toxicity & guardrails (upcoming, Jan 2026)",
-      description: "Training a classifier designed to interrupt generation when the Language Model begins producing toxic or harmful content. Implementing Qwen3-Guardrails and circuit-breaker inspired architectures for real-time safety enforcement in a specialized AI model for the finance sector.",
+      title: "Streaming safety classifier for LLMs - Capstone Project with DragonLLM",
+      description: "Reproduced the toxicity classifier from the Qwen3Guard technical report: synthesized diverse toxic and safe conversations with Qwen3-30B, labeled them using Qwen3Guard's safety classifier, then trained a lightweight per-token safety head on top of a frozen Qwen backbone for real-time, streaming unsafe-content detection.",
       imageUrl: "/DragonLLM.png",
-      githubUrl: "",
-      category: ["Deep Learning"]
+      githubUrl: "https://github.com/maxencedbe/capstone_dragonllm",
+      category: ["Machine Learning"]
     },
     {
       title: "ScratchNet",
       description: "Reimplemented a Multi-Layer Perceptron (MLP) from scratch with NumPy.",
       imageUrl: "/Neural_network.png",
       githubUrl: "https://github.com/maxencedbe/scratchnet",
-      category: ["Deep Learning"]
+      category: ["Machine Learning"]
     },
     {
       title: "Personal portfolio website",
@@ -41,48 +41,48 @@ const projectsData = {
       category: ["Web dev"]
     },
     {
-      title: "Data privacy & anonymization — Project Cassiopee",
+      title: "Data privacy & anonymization - Project Cassiopee",
       description: "Assessed privacy risks in anonymized datasets through OSINT and re-identification case studies, and proposed data protection strategies. Project conducted at Telecom SudParis under the supervision of Maryline Laurent and Louis-Philippe Sondeck.",
       imageUrl: "/Data.png",
       githubUrl: "https://github.com/maxencedbe/Cassiopee",
-      category: ["Machine Learning"]
+      category: ["Data Science"]
     },
     {
       title: "Automated parking optimization",
       description: "Developed a Python-based optimization model for vehicle placement in multi-level automated parking systems. Designed and evaluated heuristic algorithms (A* search, simulated annealing) to minimize retrieval costs and improve system efficiency.",
       imageUrl: "/Parking.png",
       githubUrl: "https://github.com/maxencedbe/parking-optimization",
-      category: ["Machine Learning"]
+      category: ["Data Science"]
     }
   ],
   fr: [
     {
-      title: "Hi! PARIS Hi!ckathon 2025 (2ème place)",
+      title: "Hi! PARIS Hi!ckathon 2025 (Finaliste)",
       description: "Classé 2ème sur plus de 80 équipes lors de l'édition 2025 du hackathon de Data Science Hi!Paris. Tâche : prédire les scores PISA des étudiants à partir de contextes socio-économiques complexes. Conception d'un modèle « Gated » (routeur composé de deux régresseurs XGBoost), atteignant un score R² de 0,79 sur le jeu de test final.",
       imageUrl: "/HiParis.png",
       githubUrl: "https://github.com/maxencedbe/hi_paris_2025",
       category: ["Machine Learning"]
     },
     {
-      title: "Molecular graph captioning (Compétition Kaggle en cours)",
-      description: "Développement d'une architecture basée sur la recherche d'information utilisant l'apprentissage contrastif pour aligner les embeddings de graphes moléculaires avec des descriptions en langage naturel dans un espace latent commun. Implémentation d'un encodeur de réseau de neurones graphiques dédié utilisant PyTorch Geometric, optimisé pour l'alignement sémantique via les métriques BERTScore et BLEU-4.",
+      title: "Molecular graph captioning - Kaggle competition",
+      description: "Développement d'une architecture basée sur la recherche d'information utilisant l'apprentissage contrastif pour aligner les embeddings de graphes moléculaires avec des descriptions en langage naturel dans un espace latent commun. Implémentation d'un encodeur Graph Neural Network dédié utilisant PyTorch Geometric, optimisé pour l'alignement sémantique via les métriques BERTScore et BLEU-4.",
       imageUrl: "/GraphMolecular.png",
       githubUrl: "https://github.com/maxencedbe/molecular_graph_captioning",
-      category: ["Deep Learning"]
+      category: ["Machine Learning"]
     },
     {
-      title: "DragonLLM – LLM toxicity & guardrails (À venir, janv. 2026)",
-      description: "Entraînement d'un classifieur conçu pour interrompre la génération lorsque le modèle de langage commence à produire du contenu toxique ou nuisible. Implémentation de Qwen3-Guardrails et d'architectures inspirées des coupe-circuits pour l'application de la sécurité en temps réel dans un modèle d'IA spécialisé pour le secteur financier.",
+      title: "Classifieur de sécurité en streaming pour LLM – Capstone Project with DragonLLM",
+      description: "Reproduction du classifieur de toxicité du rapport technique Qwen3Guard : synthèse de conversations toxiques et sûres avec Qwen3-30B, labellisation via le classifieur de sécurité de Qwen3Guard, puis entraînement d'une safety head légère au-dessus d'un backbone Qwen gelé pour une détection de contenu nuisible en temps réel, token par token.",
       imageUrl: "/DragonLLM.png",
-      githubUrl: "",
-      category: ["Deep Learning"]
+      githubUrl: "https://github.com/maxencedbe/capstone_dragonllm",
+      category: ["Machine Learning"]
     },
     {
       title: "ScratchNet",
       description: "Réimplémentation d'un Perceptron Multi-Couches (MLP) à partir de zéro avec NumPy.",
       imageUrl: "/Neural_network.png",
       githubUrl: "https://github.com/maxencedbe/scratchnet",
-      category: ["Deep Learning"]
+      category: ["Machine Learning"]
     },
     {
       title: "Site web portfolio personnel",
@@ -92,25 +92,25 @@ const projectsData = {
       category: ["Web dev"]
     },
     {
-      title: "Confidentialité des données & anonymisation — Projet Cassiopée",
+      title: "Confidentialité des données & anonymisation - Projet Cassiopée",
       description: "Évaluation des risques de confidentialité dans des ensembles de données anonymisés via des études de cas OSINT et de ré-identification, et proposition de stratégies de protection des données. Projet mené à Télécom SudParis sous la supervision de Maryline Laurent et Louis-Philippe Sondeck.",
       imageUrl: "/Data.png",
       githubUrl: "https://github.com/maxencedbe/Cassiopee",
-      category: ["Machine Learning"]
+      category: ["Data Science"]
     },
     {
       title: "Optimisation automatisée de stationnement",
       description: "Développement d'un modèle d'optimisation en Python pour le placement de véhicules dans des systèmes de stationnement automatisés à plusieurs niveaux. Conception et évaluation d'algorithmes heuristiques (recherche A*, recuit simulé) pour minimiser les coûts de récupération et améliorer l'efficacité du système.",
       imageUrl: "/Parking.png",
       githubUrl: "https://github.com/maxencedbe/parking-optimization",
-      category: ["Machine Learning"]
+      category: ["Data Science"]
     }
   ]
 };
 
 const filterLabels = {
-  en: { All: "All", "Deep Learning": "Deep Learning", "Machine Learning": "Machine Learning", "Web dev": "Web dev" },
-  fr: { All: "Tout", "Deep Learning": "Deep Learning", "Machine Learning": "Machine Learning", "Web dev": "Développement web" }
+  en: { All: "All", "Machine Learning": "Machine Learning", "Data Science": "Data Science", "Web dev": "Web dev" },
+  fr: { All: "Tout", "Machine Learning": "Machine Learning", "Data Science": "Data Science", "Web dev": "Développement web" }
 };
 
 const ui = {
@@ -118,7 +118,7 @@ const ui = {
   fr: { showMore: "Voir plus de projets", showLess: "Voir moins", noResults: "Aucun projet trouvé dans cette catégorie." }
 };
 
-const FILTER_KEYS = ["All", "Deep Learning", "Machine Learning", "Web dev"];
+const FILTER_KEYS = ["All", "Machine Learning", "Data Science", "Web dev"];
 
 export default function ProjectGrid() {
   const locale = useLocale();

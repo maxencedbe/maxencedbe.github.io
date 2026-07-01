@@ -14,15 +14,15 @@ const links = [
 ];
 
 const workExperienceEn = [
-  { title: "ChemAI", date: "Apr 2026 – Oct 2026", role: "Data Science Intern", icon: "/ChemAI.png", logoClass: "scale-[1.4]" },
-  { title: "Batigere Maison Familiale", date: "Jul 2025 – Aug 2025", role: "IT Intern", icon: "/Batigere.png" },
-  { title: "Atos", date: "Jul 2024 – Aug 2024", role: "Java Programmer Intern", icon: "/Atos.png" },
+  { title: "ChemAI", date: "Apr 2026 – Present", role: "Data Science Intern", icon: "/ChemAI.png", logoClass: "scale-[1.4]" },
+  { title: "Batigere Maison Familiale", date: "Jul 2025 – Aug 2025", role: "IT Data Governance Intern", icon: "/Batigere.png" },
+  { title: "Atos", date: "Jul 2024 – Aug 2024", role: "Software Engineer Intern", icon: "/Atos.png" },
 ];
 
 const workExperienceFr = [
-  { title: "ChemAI", date: "Avr 2026 – Oct 2026", role: "Stagiaire Data Science", icon: "/ChemAI.png", logoClass: "scale-[1.4]" },
-  { title: "Batigere Maison Familiale", date: "Juil 2025 – Août 2025", role: "Stagiaire informatique", icon: "/Batigere.png" },
-  { title: "Atos", date: "Juil 2024 – Août 2024", role: "Stagiaire Programmeur Java", icon: "/Atos.png" },
+  { title: "ChemAI", date: "Avr 2026 – Présent", role: "Stagiaire Data Science", icon: "/ChemAI.png", logoClass: "scale-[1.4]" },
+  { title: "Batigere Maison Familiale", date: "Juil 2025 – Août 2025", role: "Stagiaire en Gouvernance des Données IT", icon: "/Batigere.png" },
+  { title: "Atos", date: "Juil 2024 – Août 2024", role: "Stagiaire Ingénieur Logiciel", icon: "/Atos.png" },
 ];
 
 const educationEn = [
@@ -128,19 +128,19 @@ const educationFr = [
         About me
       </h2>
       <p data-i18n="about.bio" class="text-base sm:text-lg leading-relaxed mb-6 text-justify desktop-indent mobile-narrow text-black dark:text-white reveal-up reveal-delay-200">
-        I am Maxence Debes, an MSc Data Science student with a strong background in Mathematics and Computer Science. I am passionate about Machine Learning, software development, and how technology can drive digital transformation.
+        I am Maxence Debes, an MSc Data Science student with a strong academic background in mathematics and computer science. My profile is deeply rooted in Data Science, with a strong specialization in Machine Learning and AI. I enjoy solving complex technical problems by combining mathematical rigor with advanced Python programming to build robust, data-driven solutions.
       </p>
     </div>
 
     <div class="max-w-[1100px] mx-auto mb-20">
-      <h2 data-i18n="about.work" class="text-2xl font-semibold mb-8 section-title text-black dark:text-white reveal-up reveal-delay-100">
+      <h2 data-i18n="about.work" class="text-2xl font-semibold mb-8 section-title mobile-narrow text-black dark:text-white reveal-up reveal-delay-100">
         Work experience
       </h2>
       <div class="reveal-up reveal-delay-200 w-full mb-16 md:mb-20">
         <ExperienceCarousel client:load itemsEn={workExperienceEn} itemsFr={workExperienceFr} />
       </div>
 
-      <h2 data-i18n="about.skills" class="text-2xl font-semibold mb-8 section-title text-black dark:text-white reveal-up reveal-delay-100">
+      <h2 data-i18n="about.skills" class="text-2xl font-semibold mb-8 section-title mobile-narrow text-black dark:text-white reveal-up reveal-delay-100">
         Skills & interests
       </h2>
 
@@ -148,8 +148,8 @@ const educationFr = [
         <div class="flex-[1.1] w-full reveal-up reveal-delay-200">
           <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
-            <h3 data-i18n="skills.data" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Data Science & AI</h3>
-            <div class="flex flex-wrap gap-2 relative z-10">
+            <h3 data-i18n="skills.data" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Data Science & AI</h3>
+            <div class="flex flex-wrap gap-2 relative z-10 justify-center lg:justify-start">
               {[
                 { name: "Python", icon: "https://cdn.simpleicons.org/python" },
                 { name: "PyTorch", icon: "https://cdn.simpleicons.org/pytorch" },
@@ -169,8 +169,8 @@ const educationFr = [
         <div class="flex-[0.85] w-full reveal-up reveal-delay-300">
           <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
-            <h3 data-i18n="skills.prog" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Programming & tools</h3>
-            <div class="flex flex-wrap gap-2 relative z-10">
+            <h3 data-i18n="skills.prog" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Programming & tools</h3>
+            <div class="flex flex-wrap gap-2 relative z-10 justify-center lg:justify-start">
               {[
                 { name: "Linux", icon: "https://cdn.simpleicons.org/linux" },
                 { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg" },
@@ -196,8 +196,8 @@ const educationFr = [
         <div class="flex-1 w-full reveal-up reveal-delay-400">
           <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
-            <h3 data-i18n="skills.lang" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10">Languages</h3>
-            <div class="flex flex-wrap gap-2 relative z-10">
+            <h3 data-i18n="skills.lang" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Languages</h3>
+            <div class="flex flex-wrap gap-2 relative z-10 justify-center lg:justify-start">
               <span data-locale-fade class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
                 <span class="grayscale">🇫🇷</span>
                 <span data-i18n="lang.french">French (native)</span>
@@ -216,7 +216,7 @@ const educationFr = [
       </div>
       <div class="w-full h-16 md:h-20"></div>
 
-      <h2 data-i18n="about.education" class="text-2xl font-semibold mb-8 section-title text-black dark:text-white reveal-up reveal-delay-100">
+      <h2 data-i18n="about.education" class="text-2xl font-semibold mb-8 section-title mobile-narrow text-black dark:text-white reveal-up reveal-delay-100">
         Education
       </h2>
       <div class="reveal-up reveal-delay-200 w-full">
@@ -236,7 +236,7 @@ const educationFr = [
           My projects
         </h2>
         <p data-i18n="projects.desc" class="text-base sm:text-lg leading-relaxed text-justify desktop-indent mobile-narrow mb-6 md:mb-8 text-black dark:text-white reveal-up reveal-delay-200">
-          Here you will find a selection of projects I have worked on, ranging from academic research to personal and professional experiences. Each one reflects my interest in AI, data, and software development. Whenever possible, I have included links to repositories so you can explore the work in more detail. Some projects are still under development, as I am continuously improving them.
+          A mix of academic research, personal builds, and professional work, all centered around AI, data, and software engineering. Some explore ideas I was simply curious about, others solve problems I ran into along the way. Most link to a repository if you want to dig into the code, and a few are still evolving as I keep iterating on them.
         </p>
       </div>
       <div class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8 w-full">
@@ -256,24 +256,9 @@ const educationFr = [
       </h2>
     </div>
 
-    <div class="flex-1 flex items-center w-full relative z-10">
-      <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col md:flex-row items-center md:items-stretch gap-12 md:gap-20">
-          <div class="w-full md:w-1/2 flex flex-col justify-center reveal-up reveal-delay-200">
-            <p data-i18n="contact.desc" class="text-base sm:text-lg leading-relaxed text-black/80 dark:text-white mb-8 max-w-lg">
-              Whether you have a question, a project idea, or just want to chat about AI, software engineering, and the future of tech, my inbox is always open. I'll do my best to get back to you!
-            </p>
-            <div class="flex items-center gap-3 w-fit">
-              <span data-locale-fade class="relative flex h-3 w-3">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-              </span>
-              <span data-i18n="contact.open" class="text-xs sm:text-sm font-semibold tracking-wide text-black/70 dark:text-white">
-                Open to new opportunities
-              </span>
-            </div>
-          </div>
-
-          <div class="w-full md:w-1/2 max-w-lg mx-auto md:mx-0 reveal-up reveal-delay-400">
+    <div class="flex-1 flex items-center w-full relative z-10 mt-10 md:mt-0">
+      <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center gap-8">
+          <div class="w-full max-w-[784px] mx-auto reveal-up reveal-delay-200">
             <form
               id="contact-form"
               action="https://api.web3forms.com/submit"
@@ -284,13 +269,15 @@ const educationFr = [
               <input type="hidden" id="form-subject" name="subject" value="New message from your Portfolio" />
               <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
 
-              <div class="flex flex-col gap-1.5">
-                <label for="name" data-i18n="contact.name" class="text-xs tracking-wide text-black dark:text-white ml-1">Name</label>
-                <input type="text" id="name" name="name" required autocomplete="none" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm" />
-              </div>
-              <div class="flex flex-col gap-1.5">
-                <label for="email" data-i18n="contact.email" class="text-xs tracking-wide text-black dark:text-white ml-1">Email</label>
-                <input type="email" id="email" name="email" required autocomplete="none" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm" />
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div class="flex flex-col gap-1.5">
+                  <label for="name" data-i18n="contact.name" class="text-xs tracking-wide text-black dark:text-white ml-1">Name</label>
+                  <input type="text" id="name" name="name" required autocomplete="none" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm" />
+                </div>
+                <div class="flex flex-col gap-1.5">
+                  <label for="email" data-i18n="contact.email" class="text-xs tracking-wide text-black dark:text-white ml-1">Email</label>
+                  <input type="email" id="email" name="email" required autocomplete="none" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm" />
+                </div>
               </div>
               <div class="flex flex-col gap-1.5">
                 <label for="message" data-i18n="contact.message" class="text-xs tracking-wide text-black dark:text-white ml-1">Message</label>
@@ -299,7 +286,7 @@ const educationFr = [
               <button
                 id="submit-button"
                 type="submit"
-                class="mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(10,10,10,0.88)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.15)] hover:bg-pink-400 hover:border-pink-400 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(244,114,182,0.4)] hover:scale-[1.01] rounded-xl font-medium cursor-pointer text-sm transition-all duration-300 active:scale-95 group transform-gpu"
+                class="mt-2 self-center sm:self-start flex items-center justify-center gap-2 px-8 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(10,10,10,0.88)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.15)] hover:bg-pink-400 hover:border-pink-400 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(244,114,182,0.4)] hover:scale-[1.01] rounded-xl font-medium cursor-pointer text-sm transition-all duration-300 active:scale-95 group transform-gpu"
               >
                 <span data-i18n="contact.send">Send message</span>
                 <svg data-locale-fade xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-[2px] group-hover:-translate-y-[2px]">
@@ -308,6 +295,10 @@ const educationFr = [
               </button>
             </form>
           </div>
+
+          <p data-i18n="contact.desc" class="text-base sm:text-lg leading-relaxed text-justify sm:text-left text-black/80 dark:text-white w-full max-w-[784px] mx-auto sm:translate-x-[3px] reveal-up reveal-delay-400">
+            Whether you have a question, a project idea, or just want to chat, my inbox is always open. I'll do my best to get back to you!
+          </p>
         </div>
       </div>
 
@@ -362,7 +353,7 @@ const educationFr = [
       'scroll': 'Scroll',
       'about.label': 'About me',
       'about.heading': 'About me',
-      'about.bio': 'I am Maxence Debes, an MSc Data Science student with a strong background in Mathematics and Computer Science. I am passionate about Machine Learning, software development, and how technology can drive digital transformation.',
+      'about.bio': 'I am Maxence Debes, an MSc Data Science student with a strong academic background in mathematics and computer science. My profile is deeply rooted in Data Science, with a strong specialization in Machine Learning and AI. I enjoy solving complex technical problems by combining mathematical rigor with advanced Python programming to build robust, data-driven solutions.',
       'about.work': 'Work experience',
       'about.skills': 'Skills & interests',
       'skills.data': 'Data Science & AI',
@@ -374,10 +365,10 @@ const educationFr = [
       'about.education': 'Education',
       'projects.label': 'My projects',
       'projects.heading': 'My projects',
-      'projects.desc': 'Here you will find a selection of projects I have worked on, ranging from academic research to personal and professional experiences. Each one reflects my interest in AI, data, and software development. Whenever possible, I have included links to repositories so you can explore the work in more detail. Some projects are still under development, as I am continuously improving them.',
+      'projects.desc': 'A mix of academic research, personal builds, and professional work, all centered around AI, data, and software engineering. Some explore ideas I was simply curious about, others solve problems I ran into along the way. Most link to a repository if you want to dig into the code, and a few are still evolving as I keep iterating on them.',
       'contact.label': "Let's connect",
       'contact.heading': "Let's connect",
-      'contact.desc': "Whether you have a question, a project idea, or just want to chat about AI, software engineering, and the future of tech, my inbox is always open. I'll do my best to get back to you!",
+      'contact.desc': "Whether you have a question, a project idea, or just want to chat, my inbox is always open. I'll do my best to get back to you!",
       'contact.open': 'Open to new opportunities',
       'contact.name': 'Name',
       'contact.email': 'Email',
@@ -385,10 +376,10 @@ const educationFr = [
       'contact.send': 'Send message',
     },
     fr: {
-      'scroll': 'Défiler',
+      'scroll': 'Scroll',
       'about.label': 'À propos',
       'about.heading': 'À propos',
-      'about.bio': "Je suis Maxence Debes, étudiant en Master de Data Science avec de solides bases en mathématiques et en informatique. Je suis passionné par le Machine Learning, le développement logiciel et la manière dont la technologie peut conduire la transformation numérique.",
+      'about.bio': "Je suis Maxence Debes, étudiant en Master de Data Science avec une solide formation académique en mathématiques et en informatique. Mon profil est profondément ancré dans la Data Science, avec une forte spécialisation en Machine Learning et en IA. J'aime résoudre des problèmes techniques complexes en combinant rigueur mathématique et programmation Python avancée pour construire des solutions robustes et data-driven.",
       'about.work': 'Expérience professionnelle',
       'about.skills': "Compétences & centres d'intérêt",
       'skills.data': 'Data Science & IA',
@@ -400,10 +391,10 @@ const educationFr = [
       'about.education': 'Formation',
       'projects.label': 'Mes projets',
       'projects.heading': 'Mes projets',
-      'projects.desc': "Vous trouverez ici une sélection de projets sur lesquels j'ai travaillé, allant de la recherche académique à mes expériences personnelles et professionnelles. Chacun reflète mon intérêt pour l'IA, la data et le développement logiciel. Dans la mesure du possible, j'ai inclus des liens vers des repositories pour que vous puissiez explorer mon travail plus en détail. Certains projets sont encore en développement, car je les améliore continuellement.",
+      'projects.desc': "Un mélange de recherche académique, de projets personnels et d'expériences professionnelles, tous centrés sur l'IA, la data et le développement logiciel. Certains explorent des idées qui m'intriguaient simplement, d'autres répondent à des problèmes rencontrés en cours de route. La plupart renvoient vers un repository si vous voulez creuser le code, et certains sont encore en évolution au fil de mes améliorations.",
       'contact.label': 'Contactez-moi',
       'contact.heading': 'Contactez-moi',
-      'contact.desc': "Que vous ayez une question, une idée de projet, ou que vous souhaitiez simplement échanger sur l'IA et l'évolution de la tech, ma messagerie est toujours ouverte. Je ferai de mon mieux pour vous répondre !",
+      'contact.desc': "Une question, une idée de projet, ou simplement envie d'échanger, ma messagerie est toujours ouverte. Je ferai de mon mieux pour vous répondre !",
       'contact.open': "À l'écoute d'opportunités",
       'contact.name': 'Nom',
       'contact.email': 'Email',

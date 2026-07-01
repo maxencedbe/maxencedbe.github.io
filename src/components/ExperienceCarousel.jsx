@@ -43,7 +43,8 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items }) => {
   }, [locale, emblaApi]);
 
   return (
-    <div className="relative max-w-[960px] mx-auto px-4 sm:px-12">
+    <div className="max-w-[960px] mx-auto">
+      <div className="relative px-4 sm:px-12">
       <div
         className="overflow-hidden py-12 -my-12"
         ref={emblaRef}
@@ -113,13 +114,14 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items }) => {
           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
         </svg>
       </button>
+      </div>
 
       <div className="relative z-10 flex justify-center gap-2 mt-5">
         {scrollSnaps.map((_, index) => (
           <button
             key={index}
             className={`carousel-dot w-2 h-2 rounded-full cursor-pointer transition-all duration-300
-              ${index === selectedIndex ? 'w-6 bg-pink-400' : 'bg-neutral-300 dark:bg-white/30 hover:bg-neutral-400 dark:hover:bg-white/50'}`}
+              ${index === selectedIndex ? 'w-6 bg-pink-400' : 'bg-neutral-400 dark:bg-white/50 hover:bg-neutral-500 dark:hover:bg-white/70'}`}
             onClick={() => scrollTo(index)}
             aria-label={`Go to slide ${index + 1}`}
           />

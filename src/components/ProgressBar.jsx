@@ -119,11 +119,11 @@ export default function ProgressBar() {
             const delta = newDocHeight - lastDocHeight;
             lastDocHeight = newDocHeight;
 
-            if (delta > 200) {
-                // Page expanded a lot (show more): animate the bar backward smoothly
+            if (Math.abs(delta) > 20) {
+                // Page expanded or shrank (show more, filter change): animate the bar smoothly
                 animateTo(getProgress());
             } else {
-                // Small expansion or collapse: track instantly so state.current stays
+                // Negligible change: track instantly so state.current stays
                 // in sync — prevents teleport if the user scrolls right after collapse
                 drawCurrent();
             }

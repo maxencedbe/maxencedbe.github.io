@@ -152,6 +152,22 @@ html {
     background-color: rgba(255, 255, 255, 0.06);
   }
 
+  /* Contact entry wave (Projects → Connect): the wave animates its flow via a
+     `transform`, which promotes it to its own compositing layer. That layer
+     rounds to a different device pixel than the section's background box (which
+     sits at a fractional Y this far down the page), leaving a 1px hairline of
+     page background between the wave and the section. Animating `left` instead
+     keeps the pseudo-element on the main paint layer, so it rounds together
+     with the section — no seam — while staying translucent (background shows
+     through). Scoped to #contact; the other waves keep the transform version. */
+  @keyframes wave-flow-left {
+    from { left: 0; }
+    to   { left: -100%; }
+  }
+
+  #contact::before {
+    animation: wave-flow-left 3s linear infinite;
+  }
 
   .wave-exit {
     z-index: 1;

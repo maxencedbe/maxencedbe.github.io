@@ -23,11 +23,32 @@ const MoonIcon = () => (
   </svg>
 );
 
-const HamburgerIcon = () => (
+const HamburgerIcon = ({ isOpen }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <line x1="3" y1="6" x2="21" y2="6"></line>
-    <line x1="3" y1="12" x2="21" y2="12"></line>
-    <line x1="3" y1="18" x2="21" y2="18"></line>
+    <line
+      x1="3" y1="6" x2="21" y2="6"
+      style={{
+        transformOrigin: '12px 12px',
+        transform: isOpen ? 'rotate(45deg) translateY(6px)' : 'none',
+        transition: 'transform 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
+      }}
+    ></line>
+    <line
+      x1="3" y1="12" x2="21" y2="12"
+      style={{
+        transformOrigin: '12px 12px',
+        opacity: isOpen ? 0 : 1,
+        transition: 'opacity 0.2s ease',
+      }}
+    ></line>
+    <line
+      x1="3" y1="18" x2="21" y2="18"
+      style={{
+        transformOrigin: '12px 12px',
+        transform: isOpen ? 'rotate(-45deg) translateY(-6px)' : 'none',
+        transition: 'transform 0.3s cubic-bezier(0.23, 1, 0.32, 1)',
+      }}
+    ></line>
   </svg>
 );
 
@@ -132,7 +153,7 @@ export default function Navbar() {
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
           >
-            <HamburgerIcon />
+            <HamburgerIcon isOpen={isMobileMenuOpen} />
           </button>
 
           <button
@@ -170,16 +191,16 @@ export default function Navbar() {
             role="button"
             aria-label="Switch language"
           >
-            <div className="absolute inset-0 pointer-events-none opacity-30 flex">
+            <div className="absolute inset-0 pointer-events-none opacity-60 flex">
               <div className="w-1/2 h-full flex items-center justify-center">
-                <span className="text-xs font-normal text-black dark:text-white -translate-y-px">EN</span>
+                <span className="text-xs font-normal text-black dark:text-white">EN</span>
               </div>
               <div className="w-1/2 h-full flex items-center justify-center">
-                <span className="text-xs font-normal text-black dark:text-white -translate-y-px">FR</span>
+                <span className="text-xs font-normal text-black dark:text-white">FR</span>
               </div>
             </div>
             <div
-              className={`absolute top-[3px] left-[3px] w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${bubbleLocale === 'fr' ? 'translate-x-[36px]' : 'translate-x-0'}`}
+              className={`absolute top-1/2 left-[3px] -translate-y-1/2 w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${bubbleLocale === 'fr' ? 'translate-x-[36px]' : 'translate-x-0'}`}
               style={{ WebkitBackdropFilter: "blur(12px)", backdropFilter: "blur(12px)" }}
             >
               <span className="text-xs font-normal text-black dark:text-white">
