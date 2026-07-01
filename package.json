@@ -3,9 +3,9 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
+    "dev": "NODE_OPTIONS=\"--disable-warning=DEP0205 --disable-warning=ExperimentalWarning\" astro dev",
+    "build": "NODE_OPTIONS=\"--disable-warning=DEP0205 --disable-warning=ExperimentalWarning\" astro build",
+    "preview": "NODE_OPTIONS=\"--disable-warning=DEP0205 --disable-warning=ExperimentalWarning\" astro preview",
     "astro": "astro"
   },
   "dependencies": {
