@@ -15,6 +15,11 @@ html.lenis body {
   height: auto;
 }
 
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
 .lenis.lenis-smooth {
   scroll-behavior: auto !important;
 
@@ -203,7 +208,6 @@ html {
     opacity: 0;
     transform: translateY(40px);
     filter: blur(8px);
-    will-change: opacity, transform, filter;
     transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -217,7 +221,6 @@ html {
     opacity: 0;
     transform: translateY(-40px);
     filter: blur(8px);
-    will-change: opacity, transform, filter;
     transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -231,7 +234,6 @@ html {
     opacity: 0;
     transform: translateX(40px);
     filter: blur(8px);
-    will-change: opacity, transform, filter;
     transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -260,7 +262,6 @@ html {
     opacity: 0;
     transform: translateX(-40px);
     filter: blur(8px);
-    will-change: opacity, transform, filter;
     transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -274,7 +275,6 @@ html {
     opacity: 0;
     transform: scale(0.95);
     filter: blur(8px);
-    will-change: opacity, transform, filter;
     transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -287,7 +287,6 @@ html {
   .reveal-fade {
     opacity: 0;
     filter: blur(5px);
-    will-change: opacity, filter;
     transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 

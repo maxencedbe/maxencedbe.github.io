@@ -6,7 +6,7 @@ import { useLocale } from "./useLocale.js";
 const projectsData = {
   en: [
     {
-      title: "Hi! PARIS Hi!ckathon 2025 (Finalist)",
+      title: "Hi! PARIS Hi!ckathon 2025 (finalist)",
       description: "Ranked 2nd out of 80+ teams in the 2025 edition of the Hi!Paris Data Science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds. Engineered a Gated Model (router composed of two XGBoost regressors), achieving an R² score of 0.79 on the final test set.",
       imageUrl: "/HiParis.png",
       githubUrl: "https://github.com/maxencedbe/hi_paris_2025",
@@ -57,7 +57,7 @@ const projectsData = {
   ],
   fr: [
     {
-      title: "Hi! PARIS Hi!ckathon 2025 (Finaliste)",
+      title: "Hi! PARIS Hi!ckathon 2025 (finaliste)",
       description: "Classé 2ème sur plus de 80 équipes lors de l'édition 2025 du hackathon de Data Science Hi!Paris. Tâche : prédire les scores PISA des étudiants à partir de contextes socio-économiques complexes. Conception d'un modèle « Gated » (routeur composé de deux régresseurs XGBoost), atteignant un score R² de 0,79 sur le jeu de test final.",
       imageUrl: "/HiParis.png",
       githubUrl: "https://github.com/maxencedbe/hi_paris_2025",

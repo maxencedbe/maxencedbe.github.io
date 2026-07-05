@@ -44,13 +44,23 @@ const SideNav = () => {
   }, []);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollPosition = window.scrollY;
-      const sections = links.map(link => {
+    // Cache section boundaries so the scroll handler never touches layout
+    // (offsetTop/offsetHeight force a synchronous reflow, which on mobile
+    // interrupts momentum scrolling and makes it stutter/stop). Recompute
+    // only on resize and after images/layout settle.
+    let sections = [];
+    const measure = () => {
+      sections = links.map(link => {
         const element = document.getElementById(link.id);
         if (!element) return null;
         return { id: link.id, top: element.offsetTop, bottom: element.offsetTop + element.offsetHeight };
       }).filter(Boolean);
+    };
+
+    let ticking = false;
+    const update = () => {
+      ticking = false;
+      const scrollPosition = window.scrollY;
       const current = sections.find(section =>
         scrollPosition >= section.top - 200 && scrollPosition < section.bottom - 200
       );
@@ -60,9 +70,21 @@ const SideNav = () => {
         setActiveSection('home');
       }
     };
+    const handleScroll = () => {
+      if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    };
+
+    measure();
+    update();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('resize', measure);
+    // Re-measure once everything has loaded (fonts/images can shift offsets)
+    window.addEventListener('load', measure);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', measure);
+      window.removeEventListener('load', measure);
+    };
   }, [links]);
 
   const handleClick = (e, id) => {
