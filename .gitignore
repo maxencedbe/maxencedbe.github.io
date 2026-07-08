@@ -25,3 +25,20 @@ pnpm-debug.log*
 
 # Claude Code configuration
 .claude/
+
+# LaTeX build artifacts for the CV sources (only the sources in cv/ and the
+# final PDFs in public/ are committed)
+cv/**/*.aux
+cv/**/*.bbl
+cv/**/*.bcf
+cv/**/*.blg
+cv/**/*.fdb_latexmk
+cv/**/*.fls
+cv/**/*.log
+cv/**/*.out
+cv/**/*.run.xml
+cv/**/*.synctex.gz
+cv/**/*.xdv
+cv/**/*.toc
+cv/en/cv.pdf
+cv/fr/cv.pdf
