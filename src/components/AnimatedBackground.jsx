@@ -176,24 +176,10 @@ export default function AnimatedBackground() {
 
     window.addEventListener("resize", resize);
 
-    // Skip redraw work while the user is actively scrolling: this canvas is
-    // `position: fixed` and repaints every rAF frame, which competes with the
-    // main thread during native touch scrolling (Lenis is off on touch) and
-    // causes visible jank/freezes on fast mobile scrolls.
-    let isScrolling = false;
-    let scrollEndTimer;
-    const onScroll = () => {
-      isScrolling = true;
-      clearTimeout(scrollEndTimer);
-      scrollEndTimer = setTimeout(() => { isScrolling = false; }, 120);
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("touchmove", onScroll, { passive: true });
-
     points.forEach(shiftPoint);
 
     function animate() {
-      if (animateHeader && !isScrolling) {
+      if (animateHeader) {
         ctx.clearRect(0, 0, width, height);
 
         const elapsed = performance.now() - revealStart;
@@ -295,9 +281,6 @@ export default function AnimatedBackground() {
 
     return () => {
       window.removeEventListener("resize", resize);
-      window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("touchmove", onScroll);
-      clearTimeout(scrollEndTimer);
       cancelAnimationFrame(animationFrameId);
       gsap.killTweensOf(points);
       observer.disconnect();
