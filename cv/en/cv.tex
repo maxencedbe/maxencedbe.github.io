@@ -57,8 +57,8 @@
 \RequirePackage{graphicx}
 \usepackage[usenames,dvipsnames]{xcolor}
 \usepackage[
-    top=1cm,       % Marge entre le haut de la feuille et votre nom
-    bottom=1cm,    % Marge entre le bas de la feuille et vos intérêts
+    top=0.7cm,       % Marge entre le haut de la feuille et votre nom
+    bottom=0.7cm,    % Marge entre le bas de la feuille et vos intérêts
     left=1.1cm,      % Marge gauche
     right=1.1cm      % Marge droite
 ]{geometry}
@@ -86,7 +86,7 @@
 %CV Sections inspired by: 
 %http://stefano.italians.nl/archives/26
 \titleformat{\section}{\Large\raggedright}{}{0em}{}[\titlerule]
-\titlespacing{\section}{0pt}{5pt}{2pt}
+\titlespacing{\section}{0pt}{3pt}{2pt}
 
 %for publications
 % \usepackage[style=authoryear,sorting=ynt, maxbibnames=2]{biblatex}
@@ -161,7 +161,7 @@
 
 %Summary
 \noindent
-MSc Data Science student with a strong background in mathematics and computer science. Specialized in advanced machine learning and the implementation of state-of-the-art AI algorithms.\\
+MSc Data Science student with a strong academic background in mathematics and computer science, specialized in Machine Learning and AI --- combining mathematical rigor with advanced Python to build robust, data-driven solutions.\\
 [-8pt]
 
 %----------------------------------------------------------------------------------------
@@ -169,7 +169,7 @@ MSc Data Science student with a strong background in mathematics and computer sc
 %-----------------------------
 \section{Projects}
 
-\begin{project}{Hi! Paris Hackathon 2025 (2nd Place)}
+\begin{project}{Hi! PARIS Hi!ckathon 2025 (2nd place)}
 {\href{https://github.com/maxencedbe/hi_paris_2025}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
     \item Ranked 2nd out of 80+ teams in the 2025 edition of the Hi!Paris data science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds.
     \item Engineered a Gated Model (router composed of two XGBoost regressors), achieving an $R^{2}$ score of 0.79 on the final test set.
@@ -181,20 +181,20 @@ MSc Data Science student with a strong background in mathematics and computer sc
     \item Implementation of a dedicated graph neural network encoder using PyTorch Geometric, optimized for semantic alignment through BERTScore and BLEU-4 metrics.
 \end{project}\vspace{-6pt}
 
-\begin{project}{DragonLLM --- LLM Toxicity \& Guardrails (Ongoing, Jan 2026)}
-{\href{https://github.com/vemz/capstone_dragonllm}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Objective: Train a classifier designed to interrupt generation when the Language Model begins producing toxic or harmful content.
-    \item Implementing Qwen3-Guardrails and circuit-breaker inspired architectures for real-time safety enforcement in a specialized AI model for the finance sector.
+\begin{project}{Streaming Safety Classifier for LLMs --- Capstone Project with DragonLLM}
+{\href{https://github.com/maxencedbe/capstone_dragonllm}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
+    \item Reproduced the toxicity classifier from the Qwen3Guard technical report: synthesized diverse toxic and safe conversations with Qwen3-30B and labeled them using Qwen3Guard's safety classifier.
+    \item Trained a lightweight per-token safety head on top of a frozen Qwen backbone for real-time, streaming unsafe-content detection.
 \end{project}\vspace{-6pt}
 
 \begin{project}{Data Privacy \& Anonymization --- Project Cassiopee}
-{\href{https://github.com/maxencedbe/cassiopee}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Investigated privacy and re-identification risks in anonymized healthcare datasets through OSINT techniques, contributing to ethical and responsible use of medical data for AI research.
+{\href{https://github.com/maxencedbe/Cassiopee}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
+    \item Assessed privacy and re-identification risks in anonymized datasets through OSINT case studies, and proposed data-protection strategies. Conducted at Télécom SudParis.
 \end{project}\vspace{-6pt}
 
 \begin{project}{Automated Parking Optimization}
 {\href{https://github.com/maxencedbe/parking-optimization}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Engineered a hybrid algorithm combining A* search (for pathfinding) and Simulated Annealing (for global optimization) to minimize retrieval costs.
+    \item Developed a Python optimization model for vehicle placement in multi-level automated parking, combining A* search and simulated annealing to minimize retrieval costs and improve efficiency.
 \end{project} \\[-16pt]
 
 %----------------------------------------------------------------------------------------
@@ -204,12 +204,16 @@ MSc Data Science student with a strong background in mathematics and computer sc
 %Experience
 \section{Work Experience}
 
-\begin{joblong}{IT Intern --- Batigere Maison Familiale}{Jul 2025 --- Aug 2025}
+\begin{joblong}{Data Science Intern --- ChemAI}{Apr 2026 --- present}
+\item Building and analyzing a graph database of chemical reactions to extract actionable insights.
+\end{joblong}\vspace{-6pt}
+
+\begin{joblong}{IT Data Governance Intern --- Batigere Maison Familiale}{Jul 2025 --- Aug 2025}
 \item Optimized digital infrastructure by migrating the company to SharePoint in order to enhance collaboration and document management, with adoption by 100\% of employees.
 \item Designed and implemented a GDPR compliance policy, reinforcing data security and ensuring regulatory compliance.
 \end{joblong}\vspace{-6pt}
 
-\begin{joblong}{Java Programmer Intern --- Atos}{Jul 2024 --- Aug 2024}
+\begin{joblong}{Software Engineer Intern --- Atos}{Jul 2024 --- Aug 2024}
 \item Designed and implemented a telework tracking application using the JHipster application generator to facilitate accessibility to workstations.
 \end{joblong} \\[-16pt]
 
@@ -221,12 +225,12 @@ MSc Data Science student with a strong background in mathematics and computer sc
 \textbf{École Polytechnique --- Polytechnic Institute of Paris} & 2025 --- present\\
 \end{tabularx} \\
 MSc Data Science\\[1pt]
-\textit{\textbf{Relevant coursework:} Advanced Learning for Text and Graph Data (ALTEGRAD --- Joint MVA Course), Deep Learning, Machine Learning, Reinforcement Learning, Representation Learning (Joint MVA Course), Optimization for Data Science, Generative Models.} \\[6pt]
+\textit{\textbf{Relevant coursework:} ALTEGRAD (Joint MVA Course), Deep Learning, Reinforcement Learning, Representation Learning (MVA), Generative Models, Optimization for Data Science.} \\[6pt]
 \begin{tabularx}{\linewidth}{@{}X r@{}}
 \textbf{Télécom SudParis --- Polytechnic Institute of Paris} & 2023 --- present\\
 \end{tabularx}\\
-Master's Degree in Mathematics and Computer Science\\[1pt]
-\textit{\textbf{Relevant coursework:} Real Analysis and Integration, Statistics and Data Analysis, Optimization, Scientific Computing, Machine Learning and Data Mining, Applied Statistics, Stochastic Processes, Continuous Optimization for Learning.}\\[-8pt]
+Master's Degree in Computer Science and Applied Mathematics\\[1pt]
+\textit{\textbf{Relevant coursework:} Statistics and Data Analysis, Optimization, Machine Learning and Data Mining, Stochastic Processes, Continuous Optimization for Learning.}\\[-8pt]
 
 %----------------------------------------------------------------------------------------
 %	SKILLS
