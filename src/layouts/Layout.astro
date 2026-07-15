@@ -45,6 +45,51 @@ const isLockedPage = isLocked;
         document.documentElement.setAttribute("data-locale", locale);
       })();
     </script>
+    <script is:inline>
+      /* Deterministic scroll restoration across F5 reloads.
+         The ClientRouter sets history.scrollRestoration = 'manual', so on reload
+         Astro restores the position itself — but it lands a few px off (most
+         visibly a bit above the true bottom), and it races with Lenis and the
+         intro. We save the position continuously and, on reload only, re-assert
+         it after layout settles and keep Lenis in sync so the three actors agree. */
+      (function () {
+        var KEY = "scrollpos:" + location.pathname;
+        var rafId = 0;
+        function save() {
+          rafId = 0;
+          try { sessionStorage.setItem(KEY, String(Math.round(window.scrollY))); } catch (e) {}
+        }
+        window.addEventListener("scroll", function () {
+          if (!rafId) rafId = requestAnimationFrame(save);
+        }, { passive: true });
+        window.addEventListener("pagehide", save);
+
+        var nav = performance.getEntriesByType("navigation")[0];
+        var isReload = nav ? nav.type === "reload"
+          : (performance.navigation && performance.navigation.type === 1);
+        if (!isReload) return;
+
+        var saved = sessionStorage.getItem(KEY);
+        if (saved === null) return;
+        var y = parseInt(saved, 10);
+        if (!(y > 0)) return; // 0 (or top) => let the normal intro run from the top
+
+        function apply() {
+          window.scrollTo(0, y);
+          if (window.lenis) {
+            try { window.lenis.scrollTo(y, { immediate: true, force: true }); } catch (e) {}
+          }
+        }
+        apply();
+        window.addEventListener("DOMContentLoaded", apply);
+        window.addEventListener("load", function () {
+          apply();
+          requestAnimationFrame(apply);
+          setTimeout(apply, 150);
+          setTimeout(apply, 400);
+        });
+      })();
+    </script>
     <script>
        /* ... lenis script ... */
       import Lenis from "lenis";
