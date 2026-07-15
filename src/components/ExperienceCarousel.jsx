@@ -48,7 +48,6 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items }) => {
       <div
         className="overflow-hidden py-12 -my-12"
         ref={emblaRef}
-        data-lenis-prevent
         style={{
           WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
           maskImage: 'linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%)',
