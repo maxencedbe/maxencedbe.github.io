@@ -171,7 +171,23 @@ html {
   }
 
   #contact::before {
-    animation: wave-flow-left 3s linear infinite;
+    animation: wave-flow-left 4s linear infinite;
+  }
+
+  /* The footer keeps its backdrop-filter glass, which can't fade at a fractional
+     opacity without the glass compositing wrong (it stayed oddly prominent while
+     the rest of the section faded — the "weird colour"). So rather than fade it
+     with the section, hold it hidden through the section's 1s opacity reveal, then
+     flip it to full opacity in a single step (never fractional) and slide it up —
+     a navbar-like entrance that leaves the glass colour exactly as designed. */
+  #contact footer {
+    transition: opacity 0s linear 1.05s,
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.05s;
+  }
+
+  body.is-loading #contact footer {
+    opacity: 0;
+    transform: translateY(40px);
   }
 
   .wave-exit {
