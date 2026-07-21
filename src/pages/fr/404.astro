@@ -4,12 +4,17 @@ import Layout from "../../layouts/Layout.astro";
 
 <Layout title="Page non trouvée" showNavbar={false} isLocked={true}>
   <main
-    class="flex flex-1 flex-col items-center justify-center text-center px-4 pt-40 md:pt-24"
+    class="flex flex-1 flex-col items-center justify-center text-center px-4"
   >
     <h1 class="animate-type text-black dark:text-white md:text-6xl md:pb-2">
       404 | Page non trouvée
     </h1>
-    <a href="/fr" class="back-button"> Retour à l'accueil </a>
+    <a
+      href="/fr"
+      class="back-button inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(10,10,10,0.88)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.15)] hover:bg-pink-400 hover:border-pink-400 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(244,114,182,0.4)] hover:scale-[1.01] rounded-xl font-medium text-sm no-underline transition-all duration-300 active:scale-95"
+    >
+      Retour à l'accueil
+    </a>
   </main>
 
   <style>
@@ -53,51 +58,6 @@ import Layout from "../../layouts/Layout.astro";
       }
     }
 
-    .back-button {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      padding: 12px 24px;
-      font-size: 1.25rem;
-      font-weight: 500;
-      color: #000;
-      background-color: rgba(255, 255, 255, 0.9);
-      border: 1px solid rgba(0, 0, 0, 0.1);
-      border-radius: 15px;
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      text-decoration: none;
-      transition:
-        background-color 0.3s ease,
-        color 0.3s ease,
-        transform 0.2s ease;
-      cursor: pointer;
-      box-shadow:
-        0px 3px 6px rgba(0, 0, 0, 0.05),
-        0px 8px 15px rgba(0, 0, 0, 0.1);
-    }
-
-    :global(.dark) .back-button {
-      color: #fff;
-      background-color: rgba(0, 0, 0, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.35);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      box-shadow:
-        0 3px 6px rgba(0, 0, 0, 0.2),
-        0 8px 15px rgba(0, 0, 0, 0.4);
-    }
-
-    .back-button:hover {
-      background-color: #000;
-      color: #fff;
-    }
-
-    :global(.dark) .back-button:hover {
-      background-color: #fff;
-      color: #000;
-    }
-
     @media (max-width: 1024px) {
       .animate-type {
         font-size: 2rem;
@@ -114,10 +74,6 @@ import Layout from "../../layouts/Layout.astro";
 
         top: 50%;
         transform: translateY(-90%);
-      }
-      .back-button {
-        padding: 10px 20px;
-        font-size: 0.75rem;
       }
     }
 
@@ -137,10 +93,6 @@ import Layout from "../../layouts/Layout.astro";
 
         top: 50%;
         transform: translateY(-50%);
-      }
-      .back-button {
-        padding: 10px 20px;
-        font-size: 0.75rem;
       }
     }
   </style>

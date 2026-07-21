@@ -214,6 +214,11 @@ const isLockedPage = isLocked;
       #background-pattern.dots-visible {
         opacity: 1;
       }
+      /* Locked pages (404) skip the constellation intro entirely: content is
+         never hidden, and the dot pattern just fades in quickly. */
+      body.is-locked #background-pattern {
+        transition: opacity 0.3s ease;
+      }
       /* Content & SideNav fade */
       #content-wrapper {
         transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
@@ -234,7 +239,7 @@ const isLockedPage = isLocked;
     </style>
   </head>
   <body
-    class="flex flex-col min-h-screen is-loading"
+    class={`flex flex-col min-h-screen ${isLocked ? "is-locked" : "is-loading"}`}
   >
 
     <div id="background-pattern" class="fixed inset-0 -z-50 pointer-events-none bg-dots"></div>
@@ -252,7 +257,7 @@ const isLockedPage = isLocked;
       </defs>
     </svg>
 
-    <AnimatedBackground client:only="react" transition:persist="background" />
+    <AnimatedBackground client:only="react" transition:persist="background" instant={isLocked} />
     {
       showNavbar && (
         <div id="navbar-wrapper-el">
@@ -264,10 +269,9 @@ const isLockedPage = isLocked;
         </div>
       )
     }
-    <div
-      class="w-full h-[65px] md:h-[120px]"
-    >
-    </div>
+    {showNavbar && (
+      <div class="w-full h-[65px] md:h-[120px]"></div>
+    )}
     <div id="content-wrapper" class="flex-1 flex flex-col">
     <main
       class={`transition-container flex-1 flex flex-col ${!showNavbar ? "no-navbar" : ""}`}
@@ -275,15 +279,19 @@ const isLockedPage = isLocked;
       <slot />
     </main>
     </div>
-    <BackToTop client:load />
-<div id="sidenav-wrapper-el">
-      <SideNav client:load />
-    </div>
+    {!isLocked && <BackToTop client:load />}
+    {!isLocked && (
+      <div id="sidenav-wrapper-el">
+        <SideNav client:load />
+      </div>
+    )}
     <ScrollObserver client:only="react" />
     <CustomCursor client:only="react" />
-    <div id="progressbar-wrapper-el">
-      <ProgressBar client:load />
-    </div>
+    {!isLocked && (
+      <div id="progressbar-wrapper-el">
+        <ProgressBar client:load />
+      </div>
+    )}
     <script>
       // Track real Astro client-side navigations vs F5 reloads
       let isAstroNavigation = false;

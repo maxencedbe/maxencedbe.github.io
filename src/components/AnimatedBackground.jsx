@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { gsap, Circ } from "gsap";
 import "../styles/animatedBackground.css";
 
-export default function AnimatedBackground() {
+export default function AnimatedBackground({ instant = false }) {
   const canvasRef = useRef(null);
   const headerRef = useRef(null);
 
@@ -19,8 +19,10 @@ export default function AnimatedBackground() {
     let animateHeader = true;
     let animationFrameId;
     let isDark = document.documentElement.classList.contains("dark");
-    const revealSpread = 2500;
-    const pointFadeDuration = 400;
+    // `instant` (locked pages such as 404) skips the staggered constellation
+    // build-up so the page just fades in quickly instead of playing the intro.
+    const revealSpread = instant ? 0 : 2500;
+    const pointFadeDuration = instant ? 200 : 400;
     const revealStart = performance.now();
 
     setTimeout(() => {
