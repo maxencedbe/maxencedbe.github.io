@@ -135,9 +135,18 @@ html {
     background-color: rgba(255, 255, 255, 0.06);
   }
 
-  @keyframes wave-flow {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-33.333%); }
+  /* Waves flow by animating `left`, never `transform`. A transform promotes the
+     pseudo-element onto its own compositing layer, which rounds to a different
+     device pixel than the section's background box when that box sits at a
+     fractional Y — leaving a 1px hairline of page background between the wave and
+     the section. Whether it shows depends on the device's pixel ratio and zoom,
+     which is why the seam appeared on some screens only. Animating `left` keeps
+     the wave on the main paint layer so it rounds together with the section.
+     Overlapping the wave instead is not an option: both are translucent, so an
+     overlap paints a darker band. */
+  @keyframes wave-flow-left {
+    from { left: 0; }
+    to   { left: -100%; }
   }
 
   .section-bg-reveal::before {
@@ -150,26 +159,15 @@ html {
     background-color: rgba(0, 0, 0, 0.07);
     clip-path: url(#wave-clip-top);
     pointer-events: none;
-    animation: wave-flow 3s linear infinite;
+    animation: wave-flow-left 3s linear infinite;
   }
 
   html.dark .section-bg-reveal::before {
     background-color: rgba(255, 255, 255, 0.06);
   }
 
-  /* Contact entry wave (Projects → Connect): the wave animates its flow via a
-     `transform`, which promotes it to its own compositing layer. That layer
-     rounds to a different device pixel than the section's background box (which
-     sits at a fractional Y this far down the page), leaving a 1px hairline of
-     page background between the wave and the section. Animating `left` instead
-     keeps the pseudo-element on the main paint layer, so it rounds together
-     with the section — no seam — while staying translucent (background shows
-     through). Scoped to #contact; the other waves keep the transform version. */
-  @keyframes wave-flow-left {
-    from { left: 0; }
-    to   { left: -100%; }
-  }
-
+  /* Contact's entry wave only overrides the duration, to match the exit wave
+     above it rather than running noticeably faster. */
   #contact::before {
     animation: wave-flow-left 4s linear infinite;
   }
@@ -205,7 +203,7 @@ html {
     background-color: rgba(0, 0, 0, 0.07);
     clip-path: url(#wave-clip-bottom);
     pointer-events: none;
-    animation: wave-flow 4s linear infinite reverse;
+    animation: wave-flow-left 4s linear infinite reverse;
   }
 
   html.dark .wave-exit::after {
@@ -227,10 +225,16 @@ html {
     transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
+  /* Revealed states end on `filter: none`, never `blur(0)`: blur(0) is still an
+     active filter, so the element would keep a filtered layer forever. That
+     breaks backdrop-filter on descendants (nothing left for them to sample) and
+     forces the layer to re-rasterise on every frame of a hover transform — which
+     is what made the hero buttons flicker on hover, GPU- and screen-dependent.
+     blur(8px) → none still interpolates, so the reveal stays smooth. */
   .reveal-up.is-visible {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0);
+    filter: none;
   }
 
   .reveal-down {
@@ -243,7 +247,7 @@ html {
   .reveal-down.is-visible {
     opacity: 1;
     transform: translateY(0);
-    filter: blur(0);
+    filter: none;
   }
 
   .reveal-left {
@@ -256,7 +260,7 @@ html {
   .reveal-left.is-visible {
     opacity: 1;
     transform: translateX(0);
-    filter: blur(0);
+    filter: none;
   }
 
   @keyframes heroRevealUp {
@@ -284,7 +288,7 @@ html {
   .reveal-right.is-visible {
     opacity: 1;
     transform: translateX(0);
-    filter: blur(0);
+    filter: none;
   }
   
   .reveal-scale {
@@ -297,7 +301,7 @@ html {
   .reveal-scale.is-visible {
     opacity: 1;
     transform: scale(1);
-    filter: blur(0);
+    filter: none;
   }
   
   .reveal-fade {
@@ -308,7 +312,7 @@ html {
 
   .reveal-fade.is-visible {
     opacity: 1;
-    filter: blur(0);
+    filter: none;
   }
 
   .reveal-delay-100.is-visible { transition-delay: 100ms; }
