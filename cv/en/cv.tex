@@ -43,7 +43,7 @@
     BoldFont = *-Bold.ttf,
     ItalicFont = *-Italic.ttf,
     BoldItalicFont = *-BoldItalic.ttf
-]{Poppins}
+]{IBMPlexSans}
 
 
 %----------------------------------------------------------------------------------------
@@ -86,7 +86,7 @@
 %CV Sections inspired by: 
 %http://stefano.italians.nl/archives/26
 \titleformat{\section}{\Large\raggedright}{}{0em}{}[\titlerule]
-\titlespacing{\section}{0pt}{3pt}{2pt}
+\titlespacing{\section}{0pt}{6pt}{2pt}
 
 %for publications
 % \usepackage[style=authoryear,sorting=ynt, maxbibnames=2]{biblatex}
@@ -111,10 +111,13 @@
     {
     }
 
-\newenvironment{joblong}[2]
+% #1 role --- company (bold), #2 location (plain), #3 dates (flush right).
+% The location rides in the left column on purpose: each entry is its own
+% tabularx, so a middle column would not align across entries.
+\newenvironment{joblong}[3]
     {
     \begin{tabularx}{\linewidth}{@{}l X r@{}}
-    \textbf{#1} & \hfill &  #2
+    \textbf{#1} \textbar\ #2 & \hfill &  #3
     \end{tabularx}
     \begin{minipage}[t]{\linewidth}
     \begin{itemize}[nosep,after=\strut, leftmargin=1em, itemsep=0pt,label=--]
@@ -161,8 +164,25 @@
 
 %Summary
 \noindent
-MSc Data Science student with a strong academic background in mathematics and computer science, specialized in Machine Learning and AI --- combining mathematical rigor with advanced Python to build robust, data-driven solutions.\\
-[-8pt]
+MSc Data Science student with a strong academic background in Mathematics and Computer Science, specialized in Machine Learning and AI. I enjoy solving complex technical problems by combining mathematical rigor with advanced Python to build robust, data-driven solutions.\\
+Currently seeking a full-time position from October 2026.\\
+[-12pt]
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION
+%----------------------------------------------------------------------------------------
+\section{Education}
+
+\begin{tabularx}{\linewidth}{@{}X r@{}}
+\textbf{École Polytechnique --- Polytechnic Institute of Paris} & 2025 -- present\\
+\end{tabularx} \\
+MSc Data Science\\[1pt]
+\textit{\textbf{Relevant coursework:} ALTEGRAD (joint MVA course), Deep Learning, Reinforcement Learning, Representation Learning (MVA), Generative Models, Optimization for Data Science.} \\[6pt]
+\begin{tabularx}{\linewidth}{@{}X r@{}}
+\textbf{Télécom SudParis --- Polytechnic Institute of Paris} & 2023 -- present\\
+\end{tabularx}\\
+Master's degree in Computer Science and Applied Mathematics\\[1pt]
+\textit{\textbf{Relevant coursework:} Statistics and Data Analysis, Optimization, Machine Learning and Data Mining, Stochastic Processes, Continuous Optimization for Learning.}\\[-12pt]
 
 %----------------------------------------------------------------------------------------
 %	PROJECTS
@@ -171,23 +191,23 @@ MSc Data Science student with a strong academic background in mathematics and co
 
 \begin{project}{Hi! PARIS Hi!ckathon 2025 (2nd place)}
 {\href{https://github.com/maxencedbe/hi_paris_2025}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Ranked 2nd out of 80+ teams in the 2025 edition of the Hi!Paris data science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds.
-    \item Engineered a Gated Model (router composed of two XGBoost regressors), achieving an $R^{2}$ score of 0.79 on the final test set.
+    \item Ranked 2nd out of 80+ teams in the 2025 edition of the Hi! PARIS Data Science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds.
+    \item Engineered a gated model routing each sample to one of two XGBoost regressors based on a feature threshold, achieving an R\textsuperscript{2} of 0.79 on the public leaderboard.
 \end{project}\vspace{-6pt}
 
-\begin{project}{Molecular Graph Captioning (Kaggle Competition)}
+\begin{project}{Molecular Graph Captioning (Kaggle competition)}
 {\href{https://github.com/maxencedbe/molecular_graph_captioning}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Development of a retrieval-based architecture using contrastive learning to align molecular graph embeddings with natural language descriptions in a joint latent space.
-    \item Implementation of a dedicated graph neural network encoder using PyTorch Geometric, optimized for semantic alignment through BERTScore and BLEU-4 metrics.
+    \item Built a retrieval-based architecture using contrastive learning to align molecular graph embeddings with natural language descriptions in a joint latent space.
+    \item Implemented a dedicated graph neural network encoder using PyTorch Geometric, optimized for semantic alignment through BERTScore and BLEU-4 metrics.
 \end{project}\vspace{-6pt}
 
-\begin{project}{Streaming Safety Classifier for LLMs --- Capstone Project with DragonLLM}
+\begin{project}{Streaming Safety Classifier for LLMs --- Capstone Project with DragonLLM (now OVHai LLM)}
 {\href{https://github.com/maxencedbe/capstone_dragonllm}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Reproduced the toxicity classifier from the Qwen3Guard technical report: synthesized diverse toxic and safe conversations with Qwen3-30B and labeled them using Qwen3Guard's safety classifier.
-    \item Trained a lightweight per-token safety head on top of a frozen Qwen backbone for real-time, streaming unsafe-content detection.
+    \item Reproduced the Qwen3Guard toxicity classifier: built a token-level labeled dataset of 24K toxic and safe Q\&A samples, synthesized and labeled with Qwen3-30B.
+    \item Trained a lightweight per-token safety head on a frozen Qwen backbone to interrupt harmful generations in real time.
 \end{project}\vspace{-6pt}
 
-\begin{project}{Data Privacy \& Anonymization --- Project Cassiopee}
+\begin{project}{Data Privacy \& Anonymization --- Project Cassiopée}
 {\href{https://github.com/maxencedbe/Cassiopee}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
     \item Assessed privacy and re-identification risks in anonymized datasets through OSINT case studies, and proposed data-protection strategies. Conducted at Télécom SudParis.
 \end{project}\vspace{-6pt}
@@ -204,42 +224,36 @@ MSc Data Science student with a strong academic background in mathematics and co
 %Experience
 \section{Work Experience}
 
-\begin{joblong}{Data Science Intern --- ChemAI}{Apr 2026 --- present}
-\item Building and analyzing a graph database of chemical reactions to extract actionable insights.
+\begin{joblong}{Data Science Intern --- ChemAI}{Munich, Germany}{Apr 2026 -- present}
+\item Designing the architecture of, and building, a graph database of 30M chemical reactions.
+\item Running graph-native analyses to surface insights on the data's diversity, structure and reaction patterns.
+\item Training ML models that leverage the graph structure for predictive analytics on chemical reactions.
 \end{joblong}\vspace{-6pt}
 
-\begin{joblong}{IT Data Governance Intern --- Batigere Maison Familiale}{Jul 2025 --- Aug 2025}
-\item Optimized digital infrastructure by migrating the company to SharePoint in order to enhance collaboration and document management, with adoption by 100\% of employees.
-\item Designed and implemented a GDPR compliance policy, reinforcing data security and ensuring regulatory compliance.
+\begin{joblong}{IT Data Governance Intern --- Batigère Maison Familiale}{Metz, France}{Jul 2025 -- Aug 2025}
+\item Migrated the company to SharePoint --- adopted by 100\% of employees --- and designed a GDPR compliance policy reinforcing data security.
 \end{joblong}\vspace{-6pt}
 
-\begin{joblong}{Software Engineer Intern --- Atos}{Jul 2024 --- Aug 2024}
+\begin{joblong}{Software Engineer Intern --- Atos}{Metz, France}{Jul 2024 -- Aug 2024}
 \item Designed and implemented a telework tracking application using the JHipster application generator to facilitate accessibility to workstations.
 \end{joblong} \\[-16pt]
-
-%----------------------------------------------------------------------------------------
-%	EDUCATION
-%----------------------------------------------------------------------------------------
-\section{Education}
-\begin{tabularx}{\linewidth}{@{}X r@{}}
-\textbf{École Polytechnique --- Polytechnic Institute of Paris} & 2025 --- present\\
-\end{tabularx} \\
-MSc Data Science\\[1pt]
-\textit{\textbf{Relevant coursework:} ALTEGRAD (Joint MVA Course), Deep Learning, Reinforcement Learning, Representation Learning (MVA), Generative Models, Optimization for Data Science.} \\[6pt]
-\begin{tabularx}{\linewidth}{@{}X r@{}}
-\textbf{Télécom SudParis --- Polytechnic Institute of Paris} & 2023 --- present\\
-\end{tabularx}\\
-Master's Degree in Computer Science and Applied Mathematics\\[1pt]
-\textit{\textbf{Relevant coursework:} Statistics and Data Analysis, Optimization, Machine Learning and Data Mining, Stochastic Processes, Continuous Optimization for Learning.}\\[-8pt]
 
 %----------------------------------------------------------------------------------------
 %	SKILLS
 %----------------------------------------------------------------------------------------
 \section{Skills \& Interests}
 
-\textbf{Technical Skills:} Python, PyTorch, Transformers, Scikit-learn, Pandas, SQL, Java, Git, Linux, \LaTeX\\
-\textbf{Languages:} French (native), English (C1 --- TOEIC 965/990), German (A2)\\
-\textbf{Engagement \& Interests:} Former President of student association; Handball (Competitive) \& Music
+% Ce bloc est le seul dont la première ligne est du texte plein largeur (et non
+% un titre suivi de blanc) : à écart égal il paraît coller au filet, d'où ce
+% léger dégagement supplémentaire.
+\vspace{3pt}
+% \mbox keeps "Scikit-learn" from being hyphen-split (so ATS parses it whole);
+% the tiny emergencystretch lets that rigid word settle without an overfull box.
+\begingroup\emergencystretch=3em
+\textbf{Technical Skills:} Python, Java, SQL, Cypher \textbar\ PyTorch, PyG, Hugging Face, Transformers, PEFT (LoRA/QLoRA), \mbox{Scikit-learn}, NumPy, Pandas, Matplotlib \textbar\ vLLM, Ollama, Neo4j, Weights \& Biases \textbar\ Git, Docker, Bash, Linux, LaTeX\\
+\textbf{Soft Skills:} Leadership, teamwork, adaptability, technical communication\\
+\textbf{Languages:} French (native), English (C1 -- TOEIC 965/990), German (A2)\\
+\textbf{Engagement \& Interests:} Former president of a student association, competitive handball, music\par\endgroup
 
 \vfill
 \end{document}
