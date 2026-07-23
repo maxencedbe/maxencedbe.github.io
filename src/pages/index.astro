@@ -153,12 +153,22 @@ const educationFr = [
               {[
                 { name: "Python", icon: "https://cdn.simpleicons.org/python" },
                 { name: "PyTorch", icon: "https://cdn.simpleicons.org/pytorch" },
-                { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
+                { name: "PyG", icon: "" },
                 { name: "Transformers", icon: "https://cdn.simpleicons.org/huggingface" },
+                { name: "Hugging Face", icon: "https://cdn.simpleicons.org/huggingface" },
                 { name: "Scikit-learn", icon: "https://cdn.simpleicons.org/scikitlearn" },
+                { name: "NumPy", icon: "https://cdn.simpleicons.org/numpy" },
+                { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
+                { name: "Matplotlib", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg" },
+                { name: "PEFT", icon: "" },
+                { name: "vLLM", icon: "" },
+                { name: "Ollama", icon: "https://cdn.simpleicons.org/ollama" },
+                { name: "Weights & Biases", icon: "https://cdn.simpleicons.org/weightsandbiases" },
               ].map((skill) => (
                 <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
-                  <img src={skill.icon} alt="" class="w-3.5 h-3.5 brightness-0 dark:invert" aria-hidden="true" />
+                  {skill.icon ? (
+                    <img src={skill.icon} alt="" class="w-3.5 h-3.5 brightness-0 dark:invert" aria-hidden="true" />
+                  ) : null}
                   {skill.name}
                 </span>
               ))}
@@ -172,11 +182,15 @@ const educationFr = [
             <h3 data-i18n="skills.prog" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Programming & tools</h3>
             <div class="flex flex-wrap gap-2 relative z-10 justify-center lg:justify-start">
               {[
-                { name: "Linux", icon: "https://cdn.simpleicons.org/linux" },
-                { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg" },
-                { name: "Git", icon: "https://cdn.simpleicons.org/git" },
                 { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
                 { name: "SQL", icon: "inline-db" },
+                { name: "Cypher", icon: "" },
+                { name: "Neo4j", icon: "https://cdn.simpleicons.org/neo4j" },
+                { name: "Git", icon: "https://cdn.simpleicons.org/git" },
+                { name: "Docker", icon: "https://cdn.simpleicons.org/docker" },
+                { name: "Bash", icon: "https://cdn.simpleicons.org/gnubash" },
+                { name: "Linux", icon: "https://cdn.simpleicons.org/linux" },
+                { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg" },
               ].map((skill) => (
                 <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
                   {skill.icon === "inline-db" ? (
