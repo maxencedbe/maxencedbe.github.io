@@ -10,7 +10,7 @@
 %	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 %	copies of the Software, and to permit persons to whom the Software is
 %	furnished to do so, subject to the following conditions:
-%	
+%
 %	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 %	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 %	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -18,7 +18,7 @@
 %	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 %	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 %	THE SOFTWARE.
-%	
+%
 %
 %-----------------------------------------------------------------------------------------------------------------------------------------------%
 
@@ -43,14 +43,14 @@
     BoldFont = *-Bold.ttf,
     ItalicFont = *-Italic.ttf,
     BoldItalicFont = *-BoldItalic.ttf
-]{Poppins}
+]{IBMPlexSans}
 
 
 %----------------------------------------------------------------------------------------
 %	PACKAGES
 %----------------------------------------------------------------------------------------
 \usepackage{url}
-\usepackage{parskip} 	
+\usepackage{parskip}
 
 %other packages for formatting
 \RequirePackage{color}
@@ -70,7 +70,7 @@
 \usepackage{enumitem}
 
 % centered version of 'X' col. type
-\newcolumntype{C}{>{\centering\arraybackslash}X} 
+\newcolumntype{C}{>{\centering\arraybackslash}X}
 
 %to prevent spillover of tabular into next pages
 \usepackage{supertabular}
@@ -79,14 +79,14 @@
 \setlength{\fullcollw}{0.47\textwidth}
 
 %custom \section
-\usepackage{titlesec}				
+\usepackage{titlesec}
 \usepackage{multicol}
 \usepackage{multirow}
 
-%CV Sections inspired by: 
+%CV Sections inspired by:
 %http://stefano.italians.nl/archives/26
 \titleformat{\section}{\Large\raggedright}{}{0em}{}[\titlerule]
-\titlespacing{\section}{0pt}{1pt}{1pt}
+\titlespacing{\section}{0pt}{6pt}{2pt}
 
 %for publications
 % \usepackage[style=authoryear,sorting=ynt, maxbibnames=2]{biblatex}
@@ -111,10 +111,13 @@
     {
     }
 
-\newenvironment{joblong}[2]
+% #1 poste --- entreprise (gras), #2 lieu (normal), #3 dates (aligné à droite).
+% Le lieu est dans la colonne de gauche à dessein : chaque entrée est son propre
+% tabularx, donc une colonne du milieu ne s'alignerait pas d'une entrée à l'autre.
+\newenvironment{joblong}[3]
     {
     \begin{tabularx}{\linewidth}{@{}l X r@{}}
-    \textbf{#1} & \hfill &  #2
+    \textbf{#1} \textbar\ #2 & \hfill &  #3
     \end{tabularx}
     \begin{minipage}[t]{\linewidth}
     \begin{itemize}[nosep,after=\strut, leftmargin=1em, itemsep=0pt,label=--]
@@ -143,7 +146,7 @@
 \begin{document}
 
 % non-numbered pages
-\pagestyle{empty} 
+\pagestyle{empty}
 
 %----------------------------------------------------------------------------------------
 %	TITLE
@@ -161,36 +164,53 @@
 
 %Summary
 \noindent
-Étudiant en Master de Data Science avec une solide formation académique en mathématiques et informatique, spécialisé en Machine Learning et en IA --- combinant rigueur mathématique et programmation Python avancée pour construire des solutions robustes et data-driven.\\
-Recherche d'un stage de fin d'études de 6 mois en IA/machine learning pour le printemps–été 2026.\\[-8pt]
+Étudiant en MSc Data Science avec une solide formation académique en Mathématiques et Informatique, spécialisé en Machine Learning et en IA. J'aime résoudre des problèmes techniques complexes en combinant rigueur mathématique et programmation Python avancée pour construire des solutions robustes et data-driven.\\
+Actuellement à la recherche d'un CDI à partir d'octobre 2026.\\
+[-12pt]
 
 %----------------------------------------------------------------------------------------
-%	PROJECTS
+%	FORMATION
+%----------------------------------------------------------------------------------------
+\section{Formation}
+
+\begin{tabularx}{\linewidth}{@{}X r@{}}
+\textbf{École Polytechnique --- Institut Polytechnique de Paris} & 2025 -- présent\\
+\end{tabularx} \\
+MSc Data Science\\[1pt]
+\textit{\textbf{Cours pertinents :} ALTEGRAD (cours commun MVA), Deep Learning, Reinforcement Learning, Representation Learning (MVA), Generative Models, Optimisation pour la Data Science.} \\[6pt]
+\begin{tabularx}{\linewidth}{@{}X r@{}}
+\textbf{Télécom SudParis --- Institut Polytechnique de Paris} & 2023 -- présent\\
+\end{tabularx}\\
+Master en Informatique et Mathématiques Appliquées\\[1pt]
+\textit{\textbf{Cours pertinents :} Statistiques et Analyse de Données, Optimisation, Machine Learning et Data Mining, Processus Stochastiques, Optimisation Continue pour l'Apprentissage.}\\[-12pt]
+
+%----------------------------------------------------------------------------------------
+%	PROJETS
 %-----------------------------
 \section{Projets}
 
-\begin{project}{Hi! PARIS Hi!ckathon 2025 (2ème place)}
+\begin{project}{Hi! PARIS Hi!ckathon 2025 (2e place)}
 {\href{https://github.com/maxencedbe/hi_paris_2025}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Classé 2ème sur 80+ équipes. Objectif : prédire les scores PISA d'élèves à partir de contextes socio-économiques complexes.
-    \item Conception d'un modèle Gated (routeur composé de deux régresseurs XGBoost), atteignant un score $R^{2}$ de 0.79 sur le jeu de test final.
-\end{project}\vspace{-8pt}
+    \item Classé 2e sur 80+ équipes lors de l'édition 2025 du Hi! PARIS Data Science hackathon. Objectif : prédire les scores PISA d'élèves à partir de contextes socio-économiques complexes.
+    \item Conception d'un modèle gated aiguillant chaque échantillon vers l'un de deux régresseurs XGBoost selon un seuil sur une feature, atteignant un R\textsuperscript{2} de 0.79 sur le classement public.
+\end{project}\vspace{-6pt}
 
 \begin{project}{Molecular Graph Captioning (compétition Kaggle)}
 {\href{https://github.com/maxencedbe/molecular_graph_captioning}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Développement d'une architecture utilisant l'apprentissage contrastif pour aligner les embeddings de graphes moléculaires avec des descriptions en langage naturel dans un espace latent commun.
+    \item Développement d'une architecture de retrieval par apprentissage contrastif pour aligner les embeddings de graphes moléculaires avec des descriptions en langage naturel dans un espace latent commun.
     \item Implémentation d'un encodeur de réseau de neurones de graphes dédié avec PyTorch Geometric, optimisé pour l'alignement sémantique via les métriques BERTScore et BLEU-4.
-\end{project}\vspace{-8pt}
+\end{project}\vspace{-6pt}
 
-\begin{project}{Classifieur de sécurité en streaming pour LLM --- Capstone Project with DragonLLM}
+\begin{project}{Classifieur de sécurité en streaming pour LLM --- Capstone avec DragonLLM (maintenant OVHai LLM)}
 {\href{https://github.com/maxencedbe/capstone_dragonllm}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Reproduction du classifieur de toxicité du rapport technique Qwen3Guard : synthèse de conversations toxiques et sûres avec Qwen3-30B, puis labellisation via le classifieur de sécurité de Qwen3Guard.
-    \item Entraînement d'une tête de sécurité légère au-dessus d'un backbone Qwen gelé pour une détection de contenu nuisible en temps réel, token par token.
-\end{project}\vspace{-8pt}
+    \item Reproduction du classifieur de toxicité Qwen3Guard : construction d'un jeu de données labellisé au niveau du token de 24K échantillons de Q\&A toxiques et sûrs, synthétisés et labellisés avec Qwen3-30B.
+    \item Entraînement d'une tête de sécurité légère et par token sur un backbone Qwen gelé pour interrompre les générations nuisibles en temps réel.
+\end{project}\vspace{-6pt}
 
 \begin{project}{Protection des données \& anonymisation --- Projet Cassiopée}
 {\href{https://github.com/maxencedbe/Cassiopee}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
     \item Évaluation des risques de confidentialité et de ré-identification dans des jeux de données anonymisés via des études de cas OSINT, et proposition de stratégies de protection des données. Réalisé à Télécom SudParis.
-\end{project}\vspace{-8pt}
+\end{project}\vspace{-6pt}
 
 \begin{project}{Optimisation de parking automatisé}
 {\href{https://github.com/maxencedbe/parking-optimization}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
@@ -204,42 +224,36 @@ Recherche d'un stage de fin d'études de 6 mois en IA/machine learning pour le p
 %Experience
 \section{Expérience professionnelle}
 
-\begin{joblong}{Stagiaire Data Science --- ChemAI}{Avril 2026 --- présent}
-\item Construction et analyse d'une base de données de graphes de réactions chimiques afin d'en extraire des insights exploitables.
-\end{joblong}\vspace{-8pt}
+\begin{joblong}{Stagiaire Data Science --- ChemAI}{Munich, Allemagne}{Avril 2026 -- présent}
+\item Conception de l'architecture et construction d'une base de données de graphes de 30M de réactions chimiques.
+\item Analyses natives sur graphe pour faire émerger des insights sur la diversité, la structure et les motifs de réaction des données.
+\item Entraînement de modèles ML exploitant la structure de graphe pour de l'analyse prédictive sur les réactions chimiques.
+\end{joblong}\vspace{-6pt}
 
-\begin{joblong}{Stagiaire en Gouvernance des Données IT --- Batigère Maison Familiale}{Juillet 2025 --- Août 2025}
-\item Migration de l'entreprise vers SharePoint pour améliorer la collaboration et la gestion documentaire (adoption par 100\% des employés).
-\item Conception et mise en œuvre d'une politique de conformité RGPD, renforçant la sécurité des données et assurant la conformité réglementaire.
-\end{joblong}\vspace{-8pt}
+\begin{joblong}{Stagiaire en Gouvernance des Données IT --- Batigère Maison Familiale}{Metz, France}{Juillet 2025 -- Août 2025}
+\item Migration de l'entreprise vers SharePoint --- adoptée par 100\% des employés --- et conception d'une politique de conformité RGPD renforçant la sécurité des données.
+\end{joblong}\vspace{-6pt}
 
-\begin{joblong}{Stagiaire Ingénieur Logiciel --- Atos}{Juillet 2024 --- Août 2024}
-\item Conception et implémentation d'une application de suivi du télétravail grâce au générateur d'applications JHipster, facilitant l'accessibilité aux postes de travail.
+\begin{joblong}{Stagiaire Ingénieur Logiciel --- Atos}{Metz, France}{Juillet 2024 -- Août 2024}
+\item Conception et implémentation d'une application de suivi du télétravail avec le générateur d'applications JHipster pour faciliter l'accessibilité aux postes de travail.
 \end{joblong} \\[-16pt]
-
-%----------------------------------------------------------------------------------------
-%	EDUCATION
-%----------------------------------------------------------------------------------------
-\section{Formation}
-\begin{tabularx}{\linewidth}{@{}X r@{}}
-\textbf{École Polytechnique --- Institut Polytechnique de Paris} & 2025 --- présent\\
-\end{tabularx} \\
-Master Data Science\\[1pt]
-\textit{\textbf{Cours pertinents :} ALTEGRAD (cours commun MVA), Deep Learning, Reinforcement Learning, Representation Learning (MVA), Generative Models, Optimisation pour la Data Science.} \\[6pt]
-\begin{tabularx}{\linewidth}{@{}X r@{}}
-\textbf{Télécom SudParis --- Institut Polytechnique de Paris} & 2023 --- présent\\
-\end{tabularx}\\
-Diplôme d'ingénieur en Informatique et Mathématiques Appliquées\\[1pt]
-\textit{\textbf{Cours pertinents :} Statistiques et analyse de données, Optimisation, Machine Learning et Data Mining, Processus stochastiques, Optimisation continue pour l'apprentissage.}\\[-8pt]
 
 %----------------------------------------------------------------------------------------
 %	SKILLS
 %----------------------------------------------------------------------------------------
 \section{Compétences \& Centres d'intérêt}
 
-\textbf{Compétences techniques :} Python, PyTorch, Transformers, Scikit-learn, Pandas, SQL, Java, Git, Linux, \LaTeX\\
-\textbf{Langues :} Français (natif), Anglais (C1 --- TOEIC 965/990), Allemand (A2)\\
-\textbf{Engagement \& centres d'intérêt :} Ancien président d'association étudiante, handball (compétition), musique
+% Ce bloc est le seul dont la première ligne est du texte plein largeur (et non
+% un titre suivi de blanc) : à écart égal il paraît coller au filet, d'où ce
+% léger dégagement supplémentaire.
+\vspace{3pt}
+% \mbox garde « Scikit-learn » d'un seul tenant (parsing ATS) ; le petit
+% emergencystretch laisse ce mot rigide se placer sans déborder la marge.
+\begingroup\emergencystretch=3em
+\textbf{Compétences techniques :} Python, Java, SQL, Cypher \textbar\ PyTorch, PyG, Hugging Face, Transformers, PEFT (LoRA/QLoRA), \mbox{Scikit-learn}, NumPy, Pandas, Matplotlib \textbar\ vLLM, Ollama, Neo4j, Weights \& Biases \textbar\ Git, Docker, Bash, Linux, LaTeX\\
+\textbf{Compétences comportementales :} Leadership, travail d'équipe, adaptabilité, communication technique\\
+\textbf{Langues :} Français (natif), Anglais (C1 -- TOEIC 965/990), Allemand (A2)\\
+\textbf{Engagement \& centres d'intérêt :} Ancien président d'une association étudiante, handball (compétition), musique\par\endgroup
 
 \vfill
 \end{document}
