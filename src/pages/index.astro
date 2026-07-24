@@ -144,59 +144,67 @@ const educationFr = [
         Skills & interests
       </h2>
 
-      <div class="flex flex-col lg:flex-row gap-6 items-stretch w-full">
-        <div class="flex-[1.1] w-full reveal-up reveal-delay-200">
-          <div class="glass-card p-6 h-full">
-            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
-            <h3 data-i18n="skills.data" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Data Science & AI</h3>
-            <div class="flex flex-wrap gap-2 relative z-10 justify-center lg:justify-start">
-              {[
-                { name: "Python", icon: "https://cdn.simpleicons.org/python" },
-                { name: "PyTorch", icon: "https://cdn.simpleicons.org/pytorch" },
-                { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
-                { name: "Transformers", icon: "https://cdn.simpleicons.org/huggingface" },
-                { name: "Scikit-learn", icon: "https://cdn.simpleicons.org/scikitlearn" },
-              ].map((skill) => (
-                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
-                  <img src={skill.icon} alt="" class="w-3.5 h-3.5 brightness-0 dark:invert" aria-hidden="true" />
-                  {skill.name}
-                </span>
-              ))}
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+        {[
+          { key: "skills.langs", label: "Languages & Databases", chips: [
+            { name: "Python", icon: "https://cdn.simpleicons.org/python" },
+            { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
+            { name: "SQL", icon: "inline-db" },
+            { name: "Cypher", icon: "" },
+            { name: "Neo4j", icon: "https://cdn.simpleicons.org/neo4j" },
+          ] },
+          { key: "skills.ml", label: "ML & Deep Learning", chips: [
+            { name: "PyTorch", icon: "https://cdn.simpleicons.org/pytorch" },
+            { name: "PyG", icon: "" },
+            { name: "Scikit-learn", icon: "https://cdn.simpleicons.org/scikitlearn" },
+            { name: "PEFT", icon: "" },
+          ] },
+          { key: "skills.dataviz", label: "Data & Viz", chips: [
+            { name: "NumPy", icon: "https://cdn.simpleicons.org/numpy" },
+            { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
+            { name: "Matplotlib", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-original.svg" },
+          ] },
+          { key: "skills.llm", label: "LLMs & MLOps", chips: [
+            { name: "Transformers", icon: "https://cdn.simpleicons.org/huggingface" },
+            { name: "Hugging Face", icon: "https://cdn.simpleicons.org/huggingface" },
+            { name: "vLLM", icon: "" },
+            { name: "Ollama", icon: "https://cdn.simpleicons.org/ollama" },
+            { name: "Weights & Biases", icon: "https://cdn.simpleicons.org/weightsandbiases" },
+          ] },
+          { key: "skills.tools", label: "Tools", chips: [
+            { name: "Git", icon: "https://cdn.simpleicons.org/git" },
+            { name: "Docker", icon: "https://cdn.simpleicons.org/docker" },
+            { name: "Bash", icon: "https://cdn.simpleicons.org/gnubash" },
+            { name: "Linux", icon: "https://cdn.simpleicons.org/linux" },
+            { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg" },
+          ] },
+        ].map((card) => (
+          <div class="reveal-up reveal-delay-200">
+            <div class="glass-card p-6 h-full">
+              <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
+              <h3 data-i18n={card.key} class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">{card.label}</h3>
+              <div class="flex flex-wrap gap-2 relative z-10 justify-center lg:justify-start">
+                {card.chips.map((skill) => (
+                  <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+                    {skill.icon === "inline-db" ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                      </svg>
+                    ) : skill.icon ? (
+                      <img src={skill.icon} alt="" class="w-3.5 h-3.5 brightness-0 dark:invert" aria-hidden="true" />
+                    ) : null}
+                    {skill.name}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
+        ))}
 
-        <div class="flex-[0.85] w-full reveal-up reveal-delay-300">
+        <div class="reveal-up reveal-delay-200">
           <div class="glass-card p-6 h-full">
             <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
-            <h3 data-i18n="skills.prog" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Programming & tools</h3>
-            <div class="flex flex-wrap gap-2 relative z-10 justify-center lg:justify-start">
-              {[
-                { name: "Linux", icon: "https://cdn.simpleicons.org/linux" },
-                { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg" },
-                { name: "Git", icon: "https://cdn.simpleicons.org/git" },
-                { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg" },
-                { name: "SQL", icon: "inline-db" },
-              ].map((skill) => (
-                <span class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
-                  {skill.icon === "inline-db" ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
-                    </svg>
-                  ) : skill.icon ? (
-                    <img src={skill.icon} alt="" class="w-3.5 h-3.5 brightness-0 dark:invert" aria-hidden="true" />
-                  ) : null}
-                  {skill.name}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div class="flex-1 w-full reveal-up reveal-delay-400">
-          <div class="glass-card p-6 h-full">
-            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
-            <h3 data-i18n="skills.lang" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Languages</h3>
+            <h3 data-i18n="skills.lang" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Spoken languages</h3>
             <div class="flex flex-wrap gap-2 relative z-10 justify-center lg:justify-start">
               <span data-locale-fade class="px-3 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
                 <span class="grayscale">🇫🇷</span>
@@ -356,9 +364,12 @@ const educationFr = [
       'about.bio': 'I am Maxence Debes, an MSc Data Science student with a strong academic background in mathematics and computer science. My profile is deeply rooted in Data Science, with a strong specialization in Machine Learning and AI. I enjoy solving complex technical problems by combining mathematical rigor with advanced Python programming to build robust, data-driven solutions.',
       'about.work': 'Work experience',
       'about.skills': 'Skills & interests',
-      'skills.data': 'Data Science & AI',
-      'skills.prog': 'Programming & tools',
-      'skills.lang': 'Languages',
+      'skills.langs': 'Languages & Databases',
+      'skills.ml': 'ML & Deep Learning',
+      'skills.dataviz': 'Data & Viz',
+      'skills.llm': 'LLMs & MLOps',
+      'skills.tools': 'Tools',
+      'skills.lang': 'Spoken languages',
       'lang.french': 'French (native)',
       'lang.english': 'English (C1)',
       'lang.german': 'German (A2)',
@@ -382,8 +393,11 @@ const educationFr = [
       'about.bio': "Je suis Maxence Debes, étudiant en MSc Data Science avec une solide formation académique en mathématiques et en informatique. Mon profil est profondément ancré dans la Data Science, avec une forte spécialisation en Machine Learning et en IA. J'aime résoudre des problèmes techniques complexes en combinant rigueur mathématique et programmation Python avancée pour construire des solutions robustes, guidées par les données.",
       'about.work': 'Expérience professionnelle',
       'about.skills': "Compétences & centres d'intérêt",
-      'skills.data': 'Data Science & IA',
-      'skills.prog': 'Ingénierie & outils',
+      'skills.langs': 'Langages & Bases de données',
+      'skills.ml': 'ML & Deep Learning',
+      'skills.dataviz': 'Données & Viz',
+      'skills.llm': 'LLMs & MLOps',
+      'skills.tools': 'Outils',
       'skills.lang': 'Langues',
       'lang.french': 'Français (maternel)',
       'lang.english': 'Anglais (C1)',
