@@ -144,7 +144,7 @@ const educationFr = [
         Skills & interests
       </h2>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 items-start w-full">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 items-start w-full">
         {[
           { key: "skills.langs", label: "Languages & Databases", chips: [
             { name: "Python", icon: "https://cdn.simpleicons.org/python" },
@@ -159,11 +159,6 @@ const educationFr = [
             { name: "Scikit-learn", icon: "https://cdn.simpleicons.org/scikitlearn" },
             { name: "PEFT", icon: "https://cdn.simpleicons.org/huggingface" },
           ] },
-          { key: "skills.dataviz", label: "Data analysis", chips: [
-            { name: "NumPy", icon: "https://cdn.simpleicons.org/numpy" },
-            { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
-            { name: "Matplotlib", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-plain.svg" },
-          ] },
           { key: "skills.llm", label: "LLMs & MLOps", chips: [
             { name: "Transformers", icon: "https://cdn.simpleicons.org/huggingface" },
             { name: "Hugging Face", icon: "https://cdn.simpleicons.org/huggingface" },
@@ -177,6 +172,11 @@ const educationFr = [
             { name: "Bash", icon: "https://cdn.simpleicons.org/gnubash" },
             { name: "Linux", icon: "https://cdn.simpleicons.org/linux" },
             { name: "LaTeX", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/latex/latex-original.svg" },
+          ] },
+          { key: "skills.dataviz", label: "Data analysis", chips: [
+            { name: "NumPy", icon: "https://cdn.simpleicons.org/numpy" },
+            { name: "Pandas", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pandas/pandas-original.svg" },
+            { name: "Matplotlib", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/matplotlib/matplotlib-plain.svg" },
           ] },
         ].map((card) => (
           <div class="reveal-up reveal-delay-200">
