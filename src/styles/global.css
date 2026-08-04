@@ -315,6 +315,20 @@ html {
     filter: none;
   }
 
+  /* Skill chips cascade in one after another: each chip carries an inline
+     transition-delay based on its index, and the ScrollObserver toggles
+     is-visible when the card scrolls into view. */
+  .reveal-chip {
+    opacity: 0;
+    transform: translateY(6px) scale(0.96);
+    transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1), transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal-chip.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
   .reveal-delay-100.is-visible { transition-delay: 100ms; }
   .reveal-delay-200.is-visible { transition-delay: 200ms; }
   .reveal-delay-300.is-visible { transition-delay: 300ms; }
