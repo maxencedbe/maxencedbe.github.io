@@ -187,7 +187,7 @@ export default function ProjectGrid() {
             <button
               data-locale-fade
               onClick={() => setActiveFilter(key)}
-              className={`px-4 py-2 rounded-full text-sm font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer transform-gpu antialiased ${activeFilter === key ? "active" : ""}`}
+              className={`px-4 py-2 rounded-full text-sm font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 cursor-pointer transform-gpu antialiased ${activeFilter === key ? "active" : ""}`}
             >
               {labels[key]}
             </button>
@@ -263,7 +263,7 @@ export default function ProjectGrid() {
           <div className={`${showAll ? "mt-8" : "mt-12 md:mt-16"} flex justify-center reveal-up`}>
             <button
               onClick={handleToggleExpand}
-              className="px-8 py-3 rounded-full text-sm sm:text-base font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 hover:scale-[1.02] active:scale-95 cursor-pointer transform-gpu antialiased"
+              className="px-8 py-3 rounded-full text-sm sm:text-base font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 cursor-pointer transform-gpu antialiased"
             >
               <span data-locale-fade>{showAll ? t.showLess : t.showMore}</span>
             </button>

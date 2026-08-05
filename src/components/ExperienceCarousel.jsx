@@ -92,7 +92,7 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => 
         className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
           bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
           text-black dark:text-white transition-all duration-300 z-10
-          ${!prevBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-[1.02]'}
+          ${!prevBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black'}
           hidden sm:flex`}
         onClick={scrollPrev} disabled={!prevBtnEnabled} aria-label="Previous slide"
       >
@@ -105,7 +105,7 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => 
         className={`absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
           bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-lg
           text-black dark:text-white transition-all duration-300 z-10
-          ${!nextBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black hover:scale-[1.02]'}
+          ${!nextBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black'}
           hidden sm:flex`}
         onClick={scrollNext} disabled={!nextBtnEnabled} aria-label="Next slide"
       >
