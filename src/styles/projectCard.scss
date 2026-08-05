@@ -360,8 +360,8 @@ html.dark .filter-btn {
 /* Hover & Active States (High Specificity to override skins) */
 html .filter-btn:hover,
 html .filter-btn.active {
-  background-color: #f472b6 !important;
-  border-color: #f472b6 !important;
+  background-color: var(--color-pink-400) !important;
+  border-color: var(--color-pink-400) !important;
   color: white !important;
   box-shadow: none !important;
 }
