@@ -315,6 +315,17 @@ html {
     filter: none;
   }
 
+  /* Carousel pagination dots: a quick fade so they land just after the card,
+     not the slow 1.5s reveal used elsewhere. Delay is set inline per instance. */
+  .reveal-dots {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .reveal-dots.is-visible {
+    opacity: 1;
+  }
+
   .reveal-delay-100.is-visible { transition-delay: 100ms; }
   .reveal-delay-200.is-visible { transition-delay: 200ms; }
   .reveal-delay-300.is-visible { transition-delay: 300ms; }

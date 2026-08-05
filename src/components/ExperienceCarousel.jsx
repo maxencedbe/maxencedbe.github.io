@@ -115,7 +115,7 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => 
       </button>
       </div>
 
-      <div className={`relative z-10 flex justify-center gap-2 mt-5${revealDots ? ' reveal-fade' : ''}`} style={revealDots ? { transitionDelay: '600ms' } : undefined}>
+      <div className={`relative z-10 flex justify-center gap-2 mt-5${revealDots ? ' reveal-dots' : ''}`} style={revealDots ? { transitionDelay: '250ms' } : undefined}>
         {scrollSnaps.map((_, index) => (
           <button
             key={index}
