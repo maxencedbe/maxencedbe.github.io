@@ -72,26 +72,13 @@ export default function CustomCursor() {
             gsap.set(follower, { borderColor: isNormal ? color : "#ffffff" });
         };
 
-        const onMouseMove = (e) => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
-
-            // Reveal on the first move rather than only on `mouseenter`: when the
-            // pointer is already inside the page as it loads (or as this component
-            // remounts), no mouseenter ever fires and the cursor would stay hidden
-            // until you left and re-entered the window. Snap to the pointer first
-            // so it doesn't fly in from the top-left corner.
-            if (!visible) {
-                visible = true;
-                posX = mouseX;
-                posY = mouseY;
-                gsap.set(cursor, { x: mouseX, y: mouseY });
-                gsap.set(follower, { x: posX, y: posY });
-                gsap.set([cursor, follower], { opacity: 1 });
-            }
-
-            gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1, ease: "power2.out" });
-
+        // The clickable/pink hit-testing below is heavy — up to 9 elementFromPoint
+        // calls plus getComputedStyle tree-walks. Running it on every mousemove
+        // event (which can fire 120+/s and stack several per frame) did a lot of
+        // synchronous style work that janked scrolling and animations. It's now
+        // driven from the rAF loop, at most once per frame and only when the
+        // pointer actually moved. The result is identical; it just runs far less.
+        const updateCursorState = () => {
             const centerEl = document.elementFromPoint(mouseX, mouseY);
             if (!centerEl || centerEl === cursor || centerEl === follower) return;
 
@@ -131,15 +118,39 @@ export default function CustomCursor() {
             }
         };
 
+        let moved = false;
+        const onMouseMove = (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Reveal on the first move rather than only on `mouseenter`: when the
+            // pointer is already inside the page as it loads (or as this component
+            // remounts), no mouseenter ever fires and the cursor would stay hidden
+            // until you left and re-entered the window. Snap to the pointer first
+            // so it doesn't fly in from the top-left corner.
+            if (!visible) {
+                visible = true;
+                posX = mouseX;
+                posY = mouseY;
+                gsap.set(cursor, { x: mouseX, y: mouseY });
+                gsap.set(follower, { x: posX, y: posY });
+                gsap.set([cursor, follower], { opacity: 1 });
+            }
+
+            gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1, ease: "power2.out" });
+            moved = true;
+        };
+
         const loop = () => {
             posX += (mouseX - posX) / 8;
             posY += (mouseY - posY) / 8;
             gsap.set(follower, { x: posX, y: posY });
+            if (moved) { moved = false; updateCursorState(); }
             requestAnimationFrame(loop);
         };
         loop();
 
-        window.addEventListener("mousemove", onMouseMove);
+        window.addEventListener("mousemove", onMouseMove, { passive: true });
 
         const onMouseLeave = () => {
             visible = false;
