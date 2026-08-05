@@ -315,15 +315,21 @@ html {
     filter: none;
   }
 
-  /* Carousel pagination dots: a quick fade so they land just after the card,
-     not the slow 1.5s reveal used elsewhere. Delay is set inline per instance. */
-  .reveal-dots {
+  /* Work-experience pagination dots lag in just after the card. Their reveal is
+     driven by the carousel wrapper's is-visible — the SAME scroll trigger as the
+     card — not by the dots' own position; otherwise you'd have to scroll past them
+     before the observer fired, so they showed up far too late. The delay lands
+     them a beat after the card. */
+  .dots-lag {
     opacity: 0;
-    transition: opacity 0.4s ease;
+    filter: blur(5px);
+    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .reveal-dots.is-visible {
+  .reveal-up.is-visible .dots-lag {
     opacity: 1;
+    filter: none;
+    transition-delay: 600ms;
   }
 
   .reveal-delay-100.is-visible { transition-delay: 100ms; }
