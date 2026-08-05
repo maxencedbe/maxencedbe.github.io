@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import { useLocale } from './useLocale.js';
 
-const ExperienceCarousel = ({ itemsEn, itemsFr, items }) => {
+const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => {
   const locale = useLocale();
   const currentItems = itemsEn && itemsFr ? (locale === 'fr' ? itemsFr : itemsEn) : (items || []);
 
@@ -115,7 +115,7 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items }) => {
       </button>
       </div>
 
-      <div className="relative z-10 flex justify-center gap-2 mt-5">
+      <div className={`relative z-10 flex justify-center gap-2 mt-5${revealDots ? ' reveal-fade' : ''}`} style={revealDots ? { transitionDelay: '600ms' } : undefined}>
         {scrollSnaps.map((_, index) => (
           <button
             key={index}
