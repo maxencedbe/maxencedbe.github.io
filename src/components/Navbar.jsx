@@ -187,7 +187,7 @@ export default function Navbar() {
           {/* Lang toggle */}
           <div
             onClick={handleLanguageSwitch}
-            className="hidden lg:flex relative w-[72px] h-9 rounded-full bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] cursor-pointer items-center"
+            className="hidden lg:flex relative w-[72px] h-9 rounded-full bg-[rgba(253,250,244,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] cursor-pointer items-center"
             role="button"
             aria-label="Switch language"
           >
@@ -212,7 +212,7 @@ export default function Navbar() {
           {/* Theme toggle */}
           <div
             onClick={toggleTheme}
-            className="relative w-[72px] h-9 rounded-full bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] shadow-none cursor-pointer transition-all duration-300 flex items-center"
+            className="relative w-[72px] h-9 rounded-full bg-[rgba(253,250,244,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] shadow-none cursor-pointer transition-all duration-300 flex items-center"
             role="button"
             aria-label="Toggle theme"
           >
