@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Typewriter from "../components/Typewriter.jsx";
 import ProjectGrid from "../components/ProjectGrid.jsx";
 import ExperienceCarousel from "../components/ExperienceCarousel.jsx";
+import ExperienceRow from "../components/ExperienceRow.jsx";
 import Footer from "../components/Footer.jsx";
 
 import "../styles/projectCard.scss";
@@ -119,7 +120,7 @@ const educationFr = [
         Work experience
       </h2>
       <div class="reveal-up reveal-delay-200 w-full mb-16 md:mb-20">
-        <ExperienceCarousel client:load itemsEn={workExperienceEn} itemsFr={workExperienceFr} revealDots={true} />
+        <ExperienceRow client:load itemsEn={workExperienceEn} itemsFr={workExperienceFr} />
       </div>
 
       <h2 data-i18n="about.skills" class="text-2xl font-semibold mb-8 section-title mobile-narrow text-black dark:text-white reveal-up reveal-delay-100">
