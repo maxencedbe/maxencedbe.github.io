@@ -114,8 +114,8 @@ const filterLabels = {
 };
 
 const ui = {
-  en: { showMore: "Show more projects", showLess: "Show less", noResults: "No projects found in this category." },
-  fr: { showMore: "Voir plus de projets", showLess: "Voir moins", noResults: "Aucun projet trouvé dans cette catégorie." }
+  en: { showMore: "Show more projects", showLess: "Show less", noResults: "No projects found in this category.", viewCode: "View on GitHub" },
+  fr: { showMore: "Voir plus de projets", showLess: "Voir moins", noResults: "Aucun projet trouvé dans cette catégorie.", viewCode: "Voir sur GitHub" }
 };
 
 const FILTER_KEYS = ["All", "Data Science", "Machine Learning", "Web dev"];
@@ -212,6 +212,7 @@ export default function ProjectGrid() {
                     description={project.description}
                     imageUrl={project.imageUrl}
                     githubUrl={project.githubUrl}
+                    viewCodeLabel={t.viewCode}
                   />
                 </motion.div>
               );
@@ -239,6 +240,7 @@ export default function ProjectGrid() {
                       description={project.description}
                       imageUrl={project.imageUrl}
                       githubUrl={project.githubUrl}
+                      viewCodeLabel={t.viewCode}
                     />
                   </motion.div>
                 ))}
