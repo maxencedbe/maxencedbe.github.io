@@ -86,10 +86,9 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => 
       </div>
 
       <button
-        className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
-          bg-[#fffefb] dark:bg-[rgba(10,10,10,0.88)] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_8px_rgba(0,0,0,0.04)] dark:shadow-none
+        className={`absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center
           text-black dark:text-white transition-all duration-300 z-10
-          ${!prevBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black'}
+          ${!prevBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'opacity-60 hover:opacity-100 cursor-pointer'}
           hidden sm:flex`}
         onClick={scrollPrev} disabled={!prevBtnEnabled} aria-label="Previous slide"
       >
@@ -99,10 +98,9 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => 
       </button>
 
       <button
-        className={`absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center
-          bg-[#fffefb] dark:bg-[rgba(10,10,10,0.88)] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_8px_rgba(0,0,0,0.04)] dark:shadow-none
+        className={`absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center
           text-black dark:text-white transition-all duration-300 z-10
-          ${!nextBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'cursor-pointer hover:bg-black dark:hover:bg-white hover:text-white dark:hover:text-black'}
+          ${!nextBtnEnabled ? 'opacity-0 pointer-events-none scale-90' : 'opacity-60 hover:opacity-100 cursor-pointer'}
           hidden sm:flex`}
         onClick={scrollNext} disabled={!nextBtnEnabled} aria-label="Next slide"
       >
