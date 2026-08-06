@@ -180,25 +180,28 @@ export default function AnimatedBackground({ instant = false }) {
 
     points.forEach(shiftPoint);
 
-    // Fade the background out once the hero section scrolls out of view — it's
-    // a hero intro effect, and left fully visible for the whole page it competes
-    // with text for attention (especially now that content sections have no
-    // opaque card behind them). Pages without a #home hero (e.g. 404) keep it
-    // visible throughout, since there's nothing to fade against.
+    // Fade the background out as soon as scrolling starts — it's a hero intro
+    // effect, and left fully visible for the whole page it competes with text
+    // for attention (especially now that content sections have no opaque card
+    // behind them). Tied directly to scrollY (not a threshold that only flips
+    // once the hero has mostly left the viewport) so it starts dissolving on
+    // the very first pixel scrolled, fully gone well before About. Pages
+    // without a #home hero (e.g. 404) keep it visible, nothing to fade against.
     const heroEl = document.getElementById('home');
-    let bgObserver;
+    let onScroll;
     if (heroEl) {
-      bgObserver = new IntersectionObserver(
-        ([entry]) => {
-          largeHeader.style.opacity = entry.isIntersecting ? '1' : '0';
-        },
-        // The hero is ~100vh tall, so a plain threshold:0 only flips once its
-        // very last pixel scrolls away — nearly a full viewport of scrolling,
-        // well into About's content. Shrinking the root's bottom edge makes the
-        // hero "leave" as soon as it clears the top 30% of the viewport instead.
-        { threshold: 0, rootMargin: '0px 0px -70% 0px' }
-      );
-      bgObserver.observe(heroEl);
+      let ticking = false;
+      onScroll = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const fadeDistance = height * 0.35;
+          largeHeader.style.opacity = String(Math.max(0, 1 - window.scrollY / fadeDistance));
+          ticking = false;
+        });
+      };
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
     }
 
     function animate() {
@@ -307,12 +310,12 @@ export default function AnimatedBackground({ instant = false }) {
       cancelAnimationFrame(animationFrameId);
       gsap.killTweensOf(points);
       observer.disconnect();
-      if (bgObserver) bgObserver.disconnect();
+      if (onScroll) window.removeEventListener('scroll', onScroll);
     };
   }, []);
 
   return (
-    <div id="large-header" ref={headerRef} className="large-header demo-1" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, transform: 'translateZ(0)', transition: 'opacity 0.6s ease' }}>
+    <div id="large-header" ref={headerRef} className="large-header demo-1" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, transform: 'translateZ(0)' }}>
       <canvas id="demo-canvas" ref={canvasRef} style={{ width: '100%', height: '100%' }}></canvas>
     </div>
   );
