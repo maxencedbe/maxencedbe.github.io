@@ -56,7 +56,7 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => 
         <div className="flex touch-pan-y">
           {currentItems.map((item, index) => (
             <div key={index} className="flex-[0_0_100%] min-w-0 px-6 sm:px-10">
-              <div className="group p-5 sm:p-6 sm:h-full flex flex-col items-center text-center sm:flex-row sm:text-left gap-4 sm:gap-10">
+              <div className="group p-5 sm:p-6 sm:h-full flex flex-col items-center justify-center text-center sm:flex-row sm:text-left gap-4 sm:gap-10">
                 <div className="flex-shrink-0 relative z-10">
                   {item.icon ? (
                     item.url ? (
