@@ -87,7 +87,7 @@ const SideNav = () => {
     };
   }, [links]);
 
-  const NAVBAR_OFFSET = 45;
+  const NAVBAR_OFFSET = 35;
 
   const handleClick = (e, id) => {
     e.preventDefault();
