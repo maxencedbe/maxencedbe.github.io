@@ -13,11 +13,11 @@
    read too golden) so chip/border tints stay warm without going beige. Dark mode
    never matches this selector, so it keeps its defaults. */
 html:not(.dark) {
-  --color-black: #2e2b23;
+  --color-black: #262421;
   --color-pink-400: #db2777;
-  --color-slate-500: #7c7770;
-  --color-slate-400: #a19b8f;
-  --color-gray-500: #7c7770;
+  --color-slate-500: #787571;
+  --color-slate-400: #a29e94;
+  --color-gray-500: #787571;
 }
 
 [data-theme-transition]::view-transition-old(root),
@@ -96,7 +96,7 @@ body {
 @layer base {
   html {
     font-family: "Inter", sans-serif;
-    background-color: #f5f3ee;
+    background-color: #f7f6f3;
     scroll-padding-top: 0px;
   }
 
@@ -117,7 +117,7 @@ body {
   }
 
   #background-pattern {
-    background-color: #f5f3ee;
+    background-color: #f7f6f3;
   }
 
   html.dark #background-pattern {
