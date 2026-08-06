@@ -200,7 +200,7 @@ export default function ProjectGrid() {
       </div>
 
       <div className="flex flex-col items-center w-full max-w-6xl mx-auto">
-        <div className="flex flex-col gap-4 md:gap-6 w-full items-center">
+        <div className="flex flex-col gap-0 w-full items-center">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => {
               const isHiddenByDefault = activeFilter === "All" && index >= 3;
@@ -211,6 +211,7 @@ export default function ProjectGrid() {
                   exit={{ opacity: 0, transition: { duration: 0.2 } }}
                   className="flex flex-col items-center w-full"
                 >
+                  {index > 0 && <div className="w-16 h-px bg-black/10 dark:bg-white/10 my-2 md:my-3" aria-hidden="true"></div>}
                   <ProjectCard
                     title={project.title}
                     description={project.description}
@@ -233,12 +234,13 @@ export default function ProjectGrid() {
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden flex flex-col items-center w-[calc(100%+60px)] px-[30px]"
             >
-              <div className="flex flex-col gap-4 md:gap-6 w-full items-center pt-4 md:pt-6 pb-4 md:pb-8">
+              <div className="flex flex-col gap-0 w-full items-center pb-4 md:pb-8">
                 {filteredProjects.slice(3).map((project, index) => (
                   <motion.div
                     key={project.title}
                     className="flex flex-col items-center w-full"
                   >
+                    <div className="w-16 h-px bg-black/10 dark:bg-white/10 my-2 md:my-3" aria-hidden="true"></div>
                     <ProjectCard
                       title={project.title}
                       description={project.description}
