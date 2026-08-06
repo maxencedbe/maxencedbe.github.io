@@ -98,7 +98,7 @@ body {
 @layer base {
   html {
     font-family: "Inter", sans-serif;
-    background-color: #f7f8fa;
+    background-color: #fafaf9;
     scroll-padding-top: 0px;
   }
 
@@ -119,7 +119,7 @@ body {
   }
 
   #background-pattern {
-    background-color: #f7f8fa;
+    background-color: #fafaf9;
   }
 
   html.dark #background-pattern {
