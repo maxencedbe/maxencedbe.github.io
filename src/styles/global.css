@@ -144,52 +144,6 @@ html {
 @layer utilities {
 
 
-  .section-bg-reveal {
-    background-color: color-mix(in oklab, var(--color-black) 7%, transparent);
-    position: relative;
-  }
-
-  html.dark .section-bg-reveal {
-    background-color: rgba(255, 255, 255, 0.06);
-  }
-
-  /* Waves flow by animating `left`, never `transform`. A transform promotes the
-     pseudo-element onto its own compositing layer, which rounds to a different
-     device pixel than the section's background box when that box sits at a
-     fractional Y — leaving a 1px hairline of page background between the wave and
-     the section. Whether it shows depends on the device's pixel ratio and zoom,
-     which is why the seam appeared on some screens only. Animating `left` keeps
-     the wave on the main paint layer so it rounds together with the section.
-     Overlapping the wave instead is not an option: both are translucent, so an
-     overlap paints a darker band. */
-  @keyframes wave-flow-left {
-    from { left: 0; }
-    to   { left: -100%; }
-  }
-
-  .section-bg-reveal::before {
-    content: '';
-    position: absolute;
-    top: -72px;
-    left: 0;
-    width: 300%;
-    height: 72px;
-    background-color: color-mix(in oklab, var(--color-black) 7%, transparent);
-    clip-path: url(#wave-clip-top);
-    pointer-events: none;
-    animation: wave-flow-left 3s linear infinite;
-  }
-
-  html.dark .section-bg-reveal::before {
-    background-color: rgba(255, 255, 255, 0.06);
-  }
-
-  /* Contact's entry wave only overrides the duration, to match the exit wave
-     above it rather than running noticeably faster. */
-  #contact::before {
-    animation: wave-flow-left 4s linear infinite;
-  }
-
   /* The footer keeps its backdrop-filter glass, which can't fade at a fractional
      opacity without the glass compositing wrong (it stayed oddly prominent while
      the rest of the section faded — the "weird colour"). So rather than fade it
@@ -204,35 +158,6 @@ html {
   body.is-loading #contact footer {
     opacity: 0;
     transform: translateY(40px);
-  }
-
-  .wave-exit {
-    z-index: 1;
-    margin-bottom: 72px;
-  }
-
-  .wave-exit::after {
-    content: '';
-    position: absolute;
-    bottom: -72px;
-    left: 0;
-    width: 300%;
-    height: 72px;
-    background-color: color-mix(in oklab, var(--color-black) 7%, transparent);
-    clip-path: url(#wave-clip-bottom);
-    pointer-events: none;
-    animation: wave-flow-left 4s linear infinite reverse;
-  }
-
-  html.dark .wave-exit::after {
-    background-color: rgba(255, 255, 255, 0.06);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .section-bg-reveal::before,
-    .wave-exit::after {
-      animation: none;
-    }
   }
 
   /* Premium Reveals */
