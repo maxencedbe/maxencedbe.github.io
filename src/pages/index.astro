@@ -180,10 +180,9 @@ const educationFr = [
           ] },
         ].map((card, i) => (
           <div class="reveal-up" style={{ transitionDelay: `${i * 160}ms` }}>
-            <div class="glass-card p-6 h-full">
-              <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
-              <h3 data-i18n={card.key} class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">{card.label}</h3>
-              <div class="flex flex-wrap gap-1.5 relative z-10 justify-center lg:justify-start">
+            <div>
+              <h3 data-i18n={card.key} class="text-lg font-semibold mb-3 pb-2 border-b border-black/10 dark:border-white/10 text-black dark:text-white text-center lg:text-left">{card.label}</h3>
+              <div class="flex flex-wrap gap-1.5 justify-center lg:justify-start">
                 {card.chips.map((skill) => (
                   <span class="px-2.5 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
                     {skill.icon === "inline-db" ? (
@@ -202,10 +201,9 @@ const educationFr = [
         ))}
 
         <div class="reveal-up" style={{ transitionDelay: "800ms" }}>
-          <div class="glass-card p-6 h-full">
-            <svg class="about-border" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="0" y="0" width="100%" height="100%" rx="20" ry="20"></rect></svg>
-            <h3 data-i18n="skills.lang" class="text-lg font-semibold mb-4 text-black dark:text-white relative z-10 text-center lg:text-left">Spoken languages</h3>
-            <div class="flex flex-wrap gap-1.5 relative z-10 justify-center lg:justify-start">
+          <div>
+            <h3 data-i18n="skills.lang" class="text-lg font-semibold mb-3 pb-2 border-b border-black/10 dark:border-white/10 text-black dark:text-white text-center lg:text-left">Spoken languages</h3>
+            <div class="flex flex-wrap gap-1.5 justify-center lg:justify-start">
               <span data-locale-fade class="px-2.5 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
                 <span class="grayscale">🇫🇷</span>
                 <span data-i18n="lang.french">French (native)</span>
