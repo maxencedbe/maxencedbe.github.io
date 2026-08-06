@@ -329,30 +329,34 @@ html.dark .card .icon svg {
   color: var(--text-color);
 }
 
-/* Light Mode Skin */
+/* Light Mode Skin — plain text by default, no boxed chrome */
 html:not(.dark) .filter-btn {
-  background-color: #fffefb !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  background-color: transparent !important;
+  border: none !important;
+  opacity: 0.55;
 }
 
-/* Dark Mode Skin */
 /* Dark Mode Skin */
 html.dark .filter-btn {
-  background-color: rgba(10, 10, 10, 0.88) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  background-color: transparent !important;
+  border: none !important;
   color: #fff;
   box-shadow: none;
+  opacity: 0.55;
 }
 
-/* Hover & Active States (High Specificity to override skins) */
-html .filter-btn:hover,
+/* Hover: a quiet preview (full opacity), not the same strong pink as the actual selection */
+html .filter-btn:hover {
+  opacity: 1;
+}
+
+/* Active: the one filter that's actually selected gets the pink pill */
 html .filter-btn.active {
   background-color: var(--color-pink-400) !important;
   border-color: var(--color-pink-400) !important;
   color: white !important;
   box-shadow: none !important;
+  opacity: 1;
 }
 
 /* Flat, borderless content block — matches the rest of the site (no boxed card chrome) */
