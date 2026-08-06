@@ -329,25 +329,28 @@ html.dark .card .icon svg {
   color: var(--text-color);
 }
 
-/* Light Mode Skin — plain text by default, no boxed chrome */
+/* Light Mode Skin — outline only (no fill), keeps the "this is a clickable
+   chip" affordance without the heavy solid-fill box the rest of the site
+   dropped. */
 html:not(.dark) .filter-btn {
   background-color: transparent !important;
-  border: none !important;
-  opacity: 0.55;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
 }
 
 /* Dark Mode Skin */
 html.dark .filter-btn {
   background-color: transparent !important;
-  border: none !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
   color: #fff;
   box-shadow: none;
-  opacity: 0.55;
 }
 
-/* Hover: a quiet preview (full opacity), not the same strong pink as the actual selection */
-html .filter-btn:hover {
-  opacity: 1;
+/* Hover: a quiet tint, not the same strong pink as the actual selection */
+html:not(.dark) .filter-btn:hover {
+  background-color: rgba(0, 0, 0, 0.04) !important;
+}
+html.dark .filter-btn:hover {
+  background-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 /* Active: the one filter that's actually selected gets the pink pill */
