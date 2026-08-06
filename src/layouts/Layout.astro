@@ -242,7 +242,7 @@ const isLockedPage = isLocked;
     class={`flex flex-col min-h-screen ${isLocked ? "is-locked" : "is-loading"}`}
   >
 
-    <div id="background-pattern" class="fixed inset-0 -z-50 pointer-events-none bg-dots"></div>
+    <div id="background-pattern" class="fixed inset-0 -z-50 pointer-events-none"></div>
     <!-- SVG clip-path defs for wave section transitions (3 repeating periods for flowing animation) -->
     <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" transition:persist="wave-clip-defs" style="position:absolute;width:0;height:0;overflow:hidden;pointer-events:none">
       <defs>
