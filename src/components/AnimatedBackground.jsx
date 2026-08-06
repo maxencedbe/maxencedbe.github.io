@@ -192,7 +192,11 @@ export default function AnimatedBackground({ instant = false }) {
         ([entry]) => {
           largeHeader.style.opacity = entry.isIntersecting ? '1' : '0';
         },
-        { threshold: 0 }
+        // The hero is ~100vh tall, so a plain threshold:0 only flips once its
+        // very last pixel scrolls away — nearly a full viewport of scrolling,
+        // well into About's content. Shrinking the root's bottom edge makes the
+        // hero "leave" as soon as it clears the top 30% of the viewport instead.
+        { threshold: 0, rootMargin: '0px 0px -70% 0px' }
       );
       bgObserver.observe(heroEl);
     }
