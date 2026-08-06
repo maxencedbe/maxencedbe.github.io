@@ -120,7 +120,7 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => 
           <button
             key={index}
             className={`carousel-dot w-2 h-2 rounded-full cursor-pointer transition-all duration-300
-              ${index === selectedIndex ? 'w-6 bg-pink-400' : 'bg-neutral-400 dark:bg-white/50 hover:bg-neutral-500 dark:hover:bg-white/70'}`}
+              ${index === selectedIndex ? 'w-6 bg-pink-400' : 'bg-black/30 dark:bg-white/50 hover:bg-black/45 dark:hover:bg-white/70'}`}
             onClick={() => scrollTo(index)}
             aria-label={`Go to slide ${index + 1}`}
           />
