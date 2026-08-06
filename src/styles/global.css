@@ -236,11 +236,13 @@ html {
   }
 
   /* Premium Reveals */
+  /* Scroll-reveal pop-in disabled site-wide (testing a flatter, more premium
+     feel): each class now already sits at its "visible" end-state, so
+     ScrollObserver toggling .is-visible has nothing left to animate. */
   .reveal-up {
-    opacity: 0;
-    transform: translateY(40px);
-    filter: blur(8px);
-    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
   /* Revealed states end on `filter: none`, never `blur(0)`: blur(0) is still an
@@ -256,10 +258,9 @@ html {
   }
 
   .reveal-down {
-    opacity: 0;
-    transform: translateY(-40px);
-    filter: blur(8px);
-    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
   .reveal-down.is-visible {
@@ -269,10 +270,9 @@ html {
   }
 
   .reveal-left {
-    opacity: 0;
-    transform: translateX(40px);
-    filter: blur(8px);
-    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
   .reveal-left.is-visible {
@@ -297,10 +297,9 @@ html {
 
 
   .reveal-right {
-    opacity: 0;
-    transform: translateX(-40px);
-    filter: blur(8px);
-    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
   .reveal-right.is-visible {
@@ -310,10 +309,9 @@ html {
   }
   
   .reveal-scale {
-    opacity: 0;
-    transform: scale(0.95);
-    filter: blur(8px);
-    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), transform 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 
   .reveal-scale.is-visible {
@@ -323,9 +321,8 @@ html {
   }
   
   .reveal-fade {
-    opacity: 0;
-    filter: blur(5px);
-    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 1;
+    filter: none;
   }
 
   .reveal-fade.is-visible {
@@ -339,9 +336,8 @@ html {
      before the observer fired, so they showed up far too late. The delay lands
      them a beat after the card. */
   .dots-lag {
-    opacity: 0;
-    filter: blur(5px);
-    transition: opacity 1.5s cubic-bezier(0.22, 1, 0.36, 1), filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+    opacity: 1;
+    filter: none;
   }
 
   .reveal-up.is-visible .dots-lag {
