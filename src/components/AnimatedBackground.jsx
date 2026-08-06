@@ -180,6 +180,23 @@ export default function AnimatedBackground({ instant = false }) {
 
     points.forEach(shiftPoint);
 
+    // Fade the background out once the hero section scrolls out of view — it's
+    // a hero intro effect, and left fully visible for the whole page it competes
+    // with text for attention (especially now that content sections have no
+    // opaque card behind them). Pages without a #home hero (e.g. 404) keep it
+    // visible throughout, since there's nothing to fade against.
+    const heroEl = document.getElementById('home');
+    let bgObserver;
+    if (heroEl) {
+      bgObserver = new IntersectionObserver(
+        ([entry]) => {
+          largeHeader.style.opacity = entry.isIntersecting ? '1' : '0';
+        },
+        { threshold: 0 }
+      );
+      bgObserver.observe(heroEl);
+    }
+
     function animate() {
       if (animateHeader) {
         ctx.clearRect(0, 0, width, height);
@@ -286,11 +303,12 @@ export default function AnimatedBackground({ instant = false }) {
       cancelAnimationFrame(animationFrameId);
       gsap.killTweensOf(points);
       observer.disconnect();
+      if (bgObserver) bgObserver.disconnect();
     };
   }, []);
 
   return (
-    <div id="large-header" ref={headerRef} className="large-header demo-1" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, transform: 'translateZ(0)' }}>
+    <div id="large-header" ref={headerRef} className="large-header demo-1" style={{ position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 0, transform: 'translateZ(0)', transition: 'opacity 0.6s ease' }}>
       <canvas id="demo-canvas" ref={canvasRef} style={{ width: '100%', height: '100%' }}></canvas>
     </div>
   );
