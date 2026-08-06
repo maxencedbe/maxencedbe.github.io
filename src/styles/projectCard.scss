@@ -54,12 +54,8 @@ html.dark {
   max-width: none;
   min-width: 300px;
   padding: 28px 28px;
-  border: 1px solid var(--card-border-color);
-  border-radius: 20px;
   gap: 16px;
   position: relative;
-  transition: box-shadow .25s;
-  box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2);
   overflow: hidden;
 
   /* Force Light Mode Blur visibility */
@@ -194,8 +190,6 @@ html.dark {
 
 /* Hover effects for the card */
 .card:hover {
-  box-shadow: 0 var(--card-hover-box-shadow-1-y) var(--card-hover-box-shadow-1-blur) var(--card-hover-box-shadow-1), 0 var(--card-hover-box-shadow-2-y) var(--card-hover-box-shadow-2-blur) var(--card-hover-box-shadow-2);
-
   .icon {
     &::after {
       background-color: var(--card-hover-icon-background-color);
@@ -333,9 +327,6 @@ html.dark .card .icon svg {
   transition: all 0.3s ease;
   cursor: pointer;
   color: var(--text-color);
-
-  /* Shared Shadow Base */
-  box-shadow: 0 var(--card-box-shadow-1-y) var(--card-box-shadow-1-blur) var(--card-box-shadow-1), 0 var(--card-box-shadow-2-y) var(--card-box-shadow-2-blur) var(--card-box-shadow-2);
 }
 
 /* Light Mode Skin */
@@ -364,21 +355,17 @@ html .filter-btn.active {
   box-shadow: none !important;
 }
 
-/* Standardized Glass Effect (Apple Style) */
+/* Flat, borderless content block — matches the rest of the site (no boxed card chrome) */
 html:not(.dark) .card {
-  background-color: #fffefb !important;
+  background-color: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
-  border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.04) !important;
-}
-
-html:not(.dark) .card:hover {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05), 0 10px 18px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 html.dark .card {
-  background-color: rgba(10, 10, 10, 0.88) !important;
+  background-color: transparent !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   box-shadow: none !important;
@@ -386,6 +373,3 @@ html.dark .card {
   transform: translateZ(0);
 }
 
-html.dark .card:hover {
-  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.05), 0 15px 25px rgba(255, 255, 255, 0.025) !important;
-}
