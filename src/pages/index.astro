@@ -251,33 +251,33 @@ const educationFr = [
               id="contact-form"
               action="https://api.web3forms.com/submit"
               method="POST"
-              class="flex flex-col gap-5 bg-[#fffefb] dark:bg-[rgba(10,10,10,0.88)] dark:backdrop-blur-[2px] border border-[rgba(0,0,0,0.1)] dark:border-[rgba(255,255,255,0.15)] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_8px_rgba(0,0,0,0.04)] dark:shadow-none p-6 sm:p-8 rounded-2xl transition-all"
+              class="flex flex-col gap-7"
             >
               <input type="hidden" name="access_key" value="b7a332b3-794a-40fe-999e-e85a68145764" />
               <input type="hidden" id="form-subject" name="subject" value="New message from your Portfolio" />
               <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
 
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                 <div class="flex flex-col gap-1.5">
-                  <label for="name" data-i18n="contact.name" class="text-xs tracking-wide text-black dark:text-white ml-1">Name</label>
-                  <input type="text" id="name" name="name" required autocomplete="none" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm" />
+                  <label for="name" data-i18n="contact.name" class="text-xs tracking-wide text-black/60 dark:text-white/60">Name</label>
+                  <input type="text" id="name" name="name" required autocomplete="none" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm" />
                 </div>
                 <div class="flex flex-col gap-1.5">
-                  <label for="email" data-i18n="contact.email" class="text-xs tracking-wide text-black dark:text-white ml-1">Email</label>
-                  <input type="email" id="email" name="email" required autocomplete="none" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm" />
+                  <label for="email" data-i18n="contact.email" class="text-xs tracking-wide text-black/60 dark:text-white/60">Email</label>
+                  <input type="email" id="email" name="email" required autocomplete="none" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm" />
                 </div>
               </div>
               <div class="flex flex-col gap-1.5">
-                <label for="message" data-i18n="contact.message" class="text-xs tracking-wide text-black dark:text-white ml-1">Message</label>
-                <textarea id="message" name="message" required autocomplete="none" rows="4" class="w-full bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(255,255,255,0.05)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.1)] rounded-xl px-4 py-3 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none transition-all font-medium text-sm resize-none"></textarea>
+                <label for="message" data-i18n="contact.message" class="text-xs tracking-wide text-black/60 dark:text-white/60">Message</label>
+                <textarea id="message" name="message" required autocomplete="none" rows="4" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm resize-none"></textarea>
               </div>
               <button
                 id="submit-button"
                 type="submit"
-                class="mt-2 self-center sm:self-start flex items-center justify-center gap-2 px-8 py-3.5 bg-[rgba(0,0,0,0.02)] dark:bg-[rgba(10,10,10,0.88)] border border-[rgba(0,0,0,0.05)] dark:border-[rgba(255,255,255,0.15)] hover:bg-pink-400 hover:border-pink-400 text-black dark:text-white hover:text-white dark:hover:text-white hover:shadow-[0_4px_12px_rgba(244,114,182,0.4)] rounded-xl font-medium cursor-pointer text-sm transition-all duration-300 group transform-gpu"
+                class="mt-2 self-center sm:self-start flex items-center justify-center gap-2 text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 font-semibold cursor-pointer text-sm transition-colors duration-300 group"
               >
                 <span data-i18n="contact.send">Send message</span>
-                <svg data-locale-fade xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform duration-300">
+                <svg data-locale-fade xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 19.5l15-15m0 0H8.25m11.25 0v11.25"></path>
                 </svg>
               </button>
@@ -519,7 +519,7 @@ const educationFr = [
         const result = await response.json();
         if (response.status == 200) {
           submitButton.innerHTML = `${successLabel} <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-green-500"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>`;
-          submitButton.classList.remove("hover:bg-pink-400", "hover:border-pink-400", "hover:text-white", "dark:hover:text-white", "hover:shadow-[0_4px_12px_rgba(244,114,182,0.4)]");
+          submitButton.classList.remove("hover:text-pink-400", "dark:hover:text-pink-400");
           form.reset();
         } else {
           submitButton.innerHTML = originalButtonHtml;
