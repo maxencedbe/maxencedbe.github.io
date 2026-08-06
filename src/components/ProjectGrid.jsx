@@ -181,9 +181,9 @@ export default function ProjectGrid() {
 
   return (
     <div className="w-full" ref={containerRef}>
-      <div className="flex flex-wrap justify-center gap-5 mb-12">
+      <div className="flex flex-wrap justify-center divide-x divide-black/10 dark:divide-white/10 mb-12">
         {FILTER_KEYS.map((key, index) => (
-          <div key={key} className="reveal-up" style={{ transitionDelay: `${index * 100}ms` }}>
+          <div key={key} className="reveal-up px-2" style={{ transitionDelay: `${index * 100}ms` }}>
             <button
               data-locale-fade
               onClick={() => setActiveFilter(key)}
