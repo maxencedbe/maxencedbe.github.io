@@ -181,22 +181,25 @@ export default function ProjectGrid() {
 
   return (
     <div className="w-full" ref={containerRef}>
-      <div className="flex flex-wrap justify-center divide-x divide-black/10 dark:divide-white/10 mb-12">
+      <div className="flex flex-wrap justify-center items-center mb-12">
         {FILTER_KEYS.map((key, index) => (
-          <div key={key} className="reveal-up px-2" style={{ transitionDelay: `${index * 100}ms` }}>
-            <button
-              data-locale-fade
-              onClick={() => setActiveFilter(key)}
-              className={`px-4 py-2 rounded-full text-sm font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 cursor-pointer transform-gpu antialiased ${activeFilter === key ? "active" : ""}`}
-            >
-              {labels[key]}
-            </button>
-          </div>
+          <React.Fragment key={key}>
+            {index > 0 && <div className="w-[1px] h-4 bg-black/15 dark:bg-white/15" aria-hidden="true"></div>}
+            <div className="reveal-up px-3" style={{ transitionDelay: `${index * 100}ms` }}>
+              <button
+                data-locale-fade
+                onClick={() => setActiveFilter(key)}
+                className={`px-4 py-2 rounded-full text-sm font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 cursor-pointer transform-gpu antialiased ${activeFilter === key ? "active" : ""}`}
+              >
+                {labels[key]}
+              </button>
+            </div>
+          </React.Fragment>
         ))}
       </div>
 
       <div className="flex flex-col items-center w-full max-w-6xl mx-auto">
-        <div className="flex flex-col gap-6 md:gap-10 w-full items-center">
+        <div className="flex flex-col gap-4 md:gap-6 w-full items-center">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => {
               const isHiddenByDefault = activeFilter === "All" && index >= 3;
@@ -229,7 +232,7 @@ export default function ProjectGrid() {
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden flex flex-col items-center w-[calc(100%+60px)] px-[30px]"
             >
-              <div className="flex flex-col gap-6 md:gap-10 w-full items-center pt-8 md:pt-16 pb-4 md:pb-8">
+              <div className="flex flex-col gap-4 md:gap-6 w-full items-center pt-8 md:pt-16 pb-4 md:pb-8">
                 {filteredProjects.slice(3).map((project, index) => (
                   <motion.div
                     key={project.title}
