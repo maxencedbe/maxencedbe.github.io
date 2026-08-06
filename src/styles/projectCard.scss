@@ -374,7 +374,7 @@ html:not(.dark) .card {
 }
 
 html:not(.dark) .card:hover {
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.04), 0 15px 25px rgba(0, 0, 0, 0.15) !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04), 0 6px 12px rgba(0, 0, 0, 0.06) !important;
 }
 
 html.dark .card {
