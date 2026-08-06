@@ -87,11 +87,23 @@ const SideNav = () => {
     };
   }, [links]);
 
+  const NAVBAR_OFFSET = 90;
+
   const handleClick = (e, id) => {
     e.preventDefault();
-    if (id === 'home') { window.scrollTo({ top: 0, behavior: 'smooth' }); return; }
+    if (id === 'home') {
+      if (window.lenis) window.lenis.scrollTo(0, { duration: 1.5 });
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
     const element = document.getElementById(id);
-    if (element) element.scrollIntoView({ behavior: 'smooth' });
+    if (!element) return;
+    if (window.lenis) {
+      window.lenis.scrollTo(element, { offset: -NAVBAR_OFFSET, duration: 1.5 });
+    } else {
+      const top = element.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
   };
 
   const totalTrackHeight = (links.length - 1) * DOT_SPACING;
