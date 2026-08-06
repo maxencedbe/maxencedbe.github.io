@@ -166,13 +166,14 @@ export default function ProjectGrid() {
 
   const handleToggleExpand = () => {
     if (showAll) {
+      setShowAll(false);
       const el = document.getElementById('projects');
       if (!el) return;
       const lenis = window.lenis;
       if (lenis) {
-        lenis.scrollTo(el, { offset: 0, duration: 1.5, onComplete: () => setShowAll(false) });
+        lenis.scrollTo(el, { offset: 0, duration: 1.5 });
       } else {
-        smoothScrollTo(el, 1500, () => setShowAll(false));
+        smoothScrollTo(el, 1500);
       }
     } else {
       setShowAll(true);
