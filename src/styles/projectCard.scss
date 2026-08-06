@@ -340,9 +340,7 @@ html.dark .card .icon svg {
 
 /* Light Mode Skin */
 html:not(.dark) .filter-btn {
-  background-color: rgba(253, 252, 249, 0.9) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
+  background-color: #ffffff !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -368,11 +366,11 @@ html .filter-btn.active {
 
 /* Standardized Glass Effect (Apple Style) */
 html:not(.dark) .card {
-  background-color: rgba(253, 252, 249, 0.9) !important;
+  background-color: #ffffff !important;
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02), 0 10px 15px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.04) !important;
 }
 
 html:not(.dark) .card:hover {
