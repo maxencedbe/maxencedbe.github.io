@@ -7,12 +7,6 @@ import Footer from "../components/Footer.jsx";
 
 import "../styles/projectCard.scss";
 
-const links = [
-  { name: "LinkedIn", url: "https://www.linkedin.com/in/maxence-debes", icon: "/icons/linkedin.svg" },
-  { name: "GitHub", url: "https://github.com/maxencedbe", icon: "/icons/github.svg" },
-  { name: "Mail", url: "mailto:maxence.debes@polytechnique.edu", icon: "/icons/mail.svg" },
-];
-
 const workExperienceEn = [
   { title: "ChemAI", date: "Apr 2026 – Present", role: "Data Science Intern", icon: "/ChemAI.png", logoClass: "scale-[1.4]" },
   { title: "Batigère Maison Familiale", date: "Jul 2025 – Aug 2025", role: "Data Governance Intern", icon: "/Batigere.png" },
@@ -88,18 +82,6 @@ const educationFr = [
             class="w-full h-full object-cover scale-135 lg:translate-x-5 lg:translate-y-7 translate-x-3 translate-y-3 transition-transform duration-500 hover:scale-[1.40]"
           />
         </div>
-      </div>
-    </div>
-
-    <div class="flex justify-center mt-12 lg:mt-16 mb-8 lg:mb-16">
-      <div class="contact-buttons">
-        {links.map((link, index) => (
-          <div class="reveal-up reveal-early" style={{ transitionDelay: `${400 + index * 100}ms` }}>
-            <a href={link.url} target="_blank" rel="noopener noreferrer" class="contact-button">
-              <img src={link.icon} alt={link.name} />
-            </a>
-          </div>
-        ))}
       </div>
     </div>
 
@@ -314,18 +296,8 @@ const educationFr = [
   </section>
 
   <style>
-    .contact-buttons { display: flex; gap: 2.5rem; }
-    .contact-button {
-      display: flex; justify-content: center; align-items: center;
-      cursor: pointer; transition: opacity 0.3s ease; opacity: 1;
-    }
-    .contact-button:hover { opacity: 0.55; }
-    .contact-button img { width: 32px; height: 32px; filter: invert(0); }
-    :global(.dark) .contact-button img { filter: invert(1); }
     .section-title { text-align: left; }
     @media (max-width: 768px) {
-      .contact-buttons { gap: 1.5rem; }
-      .contact-button img { width: 28px; height: 28px; }
       .mobile-narrow { max-width: 95%; margin-left: auto; margin-right: auto; line-height: 1.7; }
     }
     @media (max-width: 1024px) {
