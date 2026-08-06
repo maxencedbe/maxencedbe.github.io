@@ -13,8 +13,13 @@
    cool slate/neutral scale so the whole thing reads clean and modern rather than
    warm/beige. Dark mode never matches this selector, so it keeps its defaults. */
 html:not(.dark) {
-  --color-black: #16181c;
+  --color-black: #1d1d1f;
   --color-pink-400: #db2777;
+  /* Neutralise the faintly-blue slate/gray so nothing reads cold on the neutral
+     off-white. The plain `neutral` scale is already chroma-0, so only these need it. */
+  --color-slate-500: #737373;
+  --color-slate-400: #a3a3a3;
+  --color-gray-500: #737373;
 }
 
 [data-theme-transition]::view-transition-old(root),

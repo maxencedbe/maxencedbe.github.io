@@ -109,8 +109,8 @@ const projectsData = {
 };
 
 const filterLabels = {
-  en: { All: "All", "Machine Learning": "Machine Learning", "Data Science": "Data Science", "Web dev": "Web dev" },
-  fr: { All: "Tout", "Machine Learning": "Machine Learning", "Data Science": "Data Science", "Web dev": "Développement web" }
+  en: { All: "All", "Data Science": "Data Science", "Machine Learning": "Machine Learning", "Web dev": "Web dev" },
+  fr: { All: "Tout", "Data Science": "Data Science", "Machine Learning": "Machine Learning", "Web dev": "Développement web" }
 };
 
 const ui = {
@@ -118,7 +118,7 @@ const ui = {
   fr: { showMore: "Voir plus de projets", showLess: "Voir moins", noResults: "Aucun projet trouvé dans cette catégorie." }
 };
 
-const FILTER_KEYS = ["All", "Machine Learning", "Data Science", "Web dev"];
+const FILTER_KEYS = ["All", "Data Science", "Machine Learning", "Web dev"];
 
 export default function ProjectGrid() {
   const locale = useLocale();
