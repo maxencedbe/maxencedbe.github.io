@@ -204,11 +204,7 @@ export default function ProjectGrid() {
               return (
                 <motion.div
                   key={index + '-' + activeFilter}
-                  initial={{ opacity: 0, y: 40, filter: "blur(8px)" }}
-                  whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                   exit={{ opacity: 0, transition: { duration: 0.2 } }}
-                  viewport={{ once: false, margin: "0px 0px -200px 0px" }}
-                  transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
                   className="flex flex-col items-center w-full"
                 >
                   <ProjectCard
@@ -236,10 +232,6 @@ export default function ProjectGrid() {
                 {filteredProjects.slice(3).map((project, index) => (
                   <motion.div
                     key={project.title}
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, margin: "0px 0px -200px 0px" }}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: index * 0.08 }}
                     className="flex flex-col items-center w-full"
                   >
                     <ProjectCard
