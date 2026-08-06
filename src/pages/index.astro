@@ -317,29 +317,15 @@ const educationFr = [
     .contact-buttons { display: flex; gap: 2.5rem; }
     .contact-button {
       display: flex; justify-content: center; align-items: center;
-      width: 65px; height: 65px; border-radius: 50%;
-      border: 1px solid rgba(0,0,0,0.1);
-      background-color: #fffefb;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.04), 0 4px 8px rgba(0,0,0,0.04);
-      cursor: pointer; transition: all 0.3s ease;
+      cursor: pointer; transition: opacity 0.3s ease; opacity: 1;
     }
-    :global(.dark) .contact-button {
-      border: 1px solid rgba(255,255,255,0.15);
-      background-color: rgba(10,10,10,0.88);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      box-shadow: none;
-    }
-    .contact-button:hover { background-color: #000000; border-color: #000000; }
-    :global(.dark) .contact-button:hover { background-color: #ffffff; border-color: #ffffff; }
-    .contact-button img { width: 30px; height: 30px; filter: invert(0); transition: filter 0.3s ease; }
+    .contact-button:hover { opacity: 0.55; }
+    .contact-button img { width: 32px; height: 32px; filter: invert(0); }
     :global(.dark) .contact-button img { filter: invert(1); }
-    .contact-button:hover img { filter: invert(1); }
-    :global(.dark) .contact-button:hover img { filter: invert(0); }
     .section-title { text-align: left; }
     @media (max-width: 768px) {
       .contact-buttons { gap: 1.5rem; }
-      .contact-button { width: 60px; height: 60px; }
-      .contact-button img { width: 25px; height: 25px; }
+      .contact-button img { width: 28px; height: 28px; }
       .mobile-narrow { max-width: 95%; margin-left: auto; margin-right: auto; line-height: 1.7; }
     }
     @media (max-width: 1024px) {
