@@ -1,31 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
 
-/* ── Light-mode palette: warm ivory ──────────────────────────────────────────
+/* ── Light-mode palette: cool-crisp (Apple/Linear direction) ──────────────────
    Tailwind v4 emits every colour utility from a CSS variable (text-black →
    var(--color-black), pink-400 → var(--color-pink-400), bg-black/5 →
-   color-mix(in oklab, var(--color-black) 5%, transparent)). Redefining those two
-   variables here — unlayered, so it wins over Tailwind's theme layer — shifts the
-   whole LIGHT palette to a warm near-black and a deeper rose in one place. Dark
-   mode never matches this selector, so it keeps the vivid defaults untouched. */
+   color-mix(in oklab, var(--color-black) 5%, transparent)). Redefining them here —
+   unlayered, so it wins over Tailwind's theme layer — sets a cool near-black for
+   all light text/black surfaces. The muted greys are left on Tailwind's default
+   cool slate/neutral scale so the whole thing reads clean and modern rather than
+   warm/beige. Dark mode never matches this selector, so it keeps its defaults. */
 html:not(.dark) {
-  --color-black: #1c1a17;
+  --color-black: #16181c;
   --color-pink-400: #db2777;
-  /* Warm the muted greys too. slate/gray are faintly blue and neutral is dead
-     flat (chroma 0) — both read cold on the ivory base. Remap the stops actually
-     used in light mode onto Tailwind's warm `stone` scale so secondary text,
-     placeholders and the little nav/carousel dots harmonize instead of clashing. */
-  --color-slate-500: #78716c;
-  --color-slate-400: #a8a29e;
-  --color-gray-500: #78716c;
-  --color-neutral-700: #44403c;
-  --color-neutral-500: #78716c;
-  --color-neutral-400: #a8a29e;
-  --color-neutral-300: #d6d3d1;
-  --color-neutral-100: #f5f5f4;
 }
 
 [data-theme-transition]::view-transition-old(root),
@@ -103,8 +92,8 @@ body {
 
 @layer base {
   html {
-    font-family: "Poppins", sans-serif;
-    background-color: #f7f5f0;
+    font-family: "Inter", sans-serif;
+    background-color: #f7f8fa;
     scroll-padding-top: 0px;
   }
 
@@ -125,7 +114,7 @@ body {
   }
 
   #background-pattern {
-    background-color: #f7f5f0;
+    background-color: #f7f8fa;
   }
 
   html.dark #background-pattern {
