@@ -13,11 +13,11 @@
    read too golden) so chip/border tints stay warm without going beige. Dark mode
    never matches this selector, so it keeps its defaults. */
 html:not(.dark) {
-  --color-black: #3d3929;
+  --color-black: #2e2b23;
   --color-pink-400: #db2777;
-  --color-slate-500: #85806f;
-  --color-slate-400: #a8a293;
-  --color-gray-500: #85806f;
+  --color-slate-500: #7c7770;
+  --color-slate-400: #a19b8f;
+  --color-gray-500: #7c7770;
 }
 
 [data-theme-transition]::view-transition-old(root),
@@ -96,7 +96,7 @@ body {
 @layer base {
   html {
     font-family: "Inter", sans-serif;
-    background-color: #f0eee6;
+    background-color: #f5f3ee;
     scroll-padding-top: 0px;
   }
 
@@ -117,7 +117,7 @@ body {
   }
 
   #background-pattern {
-    background-color: #f0eee6;
+    background-color: #f5f3ee;
   }
 
   html.dark #background-pattern {
@@ -315,7 +315,7 @@ html {
 
 .glass-card {
   position: relative;
-  background-color: rgba(253, 250, 244, 0.9);
+  background-color: rgba(253, 252, 249, 0.9);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border: 1px solid rgba(0, 0, 0, 0.08);
