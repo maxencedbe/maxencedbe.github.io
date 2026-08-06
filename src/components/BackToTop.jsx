@@ -39,7 +39,7 @@ export default function BackToTop() {
             className={`fixed bottom-6 right-6 md:bottom-8 md:right-8 p-2 md:p-3 rounded-full shadow-[0_1px_2px_rgba(0,0,0,0.04),0_4px_8px_rgba(0,0,0,0.04)] dark:shadow-none z-40 transition-all duration-300 ease-in-out ${isVisible
                 ? "opacity-100 translate-y-0 cursor-pointer pointer-events-auto"
                 : "opacity-0 translate-y-10 pointer-events-none"
-                } bg-white dark:bg-[rgba(10,10,10,0.88)] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
+                } bg-[#fffdf9] dark:bg-[rgba(10,10,10,0.88)] dark:backdrop-blur-[8px] border border-black/10 dark:border-[rgba(255,255,255,0.15)] text-black dark:text-white hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black`}
             aria-label="Back to top"
         >
             <ArrowUpIcon />
