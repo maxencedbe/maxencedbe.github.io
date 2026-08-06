@@ -436,12 +436,12 @@ html {
 
 
 ::selection {
-  background-color: #f472b6 !important;
+  background-color: var(--color-pink-400) !important;
   color: white !important;
 }
 
 ::-moz-selection {
-  background-color: #f472b6 !important;
+  background-color: var(--color-pink-400) !important;
   color: white !important;
 }
 

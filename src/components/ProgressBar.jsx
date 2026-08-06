@@ -2,7 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 
 const STROKE = 3.5;
 const SNAKE = 500;
-const COLOR = "#f472b6";
+// Match the site's pink per mode: the deeper rose of the ivory light palette,
+// the vivid candy pink on dark. Read from the `.dark` class rather than the CSS
+// var so the canvas never has to parse an oklch() fillStyle (spotty support).
+const pinkForMode = () =>
+    document.documentElement.classList.contains("dark") ? "#f472b6" : "#db2777";
 
 function drawSnake(canvas, progress) {
     const ctx = canvas.getContext("2d");
@@ -12,7 +16,7 @@ function drawSnake(canvas, progress) {
     const t = Math.max(1, Math.round(STROKE * dpr));
 
     ctx.clearRect(0, 0, w, h);
-    ctx.fillStyle = COLOR;
+    ctx.fillStyle = pinkForMode();
 
     const perimeter = 2 * (w + h);
     const snakeEnd = progress * perimeter;
@@ -131,6 +135,9 @@ export default function ProgressBar() {
 
         const resizeObserver = new ResizeObserver(handleResize);
         resizeObserver.observe(document.body);
+        // Redraw when the theme toggles so the bar swaps to the mode's pink at once.
+        const themeObserver = new MutationObserver(drawCurrent);
+        themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
         window.addEventListener("scroll", handleScroll, { passive: true });
         document.addEventListener("astro:after-swap", handleScroll);
         document.addEventListener("locale-change", handleLocaleChange);
@@ -139,6 +146,7 @@ export default function ProgressBar() {
 
         return () => {
             resizeObserver.disconnect();
+            themeObserver.disconnect();
             window.removeEventListener("scroll", handleScroll);
             document.removeEventListener("astro:after-swap", handleScroll);
             document.removeEventListener("locale-change", handleLocaleChange);
