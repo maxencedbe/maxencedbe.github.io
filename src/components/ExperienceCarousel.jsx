@@ -43,7 +43,7 @@ const ExperienceCarousel = ({ itemsEn, itemsFr, items, revealDots = false }) => 
   }, [locale, emblaApi]);
 
   return (
-    <div className="max-w-[960px] mx-auto">
+    <div className="max-w-[900px] mx-auto">
       <div className="relative px-4 sm:px-12">
       <div
         className="overflow-hidden py-12 -my-12"
