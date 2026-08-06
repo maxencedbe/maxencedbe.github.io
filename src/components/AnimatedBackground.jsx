@@ -195,7 +195,7 @@ export default function AnimatedBackground({ instant = false }) {
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
-          const fadeDistance = height * 0.35;
+          const fadeDistance = height * 0.5;
           largeHeader.style.opacity = String(Math.max(0, 1 - window.scrollY / fadeDistance));
           ticking = false;
         });
