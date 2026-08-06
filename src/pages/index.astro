@@ -2,7 +2,6 @@
 import Layout from "../layouts/Layout.astro";
 import Typewriter from "../components/Typewriter.jsx";
 import ProjectGrid from "../components/ProjectGrid.jsx";
-import ExperienceCarousel from "../components/ExperienceCarousel.jsx";
 import ExperienceRow from "../components/ExperienceRow.jsx";
 import Footer from "../components/Footer.jsx";
 
@@ -209,7 +208,7 @@ const educationFr = [
         Education
       </h2>
       <div class="reveal-up reveal-delay-200 w-full">
-        <ExperienceCarousel client:load itemsEn={educationEn} itemsFr={educationFr} revealDots={true} />
+        <ExperienceRow client:load itemsEn={educationEn} itemsFr={educationFr} />
       </div>
     </div>
   </section>
