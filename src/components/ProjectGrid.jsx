@@ -211,7 +211,7 @@ export default function ProjectGrid() {
                   exit={{ opacity: 0, transition: { duration: 0.2 } }}
                   className="flex flex-col items-center w-full"
                 >
-                  {index > 0 && <div className="w-16 h-px bg-black/10 dark:bg-white/10 my-2 md:my-3" aria-hidden="true"></div>}
+                  {index > 0 && <div className="w-24 h-px bg-black/10 dark:bg-white/10 my-2 md:my-3" aria-hidden="true"></div>}
                   <ProjectCard
                     title={project.title}
                     description={project.description}
@@ -240,7 +240,7 @@ export default function ProjectGrid() {
                     key={project.title}
                     className="flex flex-col items-center w-full"
                   >
-                    <div className="w-16 h-px bg-black/10 dark:bg-white/10 my-2 md:my-3" aria-hidden="true"></div>
+                    <div className="w-24 h-px bg-black/10 dark:bg-white/10 my-2 md:my-3" aria-hidden="true"></div>
                     <ProjectCard
                       title={project.title}
                       description={project.description}
