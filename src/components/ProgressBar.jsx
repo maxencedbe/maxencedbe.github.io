@@ -59,9 +59,17 @@ export default function ProgressBar() {
         return () => window.removeEventListener("resize", update);
     }, []);
 
+    // Redraw at the current progress whenever the canvas is resized. Deliberately
+    // its own effect, separate from the one below: a resize mid-transition (e.g. a
+    // scrollbar toggling because EN/FR text has a different total page height)
+    // must never tear down and rebuild the scroll/locale listeners below, since
+    // that cancels an in-flight glide animation and freezes the bar mid-slide —
+    // it then only "catches up" instantly on the next scroll, i.e. it teleports.
     useEffect(() => {
-        if (dims.w === 0) return;
+        if (canvasRef.current) drawSnake(canvasRef.current, stateRef.current.current);
+    }, [dims]);
 
+    useEffect(() => {
         const state = stateRef.current;
 
         const getProgress = () => {
@@ -159,7 +167,7 @@ export default function ProgressBar() {
             if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
             if (state.animRaf) cancelAnimationFrame(state.animRaf);
         };
-    }, [dims]);
+    }, []);
 
     if (dims.w === 0 || dims.w < 768) return null;
 
