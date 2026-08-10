@@ -66,6 +66,7 @@ export default function ProgressBar() {
     // that cancels an in-flight glide animation and freezes the bar mid-slide —
     // it then only "catches up" instantly on the next scroll, i.e. it teleports.
     useEffect(() => {
+        console.log('[PB] dims-changed redraw, current=', stateRef.current.current, dims);
         if (canvasRef.current) drawSnake(canvasRef.current, stateRef.current.current);
     }, [dims]);
 
@@ -78,10 +79,12 @@ export default function ProgressBar() {
             return Math.min(Math.max(window.scrollY / docHeight, 0), 1);
         };
 
-        const drawCurrent = () => {
+        const drawCurrent = (src) => {
+            console.log('[PB] drawCurrent called from', src, 'localeChanging=', state.localeChanging, 'animatingFromLocale=', state.animatingFromLocale);
             if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
             state.scrollRaf = requestAnimationFrame(() => {
                 const progress = getProgress();
+                console.log('[PB] drawCurrent applying progress=', progress, 'from', src);
                 state.current = progress;
                 if (canvasRef.current) drawSnake(canvasRef.current, progress);
             });
@@ -94,12 +97,17 @@ export default function ProgressBar() {
             // asynchronously, sometimes right as (or just after) the glide starts —
             // if it weren't ignored here it would cancel the animation and snap the
             // bar straight to its target, which is what a "teleport" actually was.
-            if (state.localeChanging || state.animatingFromLocale) return;
+            if (state.localeChanging || state.animatingFromLocale) {
+                console.log('[PB] handleScroll IGNORED (guarded)');
+                return;
+            }
+            console.log('[PB] handleScroll NOT guarded — proceeding to drawCurrent');
             if (state.animRaf) { cancelAnimationFrame(state.animRaf); state.animRaf = null; }
-            drawCurrent();
+            drawCurrent('handleScroll');
         };
 
         const handleLocaleChange = () => {
+            console.log('[PB] locale-change received, setting localeChanging=true');
             state.localeChanging = true;
         };
 
@@ -108,13 +116,18 @@ export default function ProgressBar() {
         // the content fading back in, instead of a fixed delay that drifts
         // out of sync whenever the transition's own timing changes.
         const handleLocaleSettle = () => {
+            console.log('[PB] locale-transition-settle received, current=', state.current, 'target=', getProgress());
             state.localeChanging = false;
             state.animatingFromLocale = true;
-            animateTo(getProgress(), () => { state.animatingFromLocale = false; });
+            animateTo(getProgress(), () => {
+                console.log('[PB] glide onComplete, clearing animatingFromLocale');
+                state.animatingFromLocale = false;
+            });
         };
 
         // Animated glide when page expands (show more — progress drops suddenly)
         const animateTo = (target, onComplete) => {
+            console.log('[PB] animateTo start, from=', state.current, 'to=', target);
             if (state.animRaf) cancelAnimationFrame(state.animRaf);
             const start = state.current;
             const startTime = performance.now();
@@ -127,6 +140,7 @@ export default function ProgressBar() {
                 if (t < 1) {
                     state.animRaf = requestAnimationFrame(step);
                 } else {
+                    console.log('[PB] animateTo finished at', state.current);
                     state.current = target;
                     state.animRaf = null;
                     if (onComplete) onComplete();
@@ -144,9 +158,14 @@ export default function ProgressBar() {
             // from its own unaffected start/target closure, the bar would jump
             // to this resize-driven value and then immediately snap back onto
             // the glide's curve — a visible teleport right before it slides.
-            if (state.localeChanging || state.animatingFromLocale) { lastDocHeight = newDocHeight; return; }
+            if (state.localeChanging || state.animatingFromLocale) {
+                console.log('[PB] handleResize IGNORED (guarded), newDocHeight=', newDocHeight);
+                lastDocHeight = newDocHeight;
+                return;
+            }
             const delta = newDocHeight - lastDocHeight;
             lastDocHeight = newDocHeight;
+            console.log('[PB] handleResize NOT guarded, delta=', delta);
 
             if (Math.abs(delta) > 20) {
                 // Page expanded or shrank (show more, filter change): animate the bar smoothly
@@ -154,7 +173,7 @@ export default function ProgressBar() {
             } else {
                 // Negligible change: track instantly so state.current stays
                 // in sync — prevents teleport if the user scrolls right after collapse
-                drawCurrent();
+                drawCurrent('handleResize-small-delta');
             }
         };
 
