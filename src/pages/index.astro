@@ -424,11 +424,10 @@ const educationFr = [
     });
 
     els.forEach(el => {
-      el.style.transition = 'opacity 0.25s ease-in, filter 0.25s ease-in';
+      el.style.transition = 'opacity 0.15s ease-in';
       el.style.opacity = '0';
-      el.style.filter = 'blur(6px)';
     });
-    await new Promise(r => setTimeout(r, 250));
+    await new Promise(r => setTimeout(r, 150));
 
     applyLocaleStatic(newLocale);
     localStorage.setItem('locale', newLocale);
@@ -442,7 +441,7 @@ const educationFr = [
     await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
 
     // Capture anchor position now (after React re-renders, sections still locked)
-    // so the reference is fresh and not stale from before the 250ms fade-out.
+    // so the reference is fresh and not stale from before the 150ms fade-out.
     const anchorTopBefore = anchor.getBoundingClientRect().top;
 
     // Stop Lenis during correction so it can't override the scroll in the same frame
@@ -466,11 +465,10 @@ const educationFr = [
     await new Promise(r => setTimeout(r, 50));
 
     els.forEach(el => {
-      el.style.transition = 'opacity 0.6s ease-out, filter 0.6s ease-out';
+      el.style.transition = 'opacity 0.3s ease-out';
       el.style.opacity = '1';
-      el.style.filter = 'blur(0px)';
     });
-    await new Promise(r => setTimeout(r, 650));
+    await new Promise(r => setTimeout(r, 350));
     els.forEach(el => {
       el.style.transition = '';
       el.style.opacity = '';
