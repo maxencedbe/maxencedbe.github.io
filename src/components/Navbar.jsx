@@ -191,11 +191,15 @@ export default function Navbar() {
                 {index > 0 && <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>}
                 <button
                   onClick={bubbleLocale === code ? undefined : handleLanguageSwitch}
-                  className={`text-sm font-semibold tracking-wide cursor-pointer transition-colors duration-300 ${
+                  className={`relative py-1 text-sm font-semibold tracking-wide cursor-pointer transition-colors duration-300 ${
                     bubbleLocale === code ? 'text-pink-400' : 'text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400'
                   }`}
                 >
                   {code.toUpperCase()}
+                  <span
+                    className="absolute left-0 right-0 -bottom-0.5 h-[1.5px] bg-pink-400 origin-center transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
+                    style={{ transform: bubbleLocale === code ? 'scaleX(1)' : 'scaleX(0)' }}
+                  ></span>
                 </button>
               </>
             ))}
@@ -204,10 +208,27 @@ export default function Navbar() {
           {/* Theme toggle */}
           <button
             onClick={toggleTheme}
-            className="text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 cursor-pointer transition-colors duration-300 flex items-center justify-center"
+            className="relative w-[18px] h-[18px] text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 cursor-pointer transition-colors duration-300 flex items-center justify-center"
             aria-label="Toggle theme"
           >
-            {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+            <span
+              className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
+              style={{
+                opacity: theme === 'dark' ? 0 : 1,
+                transform: theme === 'dark' ? 'rotate(90deg) scale(0.5)' : 'rotate(0deg) scale(1)',
+              }}
+            >
+              <SunIcon />
+            </span>
+            <span
+              className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
+              style={{
+                opacity: theme === 'dark' ? 1 : 0,
+                transform: theme === 'dark' ? 'rotate(0deg) scale(1)' : 'rotate(-90deg) scale(0.5)',
+              }}
+            >
+              <MoonIcon />
+            </span>
           </button>
         </div>
       </div>
