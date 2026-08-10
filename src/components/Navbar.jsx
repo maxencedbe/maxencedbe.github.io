@@ -185,54 +185,30 @@ export default function Navbar() {
         {/* RIGHT */}
         <div className="flex items-center gap-3 md:gap-5 lg:gap-6">
           {/* Lang toggle */}
-          <div
-            onClick={handleLanguageSwitch}
-            className="hidden lg:flex relative w-[72px] h-9 rounded-full bg-[rgba(253,252,249,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] cursor-pointer items-center"
-            role="button"
-            aria-label="Switch language"
-          >
-            <div className="absolute inset-0 pointer-events-none opacity-60 flex">
-              <div className="w-1/2 h-full flex items-center justify-center">
-                <span className="text-xs font-normal text-black dark:text-white">EN</span>
-              </div>
-              <div className="w-1/2 h-full flex items-center justify-center">
-                <span className="text-xs font-normal text-black dark:text-white">FR</span>
-              </div>
-            </div>
-            <div
-              className={`absolute top-1/2 left-[3px] -translate-y-1/2 w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${bubbleLocale === 'fr' ? 'translate-x-[36px]' : 'translate-x-0'}`}
-              style={{ WebkitBackdropFilter: "blur(12px)", backdropFilter: "blur(12px)" }}
-            >
-              <span className="text-xs font-normal text-black dark:text-white">
-                {bubbleLocale === 'fr' ? 'FR' : 'EN'}
-              </span>
-            </div>
+          <div className="hidden lg:flex items-center gap-2" role="group" aria-label="Switch language">
+            {['en', 'fr'].map((code, index) => (
+              <>
+                {index > 0 && <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>}
+                <button
+                  onClick={bubbleLocale === code ? undefined : handleLanguageSwitch}
+                  className={`text-sm font-semibold tracking-wide cursor-pointer transition-colors duration-300 ${
+                    bubbleLocale === code ? 'text-pink-400' : 'text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400'
+                  }`}
+                >
+                  {code.toUpperCase()}
+                </button>
+              </>
+            ))}
           </div>
 
           {/* Theme toggle */}
-          <div
+          <button
             onClick={toggleTheme}
-            className="relative w-[72px] h-9 rounded-full bg-[rgba(253,252,249,0.9)] dark:bg-[rgba(10,10,10,0.88)] backdrop-blur-[20px] border border-black/10 dark:border-white/[0.15] shadow-none cursor-pointer transition-all duration-300 flex items-center"
-            role="button"
+            className="text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 cursor-pointer transition-colors duration-300 flex items-center justify-center"
             aria-label="Toggle theme"
           >
-            <div className="absolute inset-0 pointer-events-none opacity-30">
-              <div className="absolute top-[3px] left-[3px] w-7 h-7 flex items-center justify-center">
-                <div className="scale-[0.7] text-black dark:text-white"><SunIcon /></div>
-              </div>
-              <div className="absolute top-[3px] left-[3px] w-7 h-7 translate-x-[36px] flex items-center justify-center">
-                <div className="scale-[0.7] text-black dark:text-white"><MoonIcon /></div>
-              </div>
-            </div>
-            <div
-              className={`absolute top-[3px] left-[3px] w-7 h-7 rounded-full bg-white/40 dark:bg-white/10 backdrop-blur-md border border-white/30 dark:border-white/10 shadow-sm flex items-center justify-center cursor-pointer transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] ${theme === 'dark' ? 'translate-x-[36px]' : 'translate-x-0'}`}
-              style={{ WebkitBackdropFilter: "blur(12px)", backdropFilter: "blur(12px)" }}
-            >
-              <div className="text-black dark:text-white scale-[0.7] drop-shadow-sm">
-                {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
-              </div>
-            </div>
-          </div>
+            {theme === 'dark' ? <MoonIcon /> : <SunIcon />}
+          </button>
         </div>
       </div>
 
