@@ -138,7 +138,13 @@ export default function ProgressBar() {
         let lastDocHeight = document.documentElement.scrollHeight - window.innerHeight;
         const handleResize = () => {
             const newDocHeight = document.documentElement.scrollHeight - window.innerHeight;
-            if (state.localeChanging) { lastDocHeight = newDocHeight; return; }
+            // Also ignore while the locale-switch glide itself is running: an
+            // instant drawCurrent() here would stomp on the animation's own
+            // interpolated value, and since the glide's step() keeps computing
+            // from its own unaffected start/target closure, the bar would jump
+            // to this resize-driven value and then immediately snap back onto
+            // the glide's curve — a visible teleport right before it slides.
+            if (state.localeChanging || state.animatingFromLocale) { lastDocHeight = newDocHeight; return; }
             const delta = newDocHeight - lastDocHeight;
             lastDocHeight = newDocHeight;
 
