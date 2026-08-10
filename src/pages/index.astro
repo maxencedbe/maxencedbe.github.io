@@ -163,18 +163,21 @@ const educationFr = [
           <div class="reveal-up" style={{ transitionDelay: `${i * 160}ms` }}>
             <div>
               <h3 data-i18n={card.key} class="text-lg font-semibold mb-4 text-black dark:text-white text-center lg:text-left">{card.label}</h3>
-              <div class="flex flex-wrap gap-2 justify-center lg:justify-start">
-                {card.chips.map((skill) => (
-                  <span class="px-2.5 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
-                    {skill.icon === "inline-db" ? (
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5" aria-hidden="true">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
-                      </svg>
-                    ) : skill.icon ? (
-                      <img src={skill.icon} alt="" class={skill.color ? "w-3.5 h-3.5" : "w-3.5 h-3.5 brightness-0 dark:invert"} aria-hidden="true" />
-                    ) : null}
-                    {skill.name}
-                  </span>
+              <div class="flex flex-wrap items-center gap-2 justify-center lg:justify-start">
+                {card.chips.map((skill, index) => (
+                  <>
+                    {index > 0 && <div class="w-[1px] h-4 bg-black/15 dark:bg-white/15" aria-hidden="true"></div>}
+                    <span class="px-2 text-sm font-medium text-black dark:text-white inline-flex items-center gap-1.5">
+                      {skill.icon === "inline-db" ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                        </svg>
+                      ) : skill.icon ? (
+                        <img src={skill.icon} alt="" class={skill.color ? "w-3.5 h-3.5" : "w-3.5 h-3.5 brightness-0 dark:invert"} aria-hidden="true" />
+                      ) : null}
+                      {skill.name}
+                    </span>
+                  </>
                 ))}
               </div>
             </div>
@@ -184,16 +187,18 @@ const educationFr = [
         <div class="reveal-up" style={{ transitionDelay: "800ms" }}>
           <div>
             <h3 data-i18n="skills.lang" class="text-lg font-semibold mb-4 text-black dark:text-white text-center lg:text-left">Spoken languages</h3>
-            <div class="flex flex-wrap gap-2 justify-center lg:justify-start">
-              <span data-locale-fade class="px-2.5 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+            <div class="flex flex-wrap items-center gap-2 justify-center lg:justify-start">
+              <span data-locale-fade class="px-2 text-sm font-medium text-black dark:text-white inline-flex items-center gap-1.5">
                 <span class="grayscale">🇫🇷</span>
                 <span data-i18n="lang.french">French (native)</span>
               </span>
-              <span data-locale-fade class="px-2.5 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+              <div class="w-[1px] h-4 bg-black/15 dark:bg-white/15" aria-hidden="true"></div>
+              <span data-locale-fade class="px-2 text-sm font-medium text-black dark:text-white inline-flex items-center gap-1.5">
                 <span class="grayscale">🇬🇧</span>
                 <span data-i18n="lang.english">English (C1)</span>
               </span>
-              <span data-locale-fade class="px-2.5 py-1 text-sm font-medium rounded-full bg-black/5 dark:bg-white/10 text-black dark:text-white border border-black/5 dark:border-white/5 inline-flex items-center gap-1.5">
+              <div class="w-[1px] h-4 bg-black/15 dark:bg-white/15" aria-hidden="true"></div>
+              <span data-locale-fade class="px-2 text-sm font-medium text-black dark:text-white inline-flex items-center gap-1.5">
                 <span class="grayscale">🇩🇪</span>
                 <span data-i18n="lang.german">German (A2)</span>
               </span>
