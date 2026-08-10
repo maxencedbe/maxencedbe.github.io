@@ -88,11 +88,15 @@ export default function ProgressBar() {
 
         const handleLocaleChange = () => {
             state.localeChanging = true;
-            // Wait for the scroll correction (2 rAFs ~33ms) + layout settle before animating
-            setTimeout(() => {
-                state.localeChanging = false;
-                animateTo(getProgress());
-            }, 100);
+        };
+
+        // Fired by switchLocale once the scroll-position correction has
+        // landed — glide the bar to its new target from here, in sync with
+        // the content fading back in, instead of a fixed delay that drifts
+        // out of sync whenever the transition's own timing changes.
+        const handleLocaleSettle = () => {
+            state.localeChanging = false;
+            animateTo(getProgress());
         };
 
         // Animated glide when page expands (show more — progress drops suddenly)
@@ -141,6 +145,7 @@ export default function ProgressBar() {
         window.addEventListener("scroll", handleScroll, { passive: true });
         document.addEventListener("astro:after-swap", handleScroll);
         document.addEventListener("locale-change", handleLocaleChange);
+        document.addEventListener("locale-transition-settle", handleLocaleSettle);
 
         setTimeout(handleScroll, 50);
 
@@ -150,6 +155,7 @@ export default function ProgressBar() {
             window.removeEventListener("scroll", handleScroll);
             document.removeEventListener("astro:after-swap", handleScroll);
             document.removeEventListener("locale-change", handleLocaleChange);
+            document.removeEventListener("locale-transition-settle", handleLocaleSettle);
             if (state.scrollRaf) cancelAnimationFrame(state.scrollRaf);
             if (state.animRaf) cancelAnimationFrame(state.animRaf);
         };

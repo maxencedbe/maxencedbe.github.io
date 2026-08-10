@@ -434,6 +434,10 @@ const educationFr = [
       lenis.start();
     }
 
+    // Scroll position is now settled — safe for the progress bar to glide
+    // to its new target instead of ignoring scroll/resize noise.
+    document.dispatchEvent(new CustomEvent('locale-transition-settle'));
+
     wrapper.style.transition = 'opacity 0.35s ease-out';
     wrapper.style.opacity = '1';
     await new Promise(r => setTimeout(r, 380));
