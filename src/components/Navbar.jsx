@@ -191,8 +191,8 @@ export default function Navbar() {
                 {index > 0 && <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>}
                 <button
                   onClick={bubbleLocale === code ? undefined : handleLanguageSwitch}
-                  className={`text-sm tracking-wide cursor-pointer transition-colors duration-300 ${
-                    bubbleLocale === code ? 'text-pink-400 font-bold' : 'text-black dark:text-white font-semibold hover:text-pink-400 dark:hover:text-pink-400'
+                  className={`text-sm font-medium tracking-wide cursor-pointer transition-colors duration-300 ${
+                    bubbleLocale === code ? 'text-pink-400' : 'text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400'
                   }`}
                 >
                   {code.toUpperCase()}
