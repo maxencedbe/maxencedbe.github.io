@@ -45,7 +45,7 @@ function easeInOut(t) {
 export default function ProgressBar() {
     const canvasRef = useRef(null);
     const [dims, setDims] = useState({ w: 0, h: 0, dpr: 1 });
-    const stateRef = useRef({ current: 0, animRaf: null, scrollRaf: null, localeChanging: false });
+    const stateRef = useRef({ current: 0, animRaf: null, scrollRaf: null, localeChanging: false, animatingFromLocale: false });
 
     useEffect(() => {
         const update = () =>
@@ -88,8 +88,13 @@ export default function ProgressBar() {
         };
 
         const handleScroll = () => {
-            // Ignore scroll events fired by the locale switch scroll correction
-            if (state.localeChanging) return;
+            // Ignore scroll events fired by the locale switch scroll correction.
+            // Also ignore while a locale-triggered glide is in flight: the native
+            // 'scroll' event from switchLocale's own corrective scrollBy can arrive
+            // asynchronously, sometimes right as (or just after) the glide starts —
+            // if it weren't ignored here it would cancel the animation and snap the
+            // bar straight to its target, which is what a "teleport" actually was.
+            if (state.localeChanging || state.animatingFromLocale) return;
             if (state.animRaf) { cancelAnimationFrame(state.animRaf); state.animRaf = null; }
             drawCurrent();
         };
@@ -104,11 +109,12 @@ export default function ProgressBar() {
         // out of sync whenever the transition's own timing changes.
         const handleLocaleSettle = () => {
             state.localeChanging = false;
-            animateTo(getProgress());
+            state.animatingFromLocale = true;
+            animateTo(getProgress(), () => { state.animatingFromLocale = false; });
         };
 
         // Animated glide when page expands (show more — progress drops suddenly)
-        const animateTo = (target) => {
+        const animateTo = (target, onComplete) => {
             if (state.animRaf) cancelAnimationFrame(state.animRaf);
             const start = state.current;
             const startTime = performance.now();
@@ -123,6 +129,7 @@ export default function ProgressBar() {
                 } else {
                     state.current = target;
                     state.animRaf = null;
+                    if (onComplete) onComplete();
                 }
             };
             state.animRaf = requestAnimationFrame(step);
