@@ -191,15 +191,11 @@ export default function Navbar() {
                 {index > 0 && <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>}
                 <button
                   onClick={bubbleLocale === code ? undefined : handleLanguageSwitch}
-                  className={`relative py-1 text-sm font-semibold tracking-wide cursor-pointer transition-colors duration-300 ${
-                    bubbleLocale === code ? 'text-pink-400' : 'text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400'
+                  className={`text-sm tracking-wide cursor-pointer transition-colors duration-300 ${
+                    bubbleLocale === code ? 'text-pink-400 font-bold' : 'text-black dark:text-white font-semibold hover:text-pink-400 dark:hover:text-pink-400'
                   }`}
                 >
                   {code.toUpperCase()}
-                  <span
-                    className="absolute left-0 right-0 -bottom-0.5 h-[1.5px] bg-pink-400 origin-center transition-transform duration-300 ease-[cubic-bezier(0.23,1,0.32,1)]"
-                    style={{ transform: bubbleLocale === code ? 'scaleX(1)' : 'scaleX(0)' }}
-                  ></span>
                 </button>
               </>
             ))}
