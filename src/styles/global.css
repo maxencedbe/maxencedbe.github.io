@@ -311,11 +311,16 @@ html {
     transition-delay: 600ms;
   }
 
-  .reveal-delay-100.is-visible { transition-delay: 100ms; }
-  .reveal-delay-200.is-visible { transition-delay: 200ms; }
-  .reveal-delay-300.is-visible { transition-delay: 300ms; }
-  .reveal-delay-400.is-visible { transition-delay: 400ms; }
-  .reveal-delay-500.is-visible { transition-delay: 500ms; }
+  /* Scoped to #home: outside the Hero, reveal-up/-scale are static (no
+     transition to delay), but the class was still winning transition-delay
+     for the unrelated universal color transition below, making theme-toggle
+     color changes lag by 100-500ms on any element that happened to carry a
+     leftover reveal-delay-* class from the old site-wide stagger. */
+  #home .reveal-delay-100.is-visible { transition-delay: 100ms; }
+  #home .reveal-delay-200.is-visible { transition-delay: 200ms; }
+  #home .reveal-delay-300.is-visible { transition-delay: 300ms; }
+  #home .reveal-delay-400.is-visible { transition-delay: 400ms; }
+  #home .reveal-delay-500.is-visible { transition-delay: 500ms; }
 
   .animate-delay-600 {
     transition-delay: 600ms;
