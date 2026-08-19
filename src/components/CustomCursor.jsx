@@ -33,33 +33,30 @@ const RING_R = 12;
 const OFFSETS = [[0, 0], [DOT_R, 0], [-DOT_R, 0], [0, DOT_R], [0, -DOT_R], [RING_R, 0], [-RING_R, 0], [0, RING_R], [0, -RING_R]];
 
 export default function CustomCursor() {
-    const cursorRef = useRef(null);
-    const followerRef = useRef(null);
+    // Two full cursor layers, not one that switches blend mode. Mutating
+    // `mix-blend-mode` on a live element makes the browser tear down and
+    // rebuild its compositing layer, which drops a frame — the cursor visibly
+    // blinked out at the exact moment the look changed. Since the ring samples
+    // 12px ahead of the pointer, that moment lands just *before* you reach a
+    // button, which is why it read as "disappears on approach". Each layer now
+    // keeps a fixed blend mode for its whole life and we cross-fade opacity
+    // between them instead; opacity never rebuilds the layer, so nothing blinks.
+    const cursorBlendRef = useRef(null);
+    const followerBlendRef = useRef(null);
+    const cursorSolidRef = useRef(null);
+    const followerSolidRef = useRef(null);
 
     useEffect(() => {
         if (window.matchMedia('(hover: none)').matches) return;
 
-        const cursor = cursorRef.current;
-        const follower = followerRef.current;
+        const cursorBlend = cursorBlendRef.current;
+        const followerBlend = followerBlendRef.current;
+        const cursorSolid = cursorSolidRef.current;
+        const followerSolid = followerSolidRef.current;
 
-        const isDarkRef = { current: document.documentElement.classList.contains("dark") };
-        const obs = new MutationObserver(() => {
-            const nowDark = document.documentElement.classList.contains("dark");
-            if (nowDark === isDarkRef.current) return;
-            isDarkRef.current = nowDark;
-            // Only the pink look reads the theme (difference blending is
-            // self-inverting), so it needs repainting when the theme flips
-            // mid-hover — otherwise it keeps the old mode's colour until the
-            // pointer next enters or leaves a pink element.
-            if (onPink) applyBlend();
-        });
-        obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-
-        gsap.set(cursor, { xPercent: -50, yPercent: -50, opacity: 0 });
-        gsap.set(follower, { xPercent: -50, yPercent: -50, opacity: 0, width: 24, height: 24 });
-        gsap.set([cursor, follower], { mixBlendMode: "difference" });
-        gsap.set(cursor, { backgroundColor: "#ffffff" });
-        gsap.set(follower, { borderColor: "#ffffff" });
+        const cursors = [cursorBlend, cursorSolid];
+        const followers = [followerBlend, followerSolid];
+        const all = [...cursors, ...followers];
 
         let mouseX = 0, mouseY = 0, posX = 0, posY = 0;
         let hovering = false;
@@ -67,20 +64,46 @@ export default function CustomCursor() {
         let exitPinkTimer = null;
         let visible = false;
 
-        // Size and blend are applied independently on purpose. They used to be
+        const isDarkRef = { current: document.documentElement.classList.contains("dark") };
+
+        const paintSolid = () => {
+            const color = isDarkRef.current ? "#ffffff" : "#000000";
+            gsap.set(cursorSolid, { backgroundColor: color });
+            gsap.set(followerSolid, { borderColor: color });
+        };
+
+        const obs = new MutationObserver(() => {
+            const nowDark = document.documentElement.classList.contains("dark");
+            if (nowDark === isDarkRef.current) return;
+            isDarkRef.current = nowDark;
+            // Only the solid layer reads the theme — difference blending is
+            // self-inverting — but repaint it even while hidden so it is
+            // already correct the next time it fades in.
+            paintSolid();
+        });
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+
+        gsap.set(all, { xPercent: -50, yPercent: -50, opacity: 0 });
+        gsap.set(followers, { width: 24, height: 24 });
+        gsap.set([cursorBlend, followerBlend], { mixBlendMode: "difference" });
+        gsap.set([cursorSolid, followerSolid], { mixBlendMode: "normal" });
+        gsap.set(cursorBlend, { backgroundColor: "#ffffff" });
+        gsap.set(followerBlend, { borderColor: "#ffffff" });
+        paintSolid();
+
+        // Size and look are applied independently on purpose. They used to be
         // one combined state ("hover-pink", "default-pink", ...), so any flicker
         // in the pink test also re-fired the follower's 0.3s resize tween — the
         // pointer only had to hover near a pink edge for the ring to pump. The
         // two now only react to the input that actually concerns them.
         const applySize = () => {
-            gsap.to(follower, { width: hovering ? 40 : 24, height: hovering ? 40 : 24, duration: 0.3, ease: "power2.out" });
+            gsap.to(followers, { width: hovering ? 40 : 24, height: hovering ? 40 : 24, duration: 0.3, ease: "power2.out" });
         };
 
-        const applyBlend = () => {
-            const color = isDarkRef.current ? "#ffffff" : "#000000";
-            gsap.set([cursor, follower], { mixBlendMode: onPink ? "normal" : "difference" });
-            gsap.set(cursor, { backgroundColor: onPink ? color : "#ffffff" });
-            gsap.set(follower, { borderColor: onPink ? color : "#ffffff" });
+        const applyLook = () => {
+            if (!visible) return;
+            gsap.set([cursorBlend, followerBlend], { opacity: onPink ? 0 : 1 });
+            gsap.set([cursorSolid, followerSolid], { opacity: onPink ? 1 : 0 });
         };
 
         // The clickable/pink hit-testing below is heavy — up to 9 elementFromPoint
@@ -91,7 +114,7 @@ export default function CustomCursor() {
         // pointer actually moved. The result is identical; it just runs far less.
         const updateCursorState = () => {
             const centerEl = document.elementFromPoint(mouseX, mouseY);
-            if (!centerEl || centerEl === cursor || centerEl === follower) return;
+            if (!centerEl || all.includes(centerEl)) return;
 
             const isClickable =
                 centerEl.tagName === "A" || centerEl.tagName === "BUTTON" ||
@@ -101,11 +124,11 @@ export default function CustomCursor() {
                 centerEl.classList?.contains("no-cursor-highlight") || centerEl.closest?.(".no-cursor-highlight");
             const clickable = isClickable && !isNoHighlight;
 
-            // Check all 5 points (center + 4 ring-edge) for pink
+            // Check all 9 points (centre + dot edge + ring edge) for pink
             let pink = false;
             for (const [dx, dy] of OFFSETS) {
                 const el = dx === 0 && dy === 0 ? centerEl : document.elementFromPoint(mouseX + dx, mouseY + dy);
-                if (el && el !== cursor && el !== follower && isPinkElement(el)) { pink = true; break; }
+                if (el && !all.includes(el) && isPinkElement(el)) { pink = true; break; }
             }
 
             // Size: driven by the single centre hit-test, which only flips when
@@ -116,7 +139,7 @@ export default function CustomCursor() {
                 applySize();
             }
 
-            // Blend: asymmetric hysteresis. Entering pink applies at once,
+            // Look: asymmetric hysteresis. Entering pink applies at once,
             // because any frame spent blending over pink shows the inverted
             // colour (difference over this site's pink lands on green). Leaving
             // pink waits, because the 9-point ring sample sits a pixel or two
@@ -127,12 +150,12 @@ export default function CustomCursor() {
             // which was short enough for the flicker to get through.
             if (pink) {
                 if (exitPinkTimer) { clearTimeout(exitPinkTimer); exitPinkTimer = null; }
-                if (!onPink) { onPink = true; applyBlend(); }
+                if (!onPink) { onPink = true; applyLook(); }
             } else if (onPink && !exitPinkTimer) {
                 exitPinkTimer = setTimeout(() => {
                     exitPinkTimer = null;
                     onPink = false;
-                    applyBlend();
+                    applyLook();
                 }, 150);
             }
         };
@@ -151,19 +174,19 @@ export default function CustomCursor() {
                 visible = true;
                 posX = mouseX;
                 posY = mouseY;
-                gsap.set(cursor, { x: mouseX, y: mouseY });
-                gsap.set(follower, { x: posX, y: posY });
-                gsap.set([cursor, follower], { opacity: 1 });
+                gsap.set(cursors, { x: mouseX, y: mouseY });
+                gsap.set(followers, { x: posX, y: posY });
+                applyLook();
             }
 
-            gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1, ease: "power2.out" });
+            gsap.to(cursors, { x: mouseX, y: mouseY, duration: 0.1, ease: "power2.out" });
             moved = true;
         };
 
         const loop = () => {
             posX += (mouseX - posX) / 8;
             posY += (mouseY - posY) / 8;
-            gsap.set(follower, { x: posX, y: posY });
+            gsap.set(followers, { x: posX, y: posY });
             if (moved) { moved = false; updateCursorState(); }
             requestAnimationFrame(loop);
         };
@@ -177,7 +200,7 @@ export default function CustomCursor() {
         const onMouseLeave = (e) => {
             if (e.relatedTarget !== null) return;
             visible = false;
-            gsap.set([cursor, follower], { opacity: 0 });
+            gsap.set(all, { opacity: 0 });
         };
         // Re-entering only arms the reveal; the mousemove that follows snaps the
         // cursor to the pointer and shows it, so it never flashes at a stale spot.
@@ -202,12 +225,20 @@ export default function CustomCursor() {
     return (
         <>
             <div
-                ref={cursorRef}
-                className="fixed top-0 left-0 w-[3px] h-[3px] bg-white rounded-full pointer-events-none z-[9999] hidden md:block"
+                ref={cursorBlendRef}
+                className="fixed top-0 left-0 w-[3px] h-[3px] rounded-full pointer-events-none z-[9999] hidden md:block"
             />
             <div
-                ref={followerRef}
-                className="fixed top-0 left-0 border border-white rounded-full pointer-events-none z-[9998] hidden md:block box-border"
+                ref={followerBlendRef}
+                className="fixed top-0 left-0 border rounded-full pointer-events-none z-[9998] hidden md:block box-border"
+            />
+            <div
+                ref={cursorSolidRef}
+                className="fixed top-0 left-0 w-[3px] h-[3px] rounded-full pointer-events-none z-[9999] hidden md:block"
+            />
+            <div
+                ref={followerSolidRef}
+                className="fixed top-0 left-0 border rounded-full pointer-events-none z-[9998] hidden md:block box-border"
             />
         </>
     );
