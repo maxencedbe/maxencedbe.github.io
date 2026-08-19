@@ -61,6 +61,7 @@ export default function CustomCursor() {
 
         const setCursorState = (next) => {
             if (next === currentState) return;
+            console.log('[CURSOR] state change', currentState, '->', next);
             currentState = next;
             const color = isDarkRef.current ? "#ffffff" : "#000000";
             const isHover = next === "hover" || next === "hover-pink";
@@ -129,6 +130,7 @@ export default function CustomCursor() {
             // until you left and re-entered the window. Snap to the pointer first
             // so it doesn't fly in from the top-left corner.
             if (!visible) {
+                console.log('[CURSOR] was hidden, revealing at', mouseX, mouseY, 'target=', e.target?.tagName, e.target?.className);
                 visible = true;
                 posX = mouseX;
                 posY = mouseY;
@@ -160,13 +162,20 @@ export default function CustomCursor() {
         // viewport for another window/app; anything else is that quirk, so
         // it's ignored instead of hiding the cursor.
         const onMouseLeave = (e) => {
-            if (e.relatedTarget !== null) return;
+            if (e.relatedTarget !== null) {
+                console.log('[CURSOR] mouseleave IGNORED, relatedTarget=', e.relatedTarget?.tagName, e.relatedTarget?.className);
+                return;
+            }
+            console.log('[CURSOR] mouseleave HIDING cursor, clientX/Y=', e.clientX, e.clientY);
             visible = false;
             gsap.set([cursor, follower], { opacity: 0 });
         };
         // Re-entering only arms the reveal; the mousemove that follows snaps the
         // cursor to the pointer and shows it, so it never flashes at a stale spot.
-        const onMouseEnter = () => { visible = false; };
+        const onMouseEnter = (e) => {
+            console.log('[CURSOR] mouseenter, relatedTarget=', e.relatedTarget?.tagName, e.relatedTarget?.className);
+            visible = false;
+        };
         document.addEventListener("mouseleave", onMouseLeave);
         document.addEventListener("mouseenter", onMouseEnter);
 
