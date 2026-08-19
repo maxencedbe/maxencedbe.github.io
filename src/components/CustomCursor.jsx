@@ -152,7 +152,15 @@ export default function CustomCursor() {
 
         window.addEventListener("mousemove", onMouseMove, { passive: true });
 
-        const onMouseLeave = () => {
+        // `mouseleave` on `document` can fire spuriously — not just when the
+        // pointer actually leaves the window, but sometimes when a hovered
+        // element's `transform`/`scale` changes underneath it (common here:
+        // card hovers, filter buttons), a known browser hit-testing quirk.
+        // `relatedTarget` is null only when the pointer truly left the
+        // viewport for another window/app; anything else is that quirk, so
+        // it's ignored instead of hiding the cursor.
+        const onMouseLeave = (e) => {
+            if (e.relatedTarget !== null) return;
             visible = false;
             gsap.set([cursor, follower], { opacity: 0 });
         };
