@@ -148,9 +148,8 @@ export default function ProjectGrid() {
     return () => observer.disconnect();
   }, [activeFilter]);
 
-  const smoothScrollTo = (element, duration = 800, onComplete) => {
+  const smoothScrollToY = (target, duration = 800, onComplete) => {
     const start = window.scrollY;
-    const target = element.getBoundingClientRect().top + window.scrollY;
     const distance = target - start;
     const startTime = performance.now();
     const ease = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -169,11 +168,13 @@ export default function ProjectGrid() {
       setShowAll(false);
       const el = document.getElementById('projects');
       if (!el) return;
+      const NAVBAR_OFFSET = 35;
       const lenis = window.lenis;
       if (lenis) {
-        lenis.scrollTo(el, { offset: 0, duration: 1.5 });
+        lenis.scrollTo(el, { offset: -NAVBAR_OFFSET, duration: 1.5 });
       } else {
-        smoothScrollTo(el, 1500);
+        const target = el.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET;
+        smoothScrollToY(target, 1500);
       }
     } else {
       setShowAll(true);
