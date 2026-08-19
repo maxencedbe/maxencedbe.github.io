@@ -264,17 +264,23 @@ const educationFr = [
 
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                 <div class="flex flex-col gap-1.5">
-                  <label for="name" data-i18n="contact.name" class="text-xs tracking-wide text-black/60 dark:text-white/60">Name</label>
+                  <label for="name" data-i18n="contact.name" class="text-xs tracking-wide text-black dark:text-white">Name</label>
                   <input type="text" id="name" name="name" required autocomplete="none" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm" />
                 </div>
                 <div class="flex flex-col gap-1.5">
-                  <label for="email" data-i18n="contact.email" class="text-xs tracking-wide text-black/60 dark:text-white/60">Email</label>
+                  <label for="email" data-i18n="contact.email" class="text-xs tracking-wide text-black dark:text-white">Email</label>
                   <input type="email" id="email" name="email" required autocomplete="none" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm" />
                 </div>
               </div>
               <div class="flex flex-col gap-1.5">
-                <label for="message" data-i18n="contact.message" class="text-xs tracking-wide text-black/60 dark:text-white/60">Message</label>
-                <textarea id="message" name="message" required autocomplete="none" rows="4" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm resize-none"></textarea>
+                <label for="message" data-i18n="contact.message" class="text-xs tracking-wide text-black dark:text-white">Message</label>
+                <!-- data-lenis-prevent: Lenis hijacks wheel events document-wide to
+                     drive its smooth scroll, so scrolling inside an overflowing
+                     textarea moved the page instead of the text — once the message
+                     grew past the box there was no way to get back up to its start.
+                     This attribute makes Lenis leave wheel events over this element
+                     to the browser's native scrolling. -->
+                <textarea id="message" name="message" required autocomplete="none" rows="4" data-lenis-prevent class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm resize-none overflow-y-auto"></textarea>
               </div>
               <button
                 id="submit-button"
@@ -289,9 +295,19 @@ const educationFr = [
             </form>
           </div>
 
-          <p data-i18n="contact.desc" class="text-base sm:text-lg leading-relaxed text-justify sm:text-left text-black/80 dark:text-white w-full mobile-narrow reveal-up reveal-early reveal-delay-400">
-            Whether you have a question, a project idea, or just want to chat, my inbox is always open. I'll do my best to get back to you!
-          </p>
+          <div class="flex flex-wrap items-center justify-center gap-4 reveal-up reveal-early reveal-delay-400">
+            <a href="https://www.linkedin.com/in/maxence-debes" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300">
+              LinkedIn
+            </a>
+            <div class="w-[1px] h-4 bg-black/20 dark:bg-white/20" aria-hidden="true"></div>
+            <a href="https://github.com/maxencedbe" target="_blank" rel="noopener noreferrer" class="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300">
+              GitHub
+            </a>
+            <div class="w-[1px] h-4 bg-black/20 dark:bg-white/20" aria-hidden="true"></div>
+            <a href="mailto:maxence.debes@polytechnique.edu" class="text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300">
+              Email
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -338,7 +354,6 @@ const educationFr = [
       'projects.desc': 'A mix of academic research, personal builds, and professional work, all centered around AI, data, and software engineering. Some explore ideas I was simply curious about, others solve problems I ran into along the way. Most link to a repository if you want to dig into the code, and a few are still evolving as I keep iterating on them.',
       'contact.label': "Let's connect",
       'contact.heading': "Let's connect",
-      'contact.desc': "Whether you have a question, a project idea, or just want to chat, my inbox is always open. I'll do my best to get back to you!",
       'contact.open': 'Open to new opportunities',
       'contact.name': 'Name',
       'contact.email': 'Email',
@@ -368,7 +383,6 @@ const educationFr = [
       'projects.desc': "Un mélange de recherche académique, de projets personnels et d'expériences professionnelles, tous centrés sur l'IA, la data et le développement logiciel. Certains explorent des idées qui m'intriguaient simplement, d'autres répondent à des problèmes rencontrés en cours de route. La plupart renvoient vers un repository si vous voulez creuser le code, et certains sont encore en évolution au fil de mes améliorations.",
       'contact.label': 'Contactez-moi',
       'contact.heading': 'Contactez-moi',
-      'contact.desc': "Une question, une idée de projet, ou simplement envie d'échanger, ma messagerie est toujours ouverte. Je ferai de mon mieux pour vous répondre !",
       'contact.open': "À l'écoute d'opportunités",
       'contact.name': 'Nom',
       'contact.email': 'Email',
