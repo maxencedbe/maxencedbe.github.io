@@ -1,37 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 
-const isPinkish = (rgb) => {
-    const m = rgb && rgb.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
-    return m && +m[1] > 180 && +m[2] < 150 && +m[3] > 100 && +m[1] > +m[2] + 60;
-};
-
-const isPinkElement = (el) => {
-    let node = el;
-    while (node && node !== document.body) {
-        if (node.classList) {
-            const classes = [...node.classList];
-            if (classes.some(c =>
-                c === "filter-btn" ||
-                c === "carousel-dot" ||
-                c.startsWith("bg-pink") ||
-                c.startsWith("text-pink") ||
-                c.startsWith("border-pink") ||
-                c.startsWith("hover:bg-pink") ||
-                c.startsWith("hover:text-pink")
-            )) return true;
-        }
-        const style = window.getComputedStyle(node);
-        if (isPinkish(style.backgroundColor) || isPinkish(style.color) || isPinkish(style.borderTopColor)) return true;
-        node = node.parentElement;
-    }
-    return false;
-};
-
-const DOT_R = 2;
-const RING_R = 12;
-const OFFSETS = [[0, 0], [DOT_R, 0], [-DOT_R, 0], [0, DOT_R], [0, -DOT_R], [RING_R, 0], [-RING_R, 0], [0, RING_R], [0, -RING_R]];
-
 export default function CustomCursor() {
     const cursorRef = useRef(null);
     const followerRef = useRef(null);
@@ -42,85 +11,68 @@ export default function CustomCursor() {
         const cursor = cursorRef.current;
         const follower = followerRef.current;
 
-        const isDarkRef = { current: document.documentElement.classList.contains("dark") };
+        // Solid, theme-matched colour — deliberately NOT mix-blend-mode.
+        // `difference` blending inverts whatever is underneath, and inverting
+        // this site's pink (219,39,119) lands on green (36,216,136) — that was
+        // the green flash over pink links/buttons. The old fix sampled 9 points
+        // around the pointer to detect "am I over something pink" and switched
+        // blending off just in time; that sampling was a pixel or two from every
+        // boundary, so it flickered, and debouncing it only traded the flicker
+        // for a visible green window plus laggy hover growth. Dropping blending
+        // altogether removes the green at its source and makes the whole
+        // detection layer (and its debounce) unnecessary.
+        const colorFor = (dark) => (dark ? "#ffffff" : "#000000");
+        // A hairline halo in the opposite colour keeps the cursor legible over
+        // the few surfaces that match its own colour (the hero photo, the
+        // black-filtered project logos) — the one thing blending gave for free.
+        const haloFor = (dark) => `0 0 0 1px ${dark ? "rgba(0,0,0,0.35)" : "rgba(255,255,255,0.55)"}`;
+
+        let isDark = document.documentElement.classList.contains("dark");
+
+        const paint = () => {
+            gsap.set(cursor, { backgroundColor: colorFor(isDark), boxShadow: haloFor(isDark) });
+            gsap.set(follower, { borderColor: colorFor(isDark), boxShadow: haloFor(isDark) });
+        };
+
         const obs = new MutationObserver(() => {
-            isDarkRef.current = document.documentElement.classList.contains("dark");
+            const nowDark = document.documentElement.classList.contains("dark");
+            if (nowDark === isDark) return;
+            isDark = nowDark;
+            paint();
         });
         obs.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 
         gsap.set(cursor, { xPercent: -50, yPercent: -50, opacity: 0 });
         gsap.set(follower, { xPercent: -50, yPercent: -50, opacity: 0, width: 24, height: 24 });
-        gsap.set([cursor, follower], { mixBlendMode: "difference" });
-        gsap.set(cursor, { backgroundColor: "#ffffff" });
-        gsap.set(follower, { borderColor: "#ffffff" });
+        paint();
 
         let mouseX = 0, mouseY = 0, posX = 0, posY = 0;
-        let currentState = "default";
-        let exitPinkTimer = null;
+        let hovering = false;
         let visible = false;
 
-        const setCursorState = (next) => {
-            if (next === currentState) return;
-            currentState = next;
-            const color = isDarkRef.current ? "#ffffff" : "#000000";
-            const isHover = next === "hover" || next === "hover-pink";
-            const isNormal = next === "default-pink" || next === "hover-pink";
-
-            gsap.to(follower, { width: isHover ? 40 : 24, height: isHover ? 40 : 24, duration: 0.3, ease: "power2.out" });
-            gsap.set([cursor, follower], { mixBlendMode: isNormal ? "normal" : "difference" });
-            gsap.set(cursor, { backgroundColor: isNormal ? color : "#ffffff" });
-            gsap.set(follower, { borderColor: isNormal ? color : "#ffffff" });
-        };
-
-        // The clickable/pink hit-testing below is heavy — up to 9 elementFromPoint
-        // calls plus getComputedStyle tree-walks. Running it on every mousemove
-        // event (which can fire 120+/s and stack several per frame) did a lot of
-        // synchronous style work that janked scrolling and animations. It's now
-        // driven from the rAF loop, at most once per frame and only when the
-        // pointer actually moved. The result is identical; it just runs far less.
+        // Hit-testing is a single elementFromPoint at the pointer itself, so it
+        // flips only when the pointer genuinely crosses an element edge — no
+        // ring sampling, no jitter, and therefore no debounce needed. The grow
+        // reacts immediately instead of pumping.
         const updateCursorState = () => {
-            const centerEl = document.elementFromPoint(mouseX, mouseY);
-            if (!centerEl || centerEl === cursor || centerEl === follower) return;
+            const el = document.elementFromPoint(mouseX, mouseY);
+            if (!el || el === cursor || el === follower) return;
 
-            const isClickable =
-                centerEl.tagName === "A" || centerEl.tagName === "BUTTON" ||
-                centerEl.closest?.("a") || centerEl.closest?.("button") ||
-                centerEl.classList?.contains("cursor-pointer") || centerEl.closest?.(".cursor-pointer");
-            const isNoHighlight =
-                centerEl.classList?.contains("no-cursor-highlight") || centerEl.closest?.(".no-cursor-highlight");
-            const clickable = isClickable && !isNoHighlight;
+            const clickable = !!(
+                (el.tagName === "A" || el.tagName === "BUTTON" ||
+                    el.closest?.("a") || el.closest?.("button") ||
+                    el.classList?.contains("cursor-pointer") || el.closest?.(".cursor-pointer")) &&
+                !(el.classList?.contains("no-cursor-highlight") || el.closest?.(".no-cursor-highlight"))
+            );
 
-            // Check all 5 points (center + 4 ring-edge) for pink
-            let pink = false;
-            for (const [dx, dy] of OFFSETS) {
-                const el = dx === 0 && dy === 0 ? centerEl : document.elementFromPoint(mouseX + dx, mouseY + dy);
-                if (el && el !== cursor && el !== follower && isPinkElement(el)) { pink = true; break; }
-            }
-
-            const next = pink && clickable ? "hover-pink"
-                : pink ? "default-pink"
-                : clickable ? "hover"
-                : "default";
-
-            // Debounce every transition, not just pink exits: the ring sample
-            // (12px radius) and plain element boundaries are only ever a pixel
-            // or two from the pointer right as it approaches a target, and
-            // ordinary hand tremor (~8-12Hz, i.e. ~80-120ms) flips the result
-            // between animation frames. Committing that instantly flickered
-            // the cursor's mix-blend-mode/color (read as it vanishing) or kept
-            // restarting the follower's 0.3s grow/shrink tween (read as it
-            // pumping). 90ms is longer than one tremor cycle, so only a target
-            // that stays the same for a full beat — a real approach or leave,
-            // not a wobble — actually commits.
-            if (next === currentState) {
-                if (exitPinkTimer) { clearTimeout(exitPinkTimer); exitPinkTimer = null; }
-                return;
-            }
-            if (exitPinkTimer) clearTimeout(exitPinkTimer);
-            exitPinkTimer = setTimeout(() => {
-                exitPinkTimer = null;
-                setCursorState(next);
-            }, 90);
+            if (clickable === hovering) return;
+            hovering = clickable;
+            gsap.to(follower, {
+                width: clickable ? 40 : 24,
+                height: clickable ? 40 : 24,
+                duration: 0.3,
+                ease: "power2.out",
+            });
         };
 
         let moved = false;
@@ -157,13 +109,9 @@ export default function CustomCursor() {
 
         window.addEventListener("mousemove", onMouseMove, { passive: true });
 
-        // `mouseleave` on `document` can fire spuriously — not just when the
-        // pointer actually leaves the window, but sometimes when a hovered
-        // element's `transform`/`scale` changes underneath it (common here:
-        // card hovers, filter buttons), a known browser hit-testing quirk.
-        // `relatedTarget` is null only when the pointer truly left the
-        // viewport for another window/app; anything else is that quirk, so
-        // it's ignored instead of hiding the cursor.
+        // `mouseleave` on `document` also fires when a hovered element's
+        // transform changes underneath the pointer, a browser hit-testing quirk.
+        // `relatedTarget` is null only on a real exit to another window/app.
         const onMouseLeave = (e) => {
             if (e.relatedTarget !== null) return;
             visible = false;
@@ -184,7 +132,6 @@ export default function CustomCursor() {
             document.removeEventListener("mouseleave", onMouseLeave);
             document.removeEventListener("mouseenter", onMouseEnter);
             obs.disconnect();
-            if (exitPinkTimer) clearTimeout(exitPinkTimer);
             document.head.removeChild(styleEl);
         };
     }, []);
@@ -193,11 +140,11 @@ export default function CustomCursor() {
         <>
             <div
                 ref={cursorRef}
-                className="fixed top-0 left-0 w-[3px] h-[3px] bg-white rounded-full pointer-events-none z-[9999] hidden md:block"
+                className="fixed top-0 left-0 w-[3px] h-[3px] rounded-full pointer-events-none z-[9999] hidden md:block"
             />
             <div
                 ref={followerRef}
-                className="fixed top-0 left-0 border border-white rounded-full pointer-events-none z-[9998] hidden md:block box-border"
+                className="fixed top-0 left-0 border rounded-full pointer-events-none z-[9998] hidden md:block box-border"
             />
         </>
     );
