@@ -252,10 +252,23 @@ const educationFr = [
     <div class="w-full relative z-10 mt-10 md:mt-16">
       <div class="max-w-[1100px] w-full mx-auto px-6 md:px-12 flex flex-col items-center gap-14">
           <div class="w-full max-w-[784px] mx-auto reveal-up reveal-delay-200">
+            <!-- Password managers classify forms by their fields, and a
+                 name + email pair looks enough like a signup form to get
+                 autofilled and decorated with an extension icon. Each vendor
+                 honours its own opt-out attribute, hence the set below; there
+                 is no single standard one. `autocomplete` was "none", which is
+                 not a valid value — browsers fall back to "on" for anything
+                 unrecognised, so autofill was in fact enabled. -->
             <form
               id="contact-form"
               action="https://api.web3forms.com/submit"
               method="POST"
+              autocomplete="off"
+              data-form-type="other"
+              data-lpignore="true"
+              data-1p-ignore
+              data-bwignore
+              data-dashlane-ignore="true"
               class="flex flex-col gap-7"
             >
               <input type="hidden" name="access_key" value="b7a332b3-794a-40fe-999e-e85a68145764" />
@@ -265,11 +278,11 @@ const educationFr = [
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                 <div class="flex flex-col gap-1.5">
                   <label for="name" data-i18n="contact.name" class="text-xs tracking-wide text-black dark:text-white">Name</label>
-                  <input type="text" id="name" name="name" required autocomplete="none" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm" />
+                  <input type="text" id="name" name="name" required autocomplete="off" data-form-type="other" data-lpignore="true" data-1p-ignore data-bwignore data-dashlane-ignore="true" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm" />
                 </div>
                 <div class="flex flex-col gap-1.5">
                   <label for="email" data-i18n="contact.email" class="text-xs tracking-wide text-black dark:text-white">Email</label>
-                  <input type="email" id="email" name="email" required autocomplete="none" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm" />
+                  <input type="email" id="email" name="email" required autocomplete="off" data-form-type="other" data-lpignore="true" data-1p-ignore data-bwignore data-dashlane-ignore="true" class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm" />
                 </div>
               </div>
               <div class="flex flex-col gap-1.5">
@@ -280,7 +293,7 @@ const educationFr = [
                      grew past the box there was no way to get back up to its start.
                      This attribute makes Lenis leave wheel events over this element
                      to the browser's native scrolling. -->
-                <textarea id="message" name="message" required autocomplete="none" rows="4" data-lenis-prevent class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm resize-none overflow-y-auto"></textarea>
+                <textarea id="message" name="message" required autocomplete="off" data-form-type="other" data-lpignore="true" data-1p-ignore data-bwignore data-dashlane-ignore="true" rows="4" data-lenis-prevent class="w-full bg-transparent border-0 border-b border-black/15 dark:border-white/15 px-0 py-2.5 text-black dark:text-white placeholder:text-black/30 dark:placeholder:text-white/30 focus:outline-none focus:border-pink-400 dark:focus:border-pink-400 transition-colors font-medium text-sm resize-none overflow-y-auto"></textarea>
               </div>
               <button
                 id="submit-button"
