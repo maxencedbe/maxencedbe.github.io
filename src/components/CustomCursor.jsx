@@ -102,13 +102,16 @@ export default function CustomCursor() {
                 : clickable ? "hover"
                 : "default";
 
-            // Debounce every transition, not just pink exits: the 9-point ring
-            // sample (12px radius) is only ever a pixel or two from a pink
-            // element's true edge, so ordinary mouse jitter flips `pink`
-            // on/off between single animation frames right as the pointer
-            // approaches one. Committing that instantly flickered the cursor's
-            // mix-blend-mode/color every frame — which read as it vanishing.
-            // Only a target that stays the same for a short beat now applies.
+            // Debounce every transition, not just pink exits: the ring sample
+            // (12px radius) and plain element boundaries are only ever a pixel
+            // or two from the pointer right as it approaches a target, and
+            // ordinary hand tremor (~8-12Hz, i.e. ~80-120ms) flips the result
+            // between animation frames. Committing that instantly flickered
+            // the cursor's mix-blend-mode/color (read as it vanishing) or kept
+            // restarting the follower's 0.3s grow/shrink tween (read as it
+            // pumping). 90ms is longer than one tremor cycle, so only a target
+            // that stays the same for a full beat — a real approach or leave,
+            // not a wobble — actually commits.
             if (next === currentState) {
                 if (exitPinkTimer) { clearTimeout(exitPinkTimer); exitPinkTimer = null; }
                 return;
@@ -117,7 +120,7 @@ export default function CustomCursor() {
             exitPinkTimer = setTimeout(() => {
                 exitPinkTimer = null;
                 setCursorState(next);
-            }, 40);
+            }, 90);
         };
 
         let moved = false;
