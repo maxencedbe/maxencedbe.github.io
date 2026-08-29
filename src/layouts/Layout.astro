@@ -1,0 +1,426 @@
+---
+import Navbar from "../components/Navbar.jsx";
+import AnimatedBackground from "../components/AnimatedBackground.jsx";
+import ScrollObserver from "../components/ScrollObserver.jsx";
+import { ClientRouter } from "astro:transitions";
+import ProgressBar from "../components/ProgressBar.jsx";
+import SideNav from "../components/SideNav.jsx";
+import CustomCursor from "../components/CustomCursor.jsx";
+import "../styles/global.css";
+
+const { title, showNavbar = true, isLocked = false, showBackground = true } = Astro.props;
+const pathname = Astro.url.pathname;
+const isLockedPage = isLocked;
+
+---
+
+<!doctype html>
+<html
+  lang={Astro.currentLocale ?? "en"}
+  class=""
+>
+  <head>
+    {/* ... head content ... */}
+    <meta charset="UTF-8" />
+    <meta name="description" content="Maxence Debes Portfolio" />
+    <!-- viewport-fit=cover, with the insets it can expose taken back on the
+         navbar, the spacer under it and the footer. On iOS it changes nothing in
+         practice: measured against two otherwise identical pages, the browser
+         holds the whole page inside the safe area whenever a position:fixed
+         element sits at the top, so it will not hide one behind the status bar —
+         and this site has several. The declaration is still the correct one
+         wherever those insets are real. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- No theme-color on purpose: iOS reads it once at load and never again,
+         neither on a changed attribute nor on a replaced element, so it pinned
+         the strip above the page to whichever theme the page happened to open
+         in. Left out, that strip takes the page's own background, which follows
+         the theme. -->
+    <title>{title}</title>
+    {/* Two icon files, swapped from here rather than by a `prefers-color-scheme`
+        rule inside the SVG: Chrome ignores media queries in favicon SVGs and
+        always paints the base rule, which left the charcoal mark sitting on a
+        dark tab bar. `matchMedia` in the page is honoured normally, so the
+        choice is made here instead. The href below is the no-JS fallback.
+        ?v=7 busts the favicon cache — browsers hold on to favicons far longer
+        than other assets and often ignore a hard reload for them, so without a
+        changed URL anyone who has already visited keeps seeing the old icon.
+        Bump it whenever either favicon file changes. */}
+    <link id="favicon" rel="icon" href="/favicon.svg?v=7" type="image/svg+xml" />
+    <script is:inline>
+      (function () {
+        var link = document.getElementById("favicon");
+        var mq = window.matchMedia("(prefers-color-scheme: dark)");
+        var apply = function () {
+          link.href = (mq.matches ? "/favicon-dark.svg" : "/favicon.svg") + "?v=7";
+        };
+        apply();
+        // Follows a live theme switch, so the icon never sits at the wrong
+        // polarity until the next reload.
+        mq.addEventListener("change", apply);
+      })();
+    </script>
+    <ClientRouter />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      (function () {
+        const theme = typeof localStorage !== "undefined" && localStorage.getItem("theme") ? localStorage.getItem("theme") : "light";
+        if (theme === "dark") document.documentElement.classList.add("dark");
+        else document.documentElement.classList.remove("dark");
+
+        const locale = typeof localStorage !== "undefined" ? (localStorage.getItem("locale") || "en") : "en";
+        document.documentElement.lang = locale;
+        document.documentElement.setAttribute("data-locale", locale);
+      })();
+    </script>
+    <script is:inline>
+      /* Deterministic scroll restoration across F5 reloads.
+         The ClientRouter sets history.scrollRestoration = 'manual', so on reload
+         Astro restores the position itself — but it lands a few px off (most
+         visibly a bit above the true bottom), and it races with Lenis and the
+         intro. We save the position continuously and, on reload only, re-assert
+         it after layout settles and keep Lenis in sync so the three actors agree. */
+      (function () {
+        var KEY = "scrollpos:" + location.pathname;
+        var rafId = 0;
+        function save() {
+          rafId = 0;
+          try { sessionStorage.setItem(KEY, String(Math.round(window.scrollY))); } catch (e) {}
+        }
+        window.addEventListener("scroll", function () {
+          if (!rafId) rafId = requestAnimationFrame(save);
+        }, { passive: true });
+        window.addEventListener("pagehide", save);
+
+        var nav = performance.getEntriesByType("navigation")[0];
+        var isReload = nav ? nav.type === "reload"
+          : (performance.navigation && performance.navigation.type === 1);
+        if (!isReload) return;
+
+        var saved = sessionStorage.getItem(KEY);
+        if (saved === null) return;
+        var y = parseInt(saved, 10);
+        if (!(y > 0)) return; // 0 (or top) => let the normal intro run from the top
+
+        function apply() {
+          window.scrollTo(0, y);
+          if (window.lenis) {
+            try { window.lenis.scrollTo(y, { immediate: true, force: true }); } catch (e) {}
+          }
+        }
+        apply();
+        window.addEventListener("DOMContentLoaded", apply);
+        window.addEventListener("load", function () {
+          apply();
+          requestAnimationFrame(apply);
+          setTimeout(apply, 150);
+          setTimeout(apply, 400);
+        });
+      })();
+    </script>
+    <script>
+       /* ... lenis script ... */
+      import Lenis from "lenis";
+
+      const initLenis = () => {
+        // A coarse pointer rules it out as well as `(hover: none)`: some touch
+        // devices report hover, and there Lenis was starting on a phone. That is
+        // why the page never reached under the status bar — iOS only grows the
+        // web view when Safari collapses its bars, and Safari only collapses
+        // them for a native scroll gesture, not for one driven from script. With
+        // the bars permanently out, the content area never extends into the
+        // unsafe region and safe-area-inset-top stays 0, whatever the viewport
+        // tag says. Wikipedia has none of this, which is why it behaves.
+        if (window.matchMedia('(pointer: coarse)').matches) return;
+        if (window.matchMedia('(hover: none)').matches) return;
+        const lenis = new Lenis();
+        (window as any).lenis = lenis;
+
+        function raf(time: number) {
+          lenis.raf(time);
+          requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        if (document.body.classList.contains('is-loading')) {
+          lenis.stop();
+          const onStaggerComplete = () => {
+            lenis.start();
+            document.removeEventListener('stagger-complete', onStaggerComplete);
+          };
+          document.addEventListener('stagger-complete', onStaggerComplete);
+        }
+      };
+
+      initLenis();
+
+      document.addEventListener("astro:after-swap", initLenis);
+
+      const getTheme = () => {
+        if (
+          typeof localStorage !== "undefined" &&
+          localStorage.getItem("theme")
+        ) {
+          return localStorage.getItem("theme");
+        }
+        return "light";
+      };
+
+      document.addEventListener("astro:before-swap", (ev) => {
+        const theme = getTheme();
+        if (theme === "dark") ev.newDocument.documentElement.classList.add("dark");
+        else ev.newDocument.documentElement.classList.remove("dark");
+
+        const locale = localStorage.getItem("locale") || "en";
+        ev.newDocument.documentElement.lang = locale;
+        ev.newDocument.documentElement.setAttribute("data-locale", locale);
+      });
+
+      document.addEventListener("astro:after-swap", () => {
+        const locale = localStorage.getItem("locale") || "en";
+        document.documentElement.lang = locale;
+        document.documentElement.setAttribute("data-locale", locale);
+        document.dispatchEvent(new CustomEvent("locale-change", { detail: { locale } }));
+      });
+    </script>
+
+
+    <style>
+      :root {
+        --nav-h: 70px;
+      }
+
+      html {
+        font-family: "Inter", sans-serif;
+        /* No overflow-x guard here. On the root element it makes the page a
+           scroll container, and iOS then stops letting content run under
+           Safari's own bars — which is why the site sat inside them, short of
+           the screen's rounded corners, while an ordinary page does not.
+           Measured with it removed: nothing overflows horizontally at any width,
+           so it was guarding against nothing. */
+      }
+
+      @media (min-width: 768px) {
+        body {
+          cursor: none;
+        }
+      }
+
+      #footer-wrapper {
+        width: 100%;
+        pointer-events: auto;
+      }
+
+      main.transition-container {
+        position: relative;
+        z-index: 10;
+        box-sizing: border-box;
+      }
+
+      main.transition-container.no-navbar {
+      }
+
+      main.transition-container.no-navbar {
+        padding-top: 0;
+      }
+
+      @media (max-width: 768px) {
+        #navbar-wrapper {
+          height: var(--nav-h);
+        }
+
+        #footer-wrapper {
+          padding-top: 10px;
+        }
+      }
+    </style>
+
+    <style>
+      /* Hide content during constellation intro */
+      body.is-loading #content-wrapper,
+      body.is-loading #sidenav-wrapper-el,
+      body.is-loading #progressbar-wrapper-el {
+        opacity: 0;
+        pointer-events: none;
+      }
+      body.is-loading #navbar-wrapper-el {
+        transform: translateY(-100px);
+        pointer-events: none;
+      }
+      /* Dot pattern fades in during the constellation build */
+      #background-pattern {
+        opacity: 0;
+        transition: opacity 3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      #background-pattern.dots-visible {
+        opacity: 1;
+      }
+      /* Locked pages (404) skip the constellation intro entirely: content is
+         never hidden, and the dot pattern just fades in quickly. */
+      body.is-locked #background-pattern {
+        transition: opacity 0.3s ease;
+      }
+      /* Content & SideNav fade */
+      #content-wrapper {
+        transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      #sidenav-wrapper-el {
+        transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      /* Navbar slides down from above the viewport */
+      #navbar-wrapper-el {
+        transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      /* Explicit stacking context so opacity transition never puts ProgressBar behind navbar */
+      #progressbar-wrapper-el {
+        position: relative;
+        z-index: 9999;
+        transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+    </style>
+  </head>
+  <body
+    class={`flex flex-col min-h-screen ${isLocked ? "is-locked" : "is-loading"}`}
+  >
+
+    <div id="background-pattern" class="fixed inset-0 -z-50 pointer-events-none"></div>
+
+    {showBackground && (
+      <AnimatedBackground client:only="react" transition:persist="background" instant={isLocked} />
+    )}
+    {
+      showNavbar && (
+        <div id="navbar-wrapper-el">
+          <Navbar
+            client:load
+            currentPath={Astro.url.pathname}
+            currentLocale={Astro.currentLocale}
+          />
+        </div>
+      )
+    }
+    {showNavbar && (
+      <div class="w-full h-[calc(65px+env(safe-area-inset-top,0px))]"></div>
+    )}
+    <div id="content-wrapper" class="flex-1 flex flex-col">
+    <main
+      class={`transition-container flex-1 flex flex-col ${!showNavbar ? "no-navbar" : ""}`}
+    >
+      <slot />
+    </main>
+    </div>
+    {!isLocked && (
+      <div id="sidenav-wrapper-el">
+        <SideNav client:load />
+      </div>
+    )}
+    <ScrollObserver client:only="react" />
+    <CustomCursor client:only="react" />
+    {!isLocked && (
+      <div id="progressbar-wrapper-el">
+        <ProgressBar client:load />
+      </div>
+    )}
+    <script>
+      // Track real Astro client-side navigations vs F5 reloads
+      let isAstroNavigation = false;
+      document.addEventListener('astro:before-swap', () => {
+        isAstroNavigation = true;
+      });
+
+      // Fade in the dot pattern 500ms into the constellation build
+      if (document.body.classList.contains('is-loading')) {
+        setTimeout(() => {
+          const bg = document.getElementById('background-pattern');
+          if (bg) bg.classList.add('dots-visible');
+        }, 500);
+      } else {
+        const bg = document.getElementById('background-pattern');
+        if (bg) bg.classList.add('dots-visible');
+      }
+
+      // Reveal content once constellation is ready (F5 path)
+      document.addEventListener('constellation-ready', () => {
+        // If user refreshed while scrolled down, skip the intro animation
+        if (window.scrollY > 200) {
+          document.body.classList.remove('is-loading');
+          document.querySelectorAll('[class*="reveal-"]').forEach(el => {
+            el.classList.add('is-visible');
+          });
+          document.querySelectorAll('.section-bg-reveal').forEach(el => {
+            el.classList.add('is-visible');
+          });
+          document.dispatchEvent(new CustomEvent('stagger-complete'));
+          return;
+        }
+
+        // Collect above-fold reveal elements, sorted top to bottom
+        const viewportH = window.innerHeight;
+        const aboveFoldEls = [
+          ...document.querySelectorAll('[class*="reveal-"]'),
+          ...document.querySelectorAll('.section-bg-reveal')
+        ]
+          .filter(el => {
+            const rect = el.getBoundingClientRect();
+            return rect.top < viewportH;
+          })
+          .sort((a, b) => a.getBoundingClientRect().top - b.getBoundingClientRect().top);
+
+        // 1. Snap above-fold elements to their hidden state (no transition)
+        aboveFoldEls.forEach(el => {
+          el.style.transition = 'none';
+          el.classList.remove('is-visible');
+        });
+
+        // 2. Force reflow so the instant reset is committed before transitions are restored
+        document.body.offsetHeight;
+
+        // 3. Restore transitions, then reveal the content wrapper
+        aboveFoldEls.forEach(el => { el.style.transition = ''; });
+        document.body.classList.remove('is-loading');
+
+        // 4. Small delay to guarantee the browser paints elements at opacity:0 before stagger
+        setTimeout(() => {
+          const staggerDelay = 150;
+          aboveFoldEls.forEach((el, i) => {
+            setTimeout(() => el.classList.add('is-visible'), i * staggerDelay);
+          });
+          // Derived from the real animation rather than a blanket padding: the
+          // last element *starts* at (n-1) * staggerDelay and its fade runs
+          // 800ms (see `#home .reveal-up`). Waiting for that fade to fully
+          // finish still felt late, so scrolling is handed back once it is
+          // mostly through — by then the element is all but opaque, and the
+          // remainder plays out fine under the user's own scrolling.
+          const revealDuration = 800;
+          const totalStaggerTime = (aboveFoldEls.length - 1) * staggerDelay + revealDuration * 0.6;
+          setTimeout(() => {
+            document.dispatchEvent(new CustomEvent('stagger-complete'));
+          }, totalStaggerTime);
+        }, 50);
+      });
+
+      // On Astro internal navigation only (NOT F5), immediately show content
+      document.addEventListener('astro:after-swap', () => {
+        if (isAstroNavigation) {
+          document.body.classList.remove('is-loading');
+          isAstroNavigation = false;
+        }
+        // Dots always visible on internal nav
+        const bg = document.getElementById('background-pattern');
+        if (bg) bg.classList.add('dots-visible');
+
+        const langScroll = sessionStorage.getItem('langScroll');
+        if (langScroll !== null) {
+          window.scrollTo({ top: parseInt(langScroll, 10), behavior: 'instant' });
+          sessionStorage.removeItem('langScroll');
+        }
+      });
+    </script>
+  </body>
+</html>

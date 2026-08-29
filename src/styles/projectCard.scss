@@ -1,0 +1,446 @@
+:root {
+  --background-color: rgba(255, 255, 255, 0.002);
+  --text-color: #000000;
+  --card-background-color: rgba(255, 255, 255, 0.05);
+  --card-border-color: rgba(0, 0, 0, 0.2);
+  --card-box-shadow-1: rgba(0, 0, 0, 0.05);
+  --card-box-shadow-1-y: 3px;
+  --card-box-shadow-1-blur: 6px;
+  --card-box-shadow-2: rgba(0, 0, 0, 0.1);
+  --card-box-shadow-2-y: 8px;
+  --card-box-shadow-2-blur: 15px;
+  --card-label-color: #000000;
+  --card-icon-color: #333333;
+  --card-icon-background-color: rgba(0, 0, 0, 0.05);
+  --card-icon-border-color: rgba(0, 0, 0, 0.1);
+  --card-shine-opacity: .1;
+  --card-line-color: rgba(244, 114, 181, 0.50);
+  --card-hover-border-color: rgba(0, 0, 0, 0.2);
+  --card-hover-box-shadow-1: rgba(0, 0, 0, 0.04);
+  --card-hover-box-shadow-1-y: 5px;
+  --card-hover-box-shadow-1-blur: 10px;
+  --card-hover-box-shadow-2: rgba(0, 0, 0, 0.15);
+  --card-hover-box-shadow-2-y: 15px;
+  --card-hover-box-shadow-2-blur: 25px;
+  --card-hover-icon-color: #000000;
+  --card-hover-icon-background-color: rgba(0, 0, 0, 0.1);
+  --card-hover-icon-border-color: rgba(0, 0, 0, 0.2);
+  --blur-opacity: 30px;
+}
+
+html.dark {
+  --text-color: #ffffff;
+  --card-background-color: rgba(0, 0, 0, 0.75);
+  --card-border-color: rgba(255, 255, 255, 0.15);
+  --card-box-shadow-1: rgba(255, 255, 255, 0);
+  --card-box-shadow-2: rgba(255, 255, 255, 0);
+  --card-label-color: #FFFFFF;
+  --card-icon-color: #D4D4D8;
+  --card-icon-background-color: rgba(255, 255, 255, 0.08);
+  --card-icon-border-color: rgba(255, 255, 255, 0.12);
+  --card-hover-border-color: rgba(255, 255, 255, 0.1);
+  --card-hover-box-shadow-1: rgba(255, 255, 255, 0.05);
+  --card-hover-box-shadow-2: rgba(255, 255, 255, 0.025);
+  --card-hover-icon-color: #000000;
+  --card-hover-icon-background-color: #ffffff;
+  --card-hover-icon-border-color: rgba(255, 255, 255, 0.12);
+  --blur-opacity: 2px;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: none;
+  min-width: 300px;
+  padding: 8px 28px;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+
+  /* Force Light Mode Blur visibility */
+  /* Force Light Mode Blur visibility block removed */
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 20px;
+    background-color: transparent;
+    /* Decoration, never a hit target. It covers the whole card, and once the
+       phone layout dissolved .card-content with `display: contents` — taking its
+       z-index with it — this was the thing swallowing taps on the GitHub link.
+       elementFromPoint reports a pseudo-element as its host, which is why the
+       card itself appeared to be the culprit. */
+    pointer-events: none;
+  }
+
+
+  .card-image {
+    flex: 0 0 140px;
+    width: 140px;
+    height: 140px;
+    z-index: 2;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    background-color: transparent;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: inherit;
+      transition: filter 0.3s;
+      filter: brightness(0);
+      /* Force black in light mode */
+    }
+  }
+
+  .card-content {
+    flex: 1;
+    z-index: 2;
+    padding-top: 8px;
+    padding-bottom: 8px;
+
+    h4 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      line-height: 1.2;
+      padding-left: 14px;
+      color: var(--card-label-color);
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      padding-left: 14px;
+      color: var(--text-color);
+      text-align: justify;
+    }
+  }
+
+  .icon {
+    z-index: 2;
+    position: relative;
+    display: table;
+    padding: 8px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 4.5px;
+      border-radius: 50%;
+      background-color: var(--card-icon-background-color);
+      border: 1px solid var(--card-icon-border-color);
+      backdrop-filter: blur(2px);
+      transition: background-color .25s, border-color .25s;
+    }
+
+    svg {
+      position: relative;
+      z-index: 1;
+      display: block;
+      width: 24px;
+      height: 24px;
+      transform: translateZ(0);
+      color: var(--card-icon-color);
+      transition: color .25s;
+      filter: brightness(0);
+      /* Force black in light mode */
+    }
+  }
+
+  .shine {
+    border-radius: inherit;
+    position: absolute;
+    inset: 0;
+    /* Decoration only. It was swallowing taps on the card's GitHub link: the
+       content used to clear it through .card-content's z-index, and the phone
+       layout dissolves that box with `display: contents`, which takes the
+       z-index with it. Nothing here should ever be a hit target anyway. */
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+    opacity: 0;
+    transition: opacity .5s;
+
+    &::before {
+      content: '';
+      width: 150%;
+      padding-bottom: 150%;
+      border-radius: 50%;
+      position: absolute;
+      left: 50%;
+      bottom: 55%;
+      filter: blur(35px);
+      opacity: var(--card-shine-opacity);
+      transform: translateX(-50%);
+      background-image: var(--card-shine-gradient);
+    }
+  }
+
+  .background {
+    border-radius: inherit;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .about-border {
+    display: none;
+  }
+
+  &:hover .background .line-1 {
+    opacity: 1;
+  }
+}
+
+/* Hover effects for the card */
+.card:hover {
+  .icon {
+    &::after {
+      background-color: var(--card-hover-icon-background-color);
+      border-color: var(--card-hover-icon-border-color);
+    }
+
+    svg {
+      color: var(--card-hover-icon-color);
+    }
+  }
+
+  .shine {
+    opacity: 1;
+    transition-duration: .5s;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .card {
+    /* The logo floats rather than holding a grid column. In a two-column grid
+       the title was stuck in whatever was left — 189px — and the longest one ran
+       to seven lines with 108px of dead space beside the logo. Floated, the
+       title wraps beside the logo for its first couple of lines and then takes
+       the full width, so it costs the lines it actually needs.
+       `display: contents` on .card-content puts the heading and the paragraph in
+       the same formatting context as the float, which is what lets them flow
+       around it. The paragraph clears, so the description still starts below the
+       logo whatever the title's length. */
+    display: block;
+    text-align: left;
+    padding: 8px 24px;
+
+    .card-image {
+      float: left;
+      flex: none;
+      width: 60px;
+      max-width: none;
+      height: 60px;
+      /* No top offset: the title now reserves the logo's own height and
+         centres within it, so any nudge here would just pull the two apart. */
+      margin: 0 14px 6px 0;
+      padding: 0;
+    }
+
+    .card-content {
+      display: contents;
+
+      /* Hyphenation, on the title especially. Justifying a 263px column leaves
+         lines carrying two or three long words and nowhere to put the slack, so
+         the spaces stretch into visible gaps. Letting the browser break words
+         gives it somewhere to take that slack from. It needs the document
+         language, which Layout.astro already sets on <html> from the stored
+         locale, so the breaks follow French or English rules as appropriate. */
+      h4 {
+        margin: 0 0 8px 0;
+        padding-left: 0;
+        font-size: 19px;
+        text-align: justify;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+        /* Reserves the logo's height so a short title sits in a band the same
+           size. The offset that centres it within that band is applied in
+           JavaScript, because it depends on how many lines the title actually
+           takes. `align-content: center` would have expressed it in CSS alone,
+           but it makes the block establish a formatting context: measured, the
+           title stopped overlapping the float and dropped back to the 189px
+           column this layout exists to avoid. Padding has no such effect. */
+        min-height: 60px;
+      }
+
+      p {
+        clear: left;
+        padding-left: 0;
+        text-align: justify;
+        -webkit-hyphens: auto;
+        hyphens: auto;
+      }
+
+      /* .card-content carried z-index 2, which held the text above the card's
+         decorative layers. `display: contents` removes its box and that z-index
+         with it, so the children take it on themselves. */
+      h4,
+      p,
+      a {
+        position: relative;
+        z-index: 2;
+      }
+
+      a {
+        clear: left;
+        margin-top: 12px;
+        justify-content: flex-start;
+      }
+    }
+  }
+}
+
+/* Scoped away from phones: this sits after the block above, so at equal
+   specificity its heading margin was winning there. */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .card {
+    .card-content {
+      h4 {
+        margin-bottom: 16px;
+      }
+    }
+
+    .card-github {
+      width: 48px;
+      height: 48px;
+
+      img {
+        width: 26px;
+        height: 26px;
+      }
+    }
+
+    .card-content {
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .card .card-content {
+    padding-right: 60px;
+  }
+}
+
+html {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+/* Dark Mode Overrides */
+html.dark .card .card-github {
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+html.dark .card .card-github img {
+  filter: brightness(0) invert(1) !important;
+  /* Force white in dark mode */
+}
+
+html.dark .card .card-image img {
+  filter: brightness(0) invert(1) !important;
+  /* Force white in dark mode */
+}
+
+html.dark .card .card-github:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+html.dark .card .card-github:hover img {
+  filter: brightness(0) !important;
+  /* Force black on hover */
+}
+
+html.dark .card .icon svg {
+  filter: brightness(0) invert(1) !important;
+  /* Force white in dark mode */
+}
+
+/* Filter Button Standardized Style */
+/* Filter Button - Layout & Transitions */
+.filter-btn {
+  /* Only colour and opacity animate. The active button used to also jump to
+     weight 600, and with `all` that weight was interpolated: the text is
+     re-measured every frame, so the button grew over 300ms, and since the row is
+     centre-aligned it nudged every other button along with it. The bold is gone
+     now — pink alone marks the selection — but the transition stays narrow so
+     nothing else can creep back into it. */
+  transition: color 0.3s ease, opacity 0.3s ease;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+/* Bare text, same language as the footer/nav links: no box at any state.
+   Interactivity reads through the pink hover/active colour, not chrome. */
+html:not(.dark) .filter-btn {
+  background-color: transparent !important;
+  border: none !important;
+  opacity: 0.8;
+}
+
+/* Dark Mode Skin */
+html.dark .filter-btn {
+  background-color: transparent !important;
+  border: none !important;
+  color: #fff;
+  box-shadow: none;
+  /* Full strength, not the 0.8 light mode uses: against black, dimming white
+     text reads as grey rather than as a softer white, which made the filters
+     and the show more / show less toggle look disabled. Hover and the active
+     state carry the interaction on their own, in pink. */
+  opacity: 1;
+}
+
+/* Hover: same pink-text cue used by every other link on the site */
+html .filter-btn:hover {
+  opacity: 1;
+  color: var(--color-pink-400) !important;
+}
+
+/* Active: the selected filter stays pink and full-strength, no fill needed */
+html .filter-btn.active {
+  background-color: transparent !important;
+  border: none !important;
+  color: var(--color-pink-400) !important;
+  box-shadow: none !important;
+  opacity: 1;
+}
+
+/* Flat, borderless content block — matches the rest of the site (no boxed card chrome) */
+html:not(.dark) .card {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+html.dark .card {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  box-shadow: none !important;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+

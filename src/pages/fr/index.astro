@@ -1,0 +1,9 @@
+---
+// Redirect to / with French locale saved
+---
+<script is:inline>
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem('locale', 'fr');
+  }
+  window.location.replace('/');
+</script>

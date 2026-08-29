@@ -1,0 +1,29 @@
+#!/bin/sh
+# Auto-recompile the CV PDFs when this commit touches the CV LaTeX sources,
+# so public/ always ships the up-to-date PDF without remembering `npm run cv`.
+#
+# - Only runs when a staged file under cv/ is a source (.tex/.bib).
+# - Skips gracefully (does not block the commit) if latexmk isn't installed.
+# - Blocks the commit if the CV fails to build (bypass with `git commit --no-verify`).
+
+# Nothing to do unless CV sources are part of this commit.
+if ! git diff --cached --name-only | grep -Eq '^cv/.+\.(tex|bib)$'; then
+  exit 0
+fi
+
+if ! command -v latexmk >/dev/null 2>&1; then
+  echo "⚠  CV sources changed but latexmk isn't installed — PDFs not regenerated." >&2
+  echo "   Run 'npm run cv' on a machine with LaTeX, or commit with --no-verify." >&2
+  exit 0
+fi
+
+echo "→ CV sources changed, recompiling PDFs (make -C cv)…"
+if ! make -C cv all; then
+  echo "✗ CV build failed. Fix the LaTeX error, or commit with --no-verify to skip." >&2
+  exit 1
+fi
+
+# Include the freshly built PDFs in this commit.
+git add public/Maxence_Debes_Resume_Ang.pdf public/Maxence_Debes_Resume_Fra.pdf
+echo "✓ CV PDFs regenerated and staged."
+exit 0

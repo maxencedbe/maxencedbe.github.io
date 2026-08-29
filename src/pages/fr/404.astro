@@ -1,0 +1,51 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout
+  title="Page non trouvée"
+  showNavbar={false}
+  isLocked={true}
+  showBackground={false}
+>
+  <main class="flex flex-1 flex-col items-center justify-center text-center px-4">
+    <h1
+      class="text-2xl sm:text-5xl md:text-6xl font-bold text-black dark:text-white mb-7 transition-opacity duration-300"
+    >
+      404 | Page non trouvée
+    </h1>
+    <a
+      href="/"
+      class="back-button inline-flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-[color,opacity] duration-300 no-underline"
+    >
+      <!-- transition-none is load-bearing: a global rule gives the icon its own
+           0.3s colour transition on an `ease` curve, while the link animates on
+           Tailwind's cubic-bezier(0.4, 0, 0.2, 1). Same duration, different
+           path, so the arrow visibly trailed the text. With no transition of its
+           own it just inherits the link's animated colour each frame. -->
+      <svg
+        class="transition-none"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Retour à l'accueil
+    </a>
+  </main>
+
+  <script is:inline>
+    // Same reason the English page does it: the link goes to "/" so the
+    // ClientRouter can swap it in without replaying the intro, and the home page
+    // takes its language from here.
+    try { localStorage.setItem("locale", "fr"); } catch (e) {}
+  </script>
+</Layout>

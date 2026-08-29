@@ -1,0 +1,261 @@
+% !TEX program = xelatex
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+%	The MIT License (MIT)
+%
+%	Copyright (c) 2021 Jitin Nair
+%
+%	Permission is hereby granted, free of charge, to any person obtaining a copy
+%	of this software and associated documentation files (the "Software"), to deal
+%	in the Software without restriction, including without limitation the rights
+%	to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+%	copies of the Software, and to permit persons to whom the Software is
+%	furnished to do so, subject to the following conditions:
+%	
+%	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+%	IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+%	FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+%	AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+%	LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+%	OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+%	THE SOFTWARE.
+%	
+%
+%-----------------------------------------------------------------------------------------------------------------------------------------------%
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT DEFINITION
+%----------------------------------------------------------------------------------------
+
+% article class because we want to fully customize the page and not use a cv template
+\documentclass[a4paper,10pt]{article}
+
+%----------------------------------------------------------------------------------------
+%	FONT
+%----------------------------------------------------------------------------------------
+
+% % fontspec allows you to use TTF/OTF fonts directly
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+
+\setmainfont[
+    Path = fonts/,
+    UprightFont = *-Regular.ttf,
+    BoldFont = *-Bold.ttf,
+    ItalicFont = *-Italic.ttf,
+    BoldItalicFont = *-BoldItalic.ttf
+]{IBMPlexSans}
+
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES
+%----------------------------------------------------------------------------------------
+\usepackage{url}
+\usepackage{parskip} 	
+
+%other packages for formatting
+\RequirePackage{color}
+\RequirePackage{graphicx}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage[
+    top=0.7cm,       % Marge entre le haut de la feuille et votre nom
+    bottom=0.7cm,    % Marge entre le bas de la feuille et vos intérêts
+    left=1.1cm,      % Marge gauche
+    right=1.1cm      % Marge droite
+]{geometry}
+
+%tabularx environment
+\usepackage{tabularx}
+
+%for lists within experience section
+\usepackage{enumitem}
+
+% centered version of 'X' col. type
+\newcolumntype{C}{>{\centering\arraybackslash}X} 
+
+%to prevent spillover of tabular into next pages
+\usepackage{supertabular}
+\usepackage{tabularx}
+\newlength{\fullcollw}
+\setlength{\fullcollw}{0.47\textwidth}
+
+%custom \section
+\usepackage{titlesec}				
+\usepackage{multicol}
+\usepackage{multirow}
+
+%CV Sections inspired by: 
+%http://stefano.italians.nl/archives/26
+\titleformat{\section}{\Large\raggedright}{}{0em}{}[\titlerule]
+\titlespacing{\section}{0pt}{4pt}{2pt}
+
+%for publications
+% \usepackage[style=authoryear,sorting=ynt, maxbibnames=2]{biblatex}
+
+%Setup hyperref package, and colours for links
+\usepackage[unicode, draft=false]{hyperref}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour,linkcolor=linkcolour}
+% \addbibresource{citations.bib}
+% \setlength\bibitemsep{1em}
+
+%for social icons
+\usepackage{fontawesome5}
+
+% job listing environments
+\newenvironment{jobshort}[2]
+    {
+    \begin{tabularx}{\linewidth}{@{}l X r@{}}
+    \textbf{#1} & \hfill &  #2
+    \end{tabularx}
+    }
+    {
+    }
+
+% #1 role --- company (bold), #2 location (plain), #3 dates (flush right).
+% The location rides in the left column on purpose: each entry is its own
+% tabularx, so a middle column would not align across entries.
+\newenvironment{joblong}[3]
+    {
+    \begin{tabularx}{\linewidth}{@{}l X r@{}}
+    \textbf{#1} \textbar\ #2 & \hfill &  #3
+    \end{tabularx}
+    \begin{minipage}[t]{\linewidth}
+    \begin{itemize}[nosep,after=\strut, leftmargin=1em, itemsep=0pt,label=--]
+    }
+    {
+    \end{itemize}
+    \end{minipage}
+    }
+
+\newenvironment{project}[2]
+    {
+    \begin{tabularx}{\linewidth}{@{}l X r@{}}
+    \textbf{#1} & \hfill & #2
+    \end{tabularx}
+    \begin{minipage}[t]{\linewidth}
+    \begin{itemize}[nosep,after=\strut, leftmargin=1em, itemsep=0pt,label=--]
+    }
+    {
+    \end{itemize}
+    \end{minipage}
+    }
+
+%----------------------------------------------------------------------------------------
+%	BEGIN DOCUMENT
+%----------------------------------------------------------------------------------------
+\begin{document}
+
+% non-numbered pages
+\pagestyle{empty} 
+
+%----------------------------------------------------------------------------------------
+%	TITLE
+%----------------------------------------------------------------------------------------
+
+\begin{tabularx}{\linewidth}{@{} C @{}}\\
+\Huge{Maxence Debes} \\[5pt]
+\large{Data Scientist} \\[9pt]
+\href{mailto:maxence.debes@polytechnique.edu}{\textcolor{black}{\raisebox{-0.05\height}\faEnvelope\ maxence.debes@polytechnique.edu}} \ | \
+\href{tel:+33781327922}{\textcolor{black}{\raisebox{-0.05\height}\faPhone\ +33\ 7\ 81\ 32\ 79\ 22}} \ | \
+\textcolor{black}{\raisebox{-0.05\height}{\faIcon{map-marker-alt}}\ Paris, France} \\[0pt]
+\href{https://maxencedbe.github.io}{\textcolor{black}{\raisebox{-0.05\height}{\faIcon{link}}\ maxencedbe.github.io}} \ | \
+\href{https://linkedin.com/in/maxence-debes}{\textcolor{black}{\raisebox{-0.05\height}\faLinkedin\ maxence-debes}} \ | \
+\href{https://github.com/maxencedbe}{\textcolor{black}{\raisebox{-0.05\height}\faGithub\ maxencedbe}} \\[4pt]
+
+\end{tabularx}
+
+%Summary
+\noindent
+MSc Data Science student with a strong academic background in Mathematics and Computer Science, specialized in Machine Learning and AI. I enjoy solving complex technical problems by combining mathematical rigor with advanced Python to build robust, data-driven solutions.\\
+Currently seeking a full-time position from October 2026.\\
+[-12pt]
+
+%----------------------------------------------------------------------------------------
+%	EDUCATION
+%----------------------------------------------------------------------------------------
+\section{Education}
+
+\begin{tabularx}{\linewidth}{@{}X r@{}}
+\textbf{École Polytechnique --- Polytechnic Institute of Paris} & 2025 -- 2026 (expected)\\
+\end{tabularx} \\
+MSc Data Science\\[1pt]
+\textit{\textbf{Relevant coursework:} ALTEGRAD (joint MVA course), Deep Learning, Reinforcement Learning, Representation Learning (MVA), Generative Models, Optimization for Data Science.} \\[6pt]
+\begin{tabularx}{\linewidth}{@{}X r@{}}
+\textbf{Télécom SudParis --- Polytechnic Institute of Paris} & 2023 -- 2026 (expected)\\
+\end{tabularx}\\
+Master's degree in Computer Science and Applied Mathematics\\[1pt]
+\textit{\textbf{Relevant coursework:} Statistics and Data Analysis, Optimization, Machine Learning and Data Mining, Stochastic Processes, Continuous Optimization for Learning and Machine Learning.}\\[-12pt]
+
+%----------------------------------------------------------------------------------------
+%	PROJECTS
+%-----------------------------
+\section{Projects}
+
+\begin{project}{Hi! PARIS Hi!ckathon 2025 (2nd place)}
+{\href{https://github.com/maxencedbe/hi_paris_2025}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
+    \item Ranked 2nd out of 80+ teams in the 2025 edition of the Hi! PARIS Data Science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds.
+    \item Engineered a gated model routing each sample to one of two XGBoost regressors based on a feature threshold, achieving an R\textsuperscript{2} of 0.79 on the public leaderboard.
+\end{project}\vspace{-6pt}
+
+\begin{project}{Molecular Graph Captioning (Kaggle competition)}
+{\href{https://github.com/maxencedbe/molecular_graph_captioning}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
+    \item Built a retrieval-based architecture using contrastive learning to align molecular graph embeddings with natural language descriptions in a joint latent space.
+    \item Implemented a dedicated graph neural network encoder using PyTorch Geometric, optimized for semantic alignment through BERTScore and BLEU-4 metrics.
+\end{project}\vspace{-6pt}
+
+\begin{project}{Streaming Safety Classifier for LLMs --- Capstone Project with DragonLLM (now OVHai LLM)}
+{\href{https://github.com/maxencedbe/capstone_dragonllm}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
+    \item Reproduced the Qwen3Guard toxicity classifier: built a dataset of 24K toxic and safe Q\&A samples, synthesized and token-level labeled with Qwen3-30B.
+    \item Trained a lightweight per-token safety head on a frozen Qwen backbone to interrupt harmful generations in real time.
+\end{project}\vspace{-6pt}
+
+\begin{project}{Data Privacy \& Anonymization --- Project Cassiopée}
+{\href{https://github.com/maxencedbe/Cassiopee}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
+    \item Assessed privacy and re-identification risks in anonymized datasets through OSINT case studies, and proposed data-protection strategies. Conducted at Télécom SudParis.
+\end{project}\vspace{-6pt}
+
+\begin{project}{Automated Parking Optimization}
+{\href{https://github.com/maxencedbe/parking-optimization}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
+    \item Developed a Python optimization model for vehicle placement in multi-level automated parking, combining A* and simulated annealing to minimize retrieval costs.
+\end{project} \\[-16pt]
+
+%----------------------------------------------------------------------------------------
+% EXPERIENCE SECTIONS
+%----------------------------------------------------------------------------------------
+
+%Experience
+\section{Work Experience}
+
+\begin{joblong}{Data Science Intern --- ChemAI}{Munich, Germany}{Apr 2026 -- present}
+\item Designing the architecture of, and building, a graph database of over 30M chemical reactions.
+\item Running graph-native analyses to surface insights on the data's diversity, structure and reaction patterns.
+\item Training ML models that leverage the graph structure for predictive analytics on chemical reactions.
+\end{joblong}\vspace{-6pt}
+
+\begin{joblong}{Data Governance Intern --- Batigère Maison Familiale}{Metz, France}{Jul 2025 -- Aug 2025}
+\item Migrated the company to SharePoint --- adopted by 100\% of employees --- and designed a GDPR compliance policy reinforcing data security.
+\end{joblong}\vspace{-6pt}
+
+\begin{joblong}{Software Engineer Intern --- Atos}{Metz, France}{Jul 2024 -- Aug 2024}
+\item Designed and implemented a telework tracking application using the JHipster application generator to facilitate accessibility to workstations.
+\end{joblong} \\[-16pt]
+
+%----------------------------------------------------------------------------------------
+%	SKILLS
+%----------------------------------------------------------------------------------------
+\section{Skills \& Interests}
+
+% Ce bloc est le seul dont la première ligne est du texte plein largeur (et non
+% un titre suivi de blanc) : à écart égal il paraît coller au filet, d'où ce
+% léger dégagement supplémentaire.
+\vspace{3pt}
+% \mbox keeps "Scikit-learn" from being hyphen-split (so ATS parses it whole);
+% the tiny emergencystretch lets that rigid word settle without an overfull box.
+\begingroup\emergencystretch=3em
+\textbf{Technical Skills:} Python, Java, SQL \textbar\ PyTorch, PyG, Transformers, PEFT (LoRA/QLoRA), \mbox{Scikit-learn}, NumPy, SciPy, Pandas, Matplotlib \textbar\ vLLM, Ollama, Unsloth, Neo4j, Weights \& Biases \textbar\ Git, Docker, Bash, Linux, LaTeX\\
+\textbf{Soft Skills:} Leadership, teamwork, adaptability, technical communication\\
+\textbf{Languages:} French (native), English (C1 -- TOEIC 965/990), German (A2)\\
+\textbf{Engagement \& Interests:} Former president of a student association, competitive handball, music\par\endgroup
+
+\vfill
+\end{document}

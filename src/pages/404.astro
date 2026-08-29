@@ -1,0 +1,74 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout
+  title="Page not found"
+  showNavbar={false}
+  isLocked={true}
+  showBackground={false}
+>
+  <main class="flex flex-1 flex-col items-center justify-center text-center px-4">
+    <h1 id="not-found-title"
+      class="text-2xl sm:text-5xl md:text-6xl font-bold text-black dark:text-white mb-7 transition-opacity duration-300" style="opacity: 0"
+    >
+      404 | Page not found
+    </h1>
+    <a id="back-button"
+      href="/"
+      class="back-button inline-flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-[color,opacity] duration-300 no-underline" style="opacity: 0"
+    >
+      <!-- transition-none is load-bearing: a global rule gives the icon its own
+           0.3s colour transition on an `ease` curve, while the link animates on
+           Tailwind's cubic-bezier(0.4, 0, 0.2, 1). Same duration, different
+           path, so the arrow visibly trailed the text. With no transition of its
+           own it just inherits the link's animated colour each frame. -->
+      <svg
+        class="transition-none"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to home page
+    </a>
+  </main>
+
+  <script is:inline>
+    const pathname = window.location.pathname;
+    // Match the language the visitor picked on the rest of the site (stored in
+    // localStorage), falling back to the URL prefix.
+    const stored = (typeof localStorage !== "undefined" && localStorage.getItem("locale")) || null;
+    const locale = stored || (pathname.startsWith("/fr") ? "fr" : "en");
+    const title = document.getElementById("not-found-title");
+    const button = document.getElementById("back-button");
+
+    if (locale === "fr") {
+      if (title) title.innerText = "404 | Page non trouvée";
+      if (button) {
+        // innerText would drop the arrow; only the label node is rewritten.
+        button.lastChild.nodeValue = "Retour à l'accueil";
+      }
+      // The link keeps pointing at "/" rather than "/fr". /fr is a static page
+      // whose whole body is location.replace("/"), which is a full document
+      // load, so the intro replayed on the way back; "/" is picked up by the
+      // ClientRouter and swapped in, which is what the English path already did.
+      // The home page reads the language from here, so recording it is enough.
+      try { localStorage.setItem("locale", "fr"); } catch (e) {}
+      document.title = "Page non trouvée";
+    }
+
+    // Revealed only once the text is settled, so a French visitor never sees the
+    // English copy flash first.
+    if (title) title.style.opacity = "1";
+    if (button) button.style.opacity = "1";
+  </script>
+</Layout>

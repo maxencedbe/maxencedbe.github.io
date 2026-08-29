@@ -1,0 +1,567 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Light-mode palette: warm stone (Claude UI-inspired) ────────────────────
+   Tailwind v4 emits every colour utility from a CSS variable (text-black →
+   var(--color-black), pink-400 → var(--color-pink-400), bg-black/5 →
+   color-mix(in oklab, var(--color-black) 5%, transparent)). Redefining them here —
+   unlayered, so it wins over Tailwind's theme layer — sets a warm charcoal and
+   warm-but-muted greys (a notch cooler/greyer than the champagne attempt, which
+   read too golden) so chip/border tints stay warm without going beige. Dark mode
+   never matches this selector, so it keeps its defaults. */
+html:not(.dark) {
+  --color-black: #262421;
+  --color-pink-400: #c2185b;
+  --color-slate-500: #787571;
+  --color-slate-400: #a29e94;
+  --color-gray-500: #787571;
+}
+
+/* Dark mode gets its own pink rather than sharing light mode's: no single value
+   clears AA against both the ivory and near-black backgrounds (the best a shared
+   colour can do, balanced, is ~4.16:1). Light mode is a raspberry #c2185b, which
+   clears AA on the ivory at 5.43:1 — the previous #db2777 sat at 4.25:1, just
+   under. This is the same rose family as light
+   mode's raspberry, lifted in lightness for the dark background — it replaces
+   Tailwind's stock pink-400 (#f472b6), which read too pastel. 5.6:1 on #121212. */
+html.dark {
+  --color-pink-400: #f0518f;
+}
+
+[data-theme-transition]::view-transition-old(root),
+[data-theme-transition]::view-transition-new(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: ease;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html,
+body {
+  overscroll-behavior-y: none;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+
+
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+
+@variant dark (&:where(.dark, .dark *));
+
+
+::view-transition-old(root) {
+  animation-name: fade-out;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in;
+}
+
+/* The navbar recolours outright, never through the middle. Its text runs black
+   to white while the bar behind it runs white to black, so an interpolated swap
+   puts both at the same grey at the half-way point and the wordmark drops to no
+   contrast at all — it reads as "Maxence Debes" fading out and back rather than
+   changing colour. Nothing here is an opacity fade; the text only ever
+   transitions colour. Cutting the transition removes the midpoint entirely. */
+html[data-theme-swap] nav,
+html[data-theme-swap] nav *,
+html[data-theme-swap] nav *::before,
+html[data-theme-swap] nav *::after {
+  /* Colour is what has to stop interpolating, not everything: cutting the lot
+     also froze the sun/moon icon, which rotates and cross-fades on
+     `transition-all`. Narrowing the property list leaves each element's own
+     duration and easing intact, so the icon still turns while every colour in
+     the bar lands in one step. */
+  transition-property: opacity, transform !important;
+}
+
+/* Set only while a theme swap runs without a view transition. Longer than the
+   0.5s cross-fade it stands in for, not equal to it: the cross-fade blends the
+   whole rendering at once, while this animates colour alone, so anything that
+   does not change colour switches outright and the whole thing reads quicker at
+   the same duration. The extra time evens that out. */
+html[data-theme-fallback] *,
+html[data-theme-fallback] *::before,
+html[data-theme-fallback] *::after {
+  transition-duration: 0.65s !important;
+  transition-timing-function: ease !important;
+}
+
+.no-transition *,
+.no-transition *::before,
+.no-transition *::after {
+  transition: none !important;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1
+  }
+
+  to {
+    opacity: 0
+  }
+}
+
+
+@layer base {
+  html {
+    font-family: "Inter", sans-serif;
+    background-color: #f7f6f3;
+    scroll-padding-top: 0px;
+  }
+
+  html.dark {
+    background-color: #121212;
+  }
+
+  /* Every element that sets its own color/background/border via a
+     `dark:` variant needs its own transition, since `transition` doesn't
+     inherit — without this, only the handful of elements that already
+     declare transition-colors (links, buttons) faded smoothly on theme
+     toggle while everything else (headings, paragraphs, chips...) snapped
+     instantly. Low specificity so any element's own transition still wins. */
+  *, *::before, *::after {
+    transition: color 0.3s, background-color 0.3s, border-color 0.3s, fill 0.3s;
+  }
+
+  body {
+    background-color: transparent;
+    color: var(--color-black);
+    transition: background-color 0.3s, color 0.3s;
+    /* No overflow-x guard: with the root's overflow visible, the body's would
+       propagate to the viewport and do the same damage. See html in
+       Layout.astro. */
+  }
+
+  html.dark body {
+    background-color: transparent;
+    color: #ffffff;
+  }
+
+  #background-pattern {
+    background-color: #f7f6f3;
+  }
+
+  html.dark #background-pattern {
+    background-color: #121212;
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+
+@layer utilities {
+
+
+  /* The footer keeps its backdrop-filter glass, which can't fade at a fractional
+     opacity without the glass compositing wrong (it stayed oddly prominent while
+     the rest of the section faded — the "weird colour"). So rather than fade it
+     with the section, hold it hidden through the section's 1s opacity reveal, then
+     flip it to full opacity in a single step (never fractional) and slide it up —
+     a navbar-like entrance that leaves the glass colour exactly as designed. */
+  #contact footer {
+    transition: opacity 0s linear 1.05s,
+                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) 1.05s,
+                color 0.3s, background-color 0.3s, border-color 0.3s;
+  }
+
+  body.is-loading #contact footer {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  /* Premium Reveals */
+  /* Scroll-reveal pop-in disabled site-wide (testing a flatter, more premium
+     feel): each class now already sits at its "visible" end-state, so
+     ScrollObserver toggling .is-visible has nothing left to animate. */
+  .reveal-up {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  /* Revealed states end on `filter: none`, never `blur(0)`: blur(0) is still an
+     active filter, so the element would keep a filtered layer forever. That
+     breaks backdrop-filter on descendants (nothing left for them to sample) and
+     forces the layer to re-rasterise on every frame of a hover transform — which
+     is what made the hero buttons flicker on hover, GPU- and screen-dependent.
+     blur(8px) → none still interpolates, so the reveal stays smooth. */
+  .reveal-up.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: none;
+  }
+
+  /* Re-enable the pop-in, but only for the Hero's arrival sequence — every
+     other section stays flat per the rule above (higher specificity wins). */
+    #home .reveal-up {
+    opacity: 0 !important;
+    transform: translateY(40px) !important;
+    filter: blur(10px) !important;
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                filter 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.3s, background-color 0.3s, border-color 0.3s;
+  }
+
+  #home .reveal-up.is-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    filter: none !important;
+  }
+
+  #home .reveal-scale {
+    opacity: 0 !important;
+    transform: scale(0.9) !important;
+    transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+                color 0.3s, background-color 0.3s, border-color 0.3s;
+  }
+
+  #home .reveal-scale.is-visible {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+  }
+
+  .reveal-down {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .reveal-down.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: none;
+  }
+
+  .reveal-left {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .reveal-left.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+    filter: none;
+  }
+
+  @keyframes heroRevealUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+      filter: blur(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0px);
+    }
+  }
+
+
+
+  .reveal-right {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .reveal-right.is-visible {
+    opacity: 1;
+    transform: translateX(0);
+    filter: none;
+  }
+  
+  .reveal-scale {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .reveal-scale.is-visible {
+    opacity: 1;
+    transform: scale(1);
+    filter: none;
+  }
+  
+  .reveal-fade {
+    opacity: 1;
+    filter: none;
+  }
+
+  .reveal-fade.is-visible {
+    opacity: 1;
+    filter: none;
+  }
+
+  /* Work-experience pagination dots lag in just after the card. Their reveal is
+     driven by the carousel wrapper's is-visible — the SAME scroll trigger as the
+     card — not by the dots' own position; otherwise you'd have to scroll past them
+     before the observer fired, so they showed up far too late. The delay lands
+     them a beat after the card. */
+  .dots-lag {
+    opacity: 1;
+    filter: none;
+  }
+
+  .reveal-up.is-visible .dots-lag {
+    opacity: 1;
+    filter: none;
+    transition-delay: 600ms;
+  }
+
+  /* Scoped to #home: outside the Hero, reveal-up/-scale are static (no
+     transition to delay), but the class was still winning transition-delay
+     for the unrelated universal color transition below, making theme-toggle
+     color changes lag by 100-500ms on any element that happened to carry a
+     leftover reveal-delay-* class from the old site-wide stagger. */
+  #home .reveal-delay-100.is-visible { transition-delay: 100ms; }
+  #home .reveal-delay-200.is-visible { transition-delay: 200ms; }
+  #home .reveal-delay-300.is-visible { transition-delay: 300ms; }
+  #home .reveal-delay-400.is-visible { transition-delay: 400ms; }
+  #home .reveal-delay-500.is-visible { transition-delay: 500ms; }
+
+  .animate-delay-600 {
+    transition-delay: 600ms;
+  }
+
+  .animate-delay-700 {
+    transition-delay: 700ms;
+  }
+
+  .animate-delay-800 {
+    transition-delay: 800ms;
+  }
+
+  .bg-dots {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .dark .bg-dots {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  }
+
+  /* Shared Card Styles */
+  .about-border {
+    display: none;
+  }
+
+  .about-border rect {
+    fill: none;
+    stroke: #ec4899;
+    stroke-width: 1.1px;
+    stroke-dasharray: 4000;
+    stroke-dashoffset: 4000;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+}
+
+.glass-card {
+  position: relative;
+  background-color: #fffefb;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+.dark .glass-card {
+  background-color: rgba(10, 10, 10, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: none;
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+.glass-card:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05), 0 10px 18px rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass-card:hover {
+  box-shadow: 0 5px 10px rgba(255, 255, 255, 0.05), 0 15px 25px rgba(255, 255, 255, 0.025);
+}
+
+  /* Hover animation removed */
+
+
+.liquid-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.dark .liquid-glass {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+::selection {
+  background-color: var(--color-pink-400) !important;
+  color: white !important;
+}
+
+::-moz-selection {
+  background-color: var(--color-pink-400) !important;
+  color: white !important;
+}
+
+@media (min-width: 768px) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Wordmark → MD monogram, driven by the scroll position itself.
+
+   This used to be recomputed in JavaScript on every scroll event. That is the
+   wrong place for it on a phone: iOS scrolls the page on the compositor thread
+   while the main thread runs our handler, so the letters were always being
+   positioned from a scroll offset the screen had already moved past. Cutting
+   the cost of the handler could never fix that — the two threads simply are not
+   in step, which is why the animation still stuttered after the work per frame
+   had been reduced to almost nothing.
+
+   A scroll-driven animation hands the whole thing to the compositor, where the
+   scrolling already happens, so the letters and the page move as one. The
+   distances are measured once in JavaScript and passed in as custom properties;
+   the range matches AnimatedBackground's own fade (innerHeight * 0.5 = 50vh),
+   which is what keeps the two effects synchronised.
+--------------------------------------------------------------------------- */
+/* Travels its own width plus the feather. Its own width alone used to land it
+   exactly on the box's left edge, where overflow cut it off; now that the
+   padding moves the text's origin right by the feather, the same distance would
+   leave it stopping precisely at the far end of the fade — that is, fully
+   opaque — so the tail of the word stayed on screen in the settled monogram. */
+@keyframes brand-axence { to { transform: translateX(calc((var(--brand-ax, 0px) + var(--brand-feather)) * -1)); } }
+@keyframes brand-shift  { to { transform: translateX(calc(var(--brand-shift, 0px) * -1)); } }
+@keyframes brand-ebes   { to { transform: translateX(calc((var(--brand-eb, 0px) + var(--brand-feather)) * -1)); } }
+@keyframes brand-ax-width { to { width: var(--brand-feather); } }
+/* Also pulls the button's right edge in by the weld. The D is welded to the M
+   by a transform, which moves it visually but leaves the layout alone, so the
+   button kept the width it had before the collapse and left exactly the weld's
+   worth of slack to the right of the finished monogram. */
+@keyframes brand-eb-width {
+  to {
+    width: var(--brand-feather);
+    margin-right: calc(-1 * var(--brand-shift));
+  }
+}
+/* The strip the letters dissolve into as they go under the M and the D.
+
+   It used to be anchored to the visible left edge of each segment — which at
+   rest is exactly where the "a" of axence and the "e" of ebes sit, so any fade
+   at all blurred them where they stood. Switching it on at the first pixel of
+   scroll made the wordmark go blurry before anything moved; growing it with the
+   scroll instead meant it was still barely two pixels wide at the moment the
+   first "e" slid out, so that letter was sliced by a hard vertical line while
+   the "s" at the end dissolved into a full fade. Hard edge at the start, soft
+   edge at the end.
+
+   So the strip is moved rather than timed: a negative margin extends each
+   segment back underneath the letter in front of it, and an equal padding puts
+   the text back where it was, leaving the box the same width overall. The fade
+   now covers ground that is empty at rest and behind the stem of the M or the D
+   once it is not — so it can simply stay on, constant, at full strength, and every
+   letter leaves the same way. Nothing about it is animated, which is also why
+   it costs nothing per frame. */
+[data-brand-anim="ax-box"],
+[data-brand-anim="eb-box"] {
+  /* Narrow on purpose, and in em so it follows the font size across the
+     breakpoint. At fourteen pixels the fade spanned the whole M, so a letter
+     that had only just entered it was still nearly opaque while sitting right
+     behind the glyph — and the M's counters and the D's bowl are open, on a
+     translucent bar, so it showed straight through them. Inter Bold's stem is
+     307/2048 em; a fifth of an em covers the stem and the side bearings, which
+     means a letter is gone before it ever reaches an opening. */
+  --brand-feather: 0.2em;
+  margin-left: calc(-1 * var(--brand-feather));
+  padding-left: var(--brand-feather);
+  -webkit-mask-image: linear-gradient(to right, transparent 0px, #000 var(--brand-feather));
+          mask-image: linear-gradient(to right, transparent 0px, #000 var(--brand-feather));
+}
+
+.brand-morph [data-brand-anim] {
+  animation-timeline: scroll(root block);
+  /* Set in pixels from window.innerHeight * 0.5 rather than written as 50vh:
+     on iOS those are not the same number — vh measures the viewport with the
+     URL bar retracted, innerHeight the one actually on screen — so a vh range
+     would drift out of step with the background fade on exactly the device
+     this was rewritten for. The fallback only applies before the first
+     measurement. */
+  animation-range: 0 var(--brand-range, 50vh);
+  animation-fill-mode: both;
+  animation-timing-function: linear;
+}
+.brand-morph [data-brand-anim="axence"] { animation-name: brand-axence; }
+.brand-morph [data-brand-anim="d"] { animation-name: brand-shift; }
+.brand-morph [data-brand-anim="ebes"] { animation-name: brand-ebes; }
+.brand-morph [data-brand-anim="eb-box"] { animation-name: brand-shift; }
+
+/* Only above lg does anything sit to the right of the wordmark to be pushed
+   along, so only there is it worth animating width — a layout property, and the
+   one thing here the compositor cannot take over. Below that the D covers the
+   collapsed segment itself and nothing reflows. */
+@media (min-width: 1024px) {
+  .brand-morph [data-brand-anim="ax-box"] {
+    animation-name: brand-ax-width;
+    width: calc(var(--brand-ax) + var(--brand-feather));
+  }
+  .brand-morph [data-brand-anim="eb-box"] {
+    animation-name: brand-shift, brand-eb-width;
+    width: calc(var(--brand-eb) + var(--brand-feather));
+  }
+}

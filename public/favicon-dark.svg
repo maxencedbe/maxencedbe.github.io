@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- MD monogram in Inter Bold — the site's own typeface — rather than
+       hand-drawn letterforms, so the mark matches the wordmark it stands for.
+       The outlines are the real glyphs, extracted from the font file; the D is
+       shifted 1332 font units right so its left stem lands exactly on the M's
+       right stem (both are 307 units wide), welding the two letters into one.
+       Dark-scheme variant: white mark for a dark tab bar; twin is favicon.svg.
+       Colour is baked in rather than switched by a `prefers-color-scheme` rule:
+       Chrome ignores media queries inside favicon SVGs, so Layout.astro picks
+       between this file and its twin from JavaScript instead. -->
+  <g transform="translate(1.3989 75.3912) scale(0.034082 -0.034082)" fill="#ffffff">
+    <path d="M135 0V1490H603L845 806Q860 758 879.5 682.0Q899 606 919.0 518.0Q939 430 956.5 347.0Q974 264 985 203H926Q937 263 954.5 345.5Q972 428 992.0 516.0Q1012 604 1031.5 681.0Q1051 758 1066 806L1304 1490H1774V0H1467V702Q1467 751 1468.5 824.0Q1470 897 1472.5 981.5Q1475 1066 1477.0 1151.5Q1479 1237 1480 1313H1499Q1480 1230 1457.0 1141.5Q1434 1053 1410.5 970.0Q1387 887 1366.0 817.5Q1345 748 1330 702L1083 0H826L575 702Q560 748 539.0 816.5Q518 885 494.5 968.0Q471 1051 447.0 1139.5Q423 1228 402 1313H425Q426 1241 428.0 1156.0Q430 1071 432.5 985.5Q435 900 436.5 826.5Q438 753 438 702V0Z"/>
+    <path d="M659 0H273V263H644Q788 263 885.5 314.0Q983 365 1032.0 472.0Q1081 579 1081 746Q1081 912 1031.5 1018.5Q982 1125 885.5 1176.0Q789 1227 646 1227H266V1490H664Q888 1490 1049.5 1400.5Q1211 1311 1298.0 1144.5Q1385 978 1385 746Q1385 513 1298.0 346.0Q1211 179 1048.5 89.5Q886 0 659 0ZM440 1490V0H135V1490Z" transform="translate(1332 0)"/>
+  </g>
+</svg>
