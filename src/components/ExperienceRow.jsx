@@ -77,6 +77,7 @@ function alphaMapFor(src) {
 
 const Logo = ({ item }) => {
     const linkRef = useRef(null);
+    const boxRef = useRef(null);
     const markRef = useRef(null);
     const mapRef = useRef(null);
     const liveRef = useRef(null);
@@ -187,11 +188,11 @@ const Logo = ({ item }) => {
                 <span style={{ ...fit, ...maskOf(item.iconNeutral), backgroundColor: 'currentColor' }} />
             )}
             <span
-                className="transition-opacity duration-300 group-hover:opacity-0"
+                className="transition-opacity duration-300 group-data-[lit]:opacity-0"
                 style={{ ...fit, ...maskOf(item.iconColour), backgroundColor: 'currentColor' }}
             />
             <span
-                className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                className="opacity-0 transition-opacity duration-300 group-data-[lit]:opacity-100"
                 style={{
                     position: 'absolute', inset: 0,
                     backgroundImage: `url("${item.iconColour}")`,
@@ -219,9 +220,31 @@ const Logo = ({ item }) => {
     // hover, so the link may not go pink — the colour itself is the feedback.
     const pinkOnHover = item.iconColour ? '' : 'hover:text-pink-400 dark:hover:text-pink-400';
 
+    // Lighting the colour up is not the same question as deciding what is
+    // clickable, and tying them together was what made the logos flicker. The
+    // click target is the artwork alone, tested per pixel, and that test flips
+    // `pointer-events` — which takes `:hover` with it. Running the colour off
+    // `:hover` therefore made it blink on and off wherever the pointer grazed a
+    // thin stroke, restarting a 300ms fade each time.
+    //
+    // The box is crossed once, so it is a steady signal: entering it lights the
+    // colour, leaving it puts the colour away. Precision still governs the link.
+    const light = (on) => {
+        const box = boxRef.current;
+        if (!box) return;
+        if (on) box.setAttribute('data-lit', '');
+        else box.removeAttribute('data-lit');
+    };
+
     return (
         // The box keeps its size — it is what lays the row out — but only listens.
-        <span className="w-full h-full block" onPointerMove={onMove} onPointerLeave={() => setLive(false)}>
+        <span
+            ref={boxRef}
+            className="group w-full h-full block"
+            onPointerMove={onMove}
+            onPointerEnter={() => light(true)}
+            onPointerLeave={() => { light(false); setLive(false); }}
+        >
             <a
                 ref={linkRef}
                 href={item.url}
@@ -230,7 +253,7 @@ const Logo = ({ item }) => {
                 // The mark is decorative now that it is a mask, so the name has
                 // to live on the link itself.
                 aria-label={item.title}
-                className={`group w-full h-full flex items-center justify-center text-black dark:text-white transition-colors duration-300 ${pinkOnHover}`}
+                className={`w-full h-full flex items-center justify-center text-black dark:text-white transition-colors duration-300 ${pinkOnHover}`}
             >
                 {mark}
             </a>
