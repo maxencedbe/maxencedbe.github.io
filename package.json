@@ -11,8 +11,8 @@
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
-    "@astrojs/react": "^6.0.4",
-    "astro": "^7.2.4",
+    "@astrojs/react": "^7.0.1",
+    "astro": "^7.3.8",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.38.0",
     "gsap": "^3.13.0",
