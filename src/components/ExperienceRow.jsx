@@ -78,6 +78,7 @@ function alphaMapFor(src) {
 const Logo = ({ item }) => {
     const linkRef = useRef(null);
     const boxRef = useRef(null);
+    const offTimer = useRef(null);
     const markRef = useRef(null);
     const mapRef = useRef(null);
     const liveRef = useRef(null);
@@ -98,7 +99,22 @@ const Logo = ({ item }) => {
         return hoverRef.current;
     };
 
-    const setLive = (live) => {
+    // One state drives both halves of the response. The custom cursor grows when
+    // `elementFromPoint` lands on the link, which only happens where the link is
+    // hittable — so anything that lights the colour on a different signal grows
+    // the cursor at one moment and colours the logo at another. They share this
+    // one now.
+    const commit = (live) => {
+        if (live === liveRef.current || !linkRef.current) return;
+        liveRef.current = live;
+        linkRef.current.style.pointerEvents = live ? 'auto' : 'none';
+        const box = boxRef.current;
+        if (!box) return;
+        if (live) box.setAttribute('data-lit', '');
+        else box.removeAttribute('data-lit');
+    };
+
+    const setLive = (live, now = false) => {
         // Nothing may touch pointer-events without a hovering pointer. Guarding
         // only the initial arming was not enough: a tap emits a pointermove, and
         // then a pointerleave, so the first touch anywhere near a logo — or a
@@ -106,9 +122,14 @@ const Logo = ({ item }) => {
         // is a small target inside a 64px box, so a finger lands off the artwork
         // more often than not.
         if (!hasHover()) return;
-        if (live === liveRef.current || !linkRef.current) return;
-        liveRef.current = live;
-        linkRef.current.style.pointerEvents = live ? 'auto' : 'none';
+        if (offTimer.current) { clearTimeout(offTimer.current); offTimer.current = null; }
+        if (live || now) return commit(live);
+        // Switching off waits a moment. The test is per pixel, so a pointer
+        // crossing a thin stroke — the X's strokes, the small caps under it —
+        // falls off the artwork between two samples and comes straight back. Run
+        // bare, that flipped the link, the cursor and the colour several times a
+        // second. The delay outlasts the gap without being long enough to feel.
+        offTimer.current = setTimeout(() => { offTimer.current = null; commit(false); }, 140);
     };
 
     // The gate is armed from JavaScript, and only where there is a pointer to
@@ -121,6 +142,7 @@ const Logo = ({ item }) => {
         if (!linkRef.current || !hasHover()) return;
         linkRef.current.style.pointerEvents = 'none';
         liveRef.current = false;
+        return () => { if (offTimer.current) clearTimeout(offTimer.current); };
     }, []);
 
     const onMove = (e) => {
@@ -158,28 +180,28 @@ const Logo = ({ item }) => {
     // intermediate state. It also replaces the old `invert dark:invert-0`.
     //
     // At rest that is still the whole story — every logo reads as one flat mark
-    // in the theme's colour. Hover is where it splits, into three layers that
-    // all fit the same box the same way (`contain`, centred), so they register:
+    // in the theme's colour. What hover changes is split across two masks, both
+    // fitted to the box the same way (`contain`, centred) so they register:
     //
-    //   neutral   the parts of the logo that are black, white or grey. They stay
-    //             on currentColor at all times, because a brand's black frame has
-    //             to become white on a dark page — that is what its own charter
-    //             asks for. Absent for a logo with no neutral parts.
-    //   flat      the coloured parts, flattened onto currentColor. Always fully
-    //             opaque — see below.
-    //   true      the same coloured parts in the brand's own colours, faded in on
-    //             top. Its alpha is the same shape as `flat`'s mask, so at full
-    //             opacity it covers `flat` exactly.
+    //   neutral   the parts of the logo that are black, white or grey. Always on
+    //             currentColor, because a brand's black frame has to become white
+    //             on a dark page — that is what its own charter asks for. Absent
+    //             for a logo with no neutral parts.
+    //   chroma    the coloured parts. One mask whose fill travels from
+    //             currentColor to the brand's own colour, which every one of
+    //             these five has exactly one of.
     //
-    // `flat` deliberately does not fade out as `true` fades in. Cross-fading two
-    // layers of the same shape dips the combined alpha in the middle — at the
-    // halfway point each sits at 0.5, so a quarter of the background shows
-    // through and the mark visibly washes out before coming back. Leaving `flat`
-    // opaque underneath keeps the mark solid the whole way, and only its colour
-    // travels.
+    // Nothing is layered over anything and nothing fades. Two earlier attempts
+    // did, and each had its own artefact. Cross-fading a colour copy over a flat
+    // one dipped the combined alpha at the midpoint, washing the mark out. Fading
+    // the colour copy in over an opaque flat one fixed that, but a mask and a
+    // background-image are rasterised by different paths, so their edges landed a
+    // fraction of a pixel apart and the mark looked briefly bold, blue bleeding
+    // out past black. A single mask changing colour cannot do either: there is
+    // one shape, one set of edges, and only the fill interpolates.
     //
-    // Without a colour file the first two collapse back to the single mask, and
-    // hover stays the pink the rest of the site uses.
+    // Without a colour file this collapses back to the plain mask, and hover
+    // stays the pink the rest of the site uses.
     const fit = {
         position: 'absolute',
         inset: 0,
@@ -194,16 +216,11 @@ const Logo = ({ item }) => {
             {item.iconNeutral && (
                 <span style={{ ...fit, ...maskOf(item.iconNeutral), backgroundColor: 'currentColor' }} />
             )}
-            <span style={{ ...fit, ...maskOf(item.iconColour), backgroundColor: 'currentColor' }} />
             <span
-                className="opacity-0 transition-opacity duration-300 group-data-[lit]:opacity-100"
-                style={{
-                    position: 'absolute', inset: 0,
-                    backgroundImage: `url("${item.iconColour}")`,
-                    backgroundSize: 'contain',
-                    backgroundRepeat: 'no-repeat',
-                    backgroundPosition: 'center',
-                }}
+                // bg-current rather than an inline fill: an inline style would
+                // outrank the class that swaps the colour in.
+                className="bg-current transition-colors duration-300 group-data-[lit]:bg-[var(--logo-colour)]"
+                style={{ ...fit, ...maskOf(item.iconColour), '--logo-colour': item.colour }}
             />
         </span>
     ) : (
@@ -233,21 +250,13 @@ const Logo = ({ item }) => {
     //
     // The box is crossed once, so it is a steady signal: entering it lights the
     // colour, leaving it puts the colour away. Precision still governs the link.
-    const light = (on) => {
-        const box = boxRef.current;
-        if (!box) return;
-        if (on) box.setAttribute('data-lit', '');
-        else box.removeAttribute('data-lit');
-    };
-
     return (
         // The box keeps its size — it is what lays the row out — but only listens.
         <span
             ref={boxRef}
             className="group w-full h-full block"
             onPointerMove={onMove}
-            onPointerEnter={() => light(true)}
-            onPointerLeave={() => { light(false); setLive(false); }}
+            onPointerLeave={() => setLive(false, true)}
         >
             <a
                 ref={linkRef}
