@@ -134,11 +134,17 @@ export default function CustomCursor() {
                 centerEl.classList?.contains("no-cursor-highlight") || centerEl.closest?.(".no-cursor-highlight");
             const clickable = isClickable && !isNoHighlight;
 
-            // Check all 9 points (centre + dot edge + ring edge) for pink
-            let pink = false;
+            // Check all 9 points (centre + dot edge + ring edge) for anything the
+            // difference blend would spoil. Pink is one case — difference over
+            // this site's pink lands on green. A logo showing its brand colours is
+            // the other: inverting part of someone's mark as the pointer crosses
+            // it is exactly the kind of thing a brand charter forbids, and it
+            // looks wrong besides. Both want the same answer, the solid cursor.
+            let solid = false;
             for (const [dx, dy] of OFFSETS) {
                 const el = dx === 0 && dy === 0 ? centerEl : document.elementFromPoint(mouseX + dx, mouseY + dy);
-                if (el && !all.includes(el) && isPinkElement(el)) { pink = true; break; }
+                if (!el || all.includes(el)) continue;
+                if (isPinkElement(el) || el.closest?.(".no-cursor-blend")) { solid = true; break; }
             }
 
             // Size: driven by the single centre hit-test, which only flips when
@@ -158,7 +164,7 @@ export default function CustomCursor() {
             // whereas reverting on each flip is the green flicker. The delay
             // outlasts a tremor cycle (~80-120ms) rather than the old 30ms,
             // which was short enough for the flicker to get through.
-            if (pink) {
+            if (solid) {
                 if (exitPinkTimer) { clearTimeout(exitPinkTimer); exitPinkTimer = null; }
                 if (!onPink) { onPink = true; applyLook(); }
             } else if (onPink && !exitPinkTimer) {

@@ -234,7 +234,7 @@ const Logo = ({ item }) => {
     );
 
     if (!item.url) {
-        return <span className="w-full h-full block text-black dark:text-white">{mark}</span>;
+        return <span className="no-cursor-blend w-full h-full block text-black dark:text-white">{mark}</span>;
     }
 
     // With a colour file the neutral layer must keep following the theme on
@@ -254,7 +254,10 @@ const Logo = ({ item }) => {
         // The box keeps its size — it is what lays the row out — but only listens.
         <span
             ref={boxRef}
-            className="group w-full h-full block"
+            // The difference blend must not invert a brand mark, so the
+            // cursor goes solid over this box. See no-cursor-blend in
+            // CustomCursor.
+            className="group no-cursor-blend w-full h-full block"
             onPointerMove={onMove}
             onPointerLeave={() => setLive(false, true)}
         >
