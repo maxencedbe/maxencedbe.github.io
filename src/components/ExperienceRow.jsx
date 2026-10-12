@@ -165,11 +165,18 @@ const Logo = ({ item }) => {
     //             on currentColor at all times, because a brand's black frame has
     //             to become white on a dark page — that is what its own charter
     //             asks for. Absent for a logo with no neutral parts.
-    //   flat      the coloured parts, flattened onto currentColor. Visible at
-    //             rest, faded out on hover.
+    //   flat      the coloured parts, flattened onto currentColor. Always fully
+    //             opaque — see below.
     //   true      the same coloured parts in the brand's own colours, faded in on
-    //             hover. Its alpha is the same shape as `flat`'s mask, so the two
-    //             cross-fade in place.
+    //             top. Its alpha is the same shape as `flat`'s mask, so at full
+    //             opacity it covers `flat` exactly.
+    //
+    // `flat` deliberately does not fade out as `true` fades in. Cross-fading two
+    // layers of the same shape dips the combined alpha in the middle — at the
+    // halfway point each sits at 0.5, so a quarter of the background shows
+    // through and the mark visibly washes out before coming back. Leaving `flat`
+    // opaque underneath keeps the mark solid the whole way, and only its colour
+    // travels.
     //
     // Without a colour file the first two collapse back to the single mask, and
     // hover stays the pink the rest of the site uses.
@@ -187,10 +194,7 @@ const Logo = ({ item }) => {
             {item.iconNeutral && (
                 <span style={{ ...fit, ...maskOf(item.iconNeutral), backgroundColor: 'currentColor' }} />
             )}
-            <span
-                className="transition-opacity duration-300 group-data-[lit]:opacity-0"
-                style={{ ...fit, ...maskOf(item.iconColour), backgroundColor: 'currentColor' }}
-            />
+            <span style={{ ...fit, ...maskOf(item.iconColour), backgroundColor: 'currentColor' }} />
             <span
                 className="opacity-0 transition-opacity duration-300 group-data-[lit]:opacity-100"
                 style={{
