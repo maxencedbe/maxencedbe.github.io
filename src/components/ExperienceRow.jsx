@@ -181,23 +181,17 @@ const Logo = ({ item }) => {
     };
     const maskOf = (src) => ({ WebkitMaskImage: `url("${src}")`, maskImage: `url("${src}")` });
 
-    // Polytechnique's blue is 1.8:1 on the dark page — unreadable — so it keeps
-    // the white its charter prescribes there, and hover falls back to pink.
-    const colourInDark = item.colourInDark !== false;
-    const flatOut = colourInDark ? 'group-hover:opacity-0' : 'group-hover:opacity-0 dark:group-hover:opacity-100';
-    const trueIn = colourInDark ? 'group-hover:opacity-100' : 'group-hover:opacity-100 dark:group-hover:opacity-0';
-
     const mark = item.iconColour ? (
         <span ref={markRef} aria-hidden="true" className={`relative block w-full h-full ${item.logoClass || ""}`}>
             {item.iconNeutral && (
                 <span style={{ ...fit, ...maskOf(item.iconNeutral), backgroundColor: 'currentColor' }} />
             )}
             <span
-                className={`transition-opacity duration-300 ${flatOut}`}
+                className="transition-opacity duration-300 group-hover:opacity-0"
                 style={{ ...fit, ...maskOf(item.iconColour), backgroundColor: 'currentColor' }}
             />
             <span
-                className={`opacity-0 transition-opacity duration-300 ${trueIn}`}
+                className="opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 style={{
                     position: 'absolute', inset: 0,
                     backgroundImage: `url("${item.iconColour}")`,
@@ -223,9 +217,7 @@ const Logo = ({ item }) => {
 
     // With a colour file the neutral layer must keep following the theme on
     // hover, so the link may not go pink — the colour itself is the feedback.
-    const pinkOnHover = !item.iconColour
-        ? 'hover:text-pink-400 dark:hover:text-pink-400'
-        : (colourInDark ? '' : 'dark:hover:text-pink-400');
+    const pinkOnHover = item.iconColour ? '' : 'hover:text-pink-400 dark:hover:text-pink-400';
 
     return (
         // The box keeps its size — it is what lays the row out — but only listens.
