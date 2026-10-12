@@ -15,6 +15,12 @@ const GRID = 96;
 // Slack in grid cells, so thin strokes and the gaps inside a letterform stay
 // comfortably clickable rather than demanding pixel accuracy.
 const SLACK = 2;
+// A second, wider look. Ink inside SLACK means the pointer is on the artwork.
+// Ink between SLACK and GRAZE means it is at the edge of a stroke, where the
+// per-pixel answer flips between samples — that case waits before switching
+// off. No ink even within GRAZE means the pointer has genuinely left, and
+// there is nothing to protect against, so it switches off at once.
+const GRAZE = 7;
 const OPAQUE = 24;
 
 // Ink alone is not the target the eye aims at. The École Polytechnique mark is
@@ -164,14 +170,17 @@ const Logo = ({ item }) => {
 
         const gx = Math.round((x / map.nw) * map.w);
         const gy = Math.round((y / map.nh) * map.h);
-        for (let dy = -SLACK; dy <= SLACK; dy++) {
-            for (let dx = -SLACK; dx <= SLACK; dx++) {
+        let grazing = false;
+        for (let dy = -GRAZE; dy <= GRAZE; dy++) {
+            for (let dx = -GRAZE; dx <= GRAZE; dx++) {
                 const px = gx + dx, py = gy + dy;
                 if (px < 0 || py < 0 || px >= map.w || py >= map.h) continue;
-                if (map.a[py * map.w + px]) return setLive(true);
+                if (!map.a[py * map.w + px]) continue;
+                if (Math.abs(dx) <= SLACK && Math.abs(dy) <= SLACK) return setLive(true);
+                grazing = true;
             }
         }
-        setLive(false);
+        setLive(false, !grazing);
     };
 
     // A file drives a mask over a flat fill rather than being drawn as an image,
@@ -219,7 +228,11 @@ const Logo = ({ item }) => {
             <span
                 // bg-current rather than an inline fill: an inline style would
                 // outrank the class that swaps the colour in.
-                className="bg-current transition-colors duration-300 group-data-[lit]:bg-[var(--logo-colour)]"
+                // Quicker leaving than arriving. A transition takes the duration of the
+                // state it moves *to*, so the base value is the one that runs on the way
+                // back: colour arrives over 300ms, which reads as deliberate, and clears
+                // in 150, which stops the logo trailing behind the pointer.
+                className="bg-current transition-colors duration-150 group-data-[lit]:duration-300 group-data-[lit]:bg-[var(--logo-colour)]"
                 style={{ ...fit, ...maskOf(item.iconColour), '--logo-colour': item.colour }}
             />
         </span>
