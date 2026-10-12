@@ -151,36 +151,81 @@ const Logo = ({ item }) => {
         setLive(false);
     };
 
-    // The file drives a mask over a flat fill rather than being drawn as an
-    // image, which makes it behave like the `fill="currentColor"` SVGs of the
-    // social links: one shape whose colour changes, so hover is a plain colour
-    // transition with no half-faded intermediate state. It also replaces the old
-    // `invert dark:invert-0`, since the fill already follows the text colour.
-    // Every logo here is monochrome in practice — Batigère is 99% greyscale and
-    // the rest are flat white — so nothing is lost by flattening them.
-    const mark = (
+    // A file drives a mask over a flat fill rather than being drawn as an image,
+    // which makes it behave like the `fill="currentColor"` SVGs of the social
+    // links: a shape whose colour follows the text, with no half-faded
+    // intermediate state. It also replaces the old `invert dark:invert-0`.
+    //
+    // At rest that is still the whole story — every logo reads as one flat mark
+    // in the theme's colour. Hover is where it splits, into three layers that
+    // all fit the same box the same way (`contain`, centred), so they register:
+    //
+    //   neutral   the parts of the logo that are black, white or grey. They stay
+    //             on currentColor at all times, because a brand's black frame has
+    //             to become white on a dark page — that is what its own charter
+    //             asks for. Absent for a logo with no neutral parts.
+    //   flat      the coloured parts, flattened onto currentColor. Visible at
+    //             rest, faded out on hover.
+    //   true      the same coloured parts in the brand's own colours, faded in on
+    //             hover. Its alpha is the same shape as `flat`'s mask, so the two
+    //             cross-fade in place.
+    //
+    // Without a colour file the first two collapse back to the single mask, and
+    // hover stays the pink the rest of the site uses.
+    const fit = {
+        position: 'absolute',
+        inset: 0,
+        WebkitMaskSize: 'contain', maskSize: 'contain',
+        WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat',
+        WebkitMaskPosition: 'center', maskPosition: 'center',
+    };
+    const maskOf = (src) => ({ WebkitMaskImage: `url("${src}")`, maskImage: `url("${src}")` });
+
+    // Polytechnique's blue is 1.8:1 on the dark page — unreadable — so it keeps
+    // the white its charter prescribes there, and hover falls back to pink.
+    const colourInDark = item.colourInDark !== false;
+    const flatOut = colourInDark ? 'group-hover:opacity-0' : 'group-hover:opacity-0 dark:group-hover:opacity-100';
+    const trueIn = colourInDark ? 'group-hover:opacity-100' : 'group-hover:opacity-100 dark:group-hover:opacity-0';
+
+    const mark = item.iconColour ? (
+        <span ref={markRef} aria-hidden="true" className={`relative block w-full h-full ${item.logoClass || ""}`}>
+            {item.iconNeutral && (
+                <span style={{ ...fit, ...maskOf(item.iconNeutral), backgroundColor: 'currentColor' }} />
+            )}
+            <span
+                className={`transition-opacity duration-300 ${flatOut}`}
+                style={{ ...fit, ...maskOf(item.iconColour), backgroundColor: 'currentColor' }}
+            />
+            <span
+                className={`opacity-0 transition-opacity duration-300 ${trueIn}`}
+                style={{
+                    position: 'absolute', inset: 0,
+                    backgroundImage: `url("${item.iconColour}")`,
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
+                }}
+            />
+        </span>
+    ) : (
         <span
             ref={markRef}
             aria-hidden="true"
             className={`w-full h-full block ${item.logoClass || ""}`}
-            style={{
-                backgroundColor: 'currentColor',
-                transition: 'background-color 300ms',
-                WebkitMaskImage: `url("${item.icon}")`,
-                maskImage: `url("${item.icon}")`,
-                WebkitMaskSize: 'contain',
-                maskSize: 'contain',
-                WebkitMaskRepeat: 'no-repeat',
-                maskRepeat: 'no-repeat',
-                WebkitMaskPosition: 'center',
-                maskPosition: 'center',
-            }}
+            style={{ ...fit, ...maskOf(item.icon), position: 'static',
+                     backgroundColor: 'currentColor', transition: 'background-color 300ms' }}
         />
     );
 
     if (!item.url) {
         return <span className="w-full h-full block text-black dark:text-white">{mark}</span>;
     }
+
+    // With a colour file the neutral layer must keep following the theme on
+    // hover, so the link may not go pink — the colour itself is the feedback.
+    const pinkOnHover = !item.iconColour
+        ? 'hover:text-pink-400 dark:hover:text-pink-400'
+        : (colourInDark ? '' : 'dark:hover:text-pink-400');
 
     return (
         // The box keeps its size — it is what lays the row out — but only listens.
@@ -193,7 +238,7 @@ const Logo = ({ item }) => {
                 // The mark is decorative now that it is a mask, so the name has
                 // to live on the link itself.
                 aria-label={item.title}
-                className="w-full h-full flex items-center justify-center text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300"
+                className={`group w-full h-full flex items-center justify-center text-black dark:text-white transition-colors duration-300 ${pinkOnHover}`}
             >
                 {mark}
             </a>
