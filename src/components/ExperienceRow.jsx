@@ -307,12 +307,12 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900 }) => {
       // was no length to set. A short centred rule of its own instead. The
       // side-by-side layout above sm keeps divide-x, where a full-height rule
       // between columns is what you want.
-      className="mx-auto flex flex-col sm:flex-row sm:divide-x divide-black/10 dark:divide-white/10"
+      className="mx-auto flex flex-col sm:flex-row sm:divide-x divide-black/20 dark:divide-white/20"
     >
       {currentItems.map((item, index) => (
         <Fragment key={index}>
           {index > 0 && (
-            <div className="sm:hidden w-24 h-px mx-auto bg-black/10 dark:bg-white/10" aria-hidden="true" />
+            <div className="sm:hidden w-24 h-px mx-auto bg-black/20 dark:bg-white/20" aria-hidden="true" />
           )}
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
           <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center mb-2">
