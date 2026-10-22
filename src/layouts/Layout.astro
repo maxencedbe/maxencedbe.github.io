@@ -262,7 +262,7 @@ const isLockedPage = isLocked;
       }
       :global(html.reload-fade.reload-fade-in body) {
         opacity: 1;
-        transition: opacity 0.5s ease;
+        transition: opacity 0.25s ease;
       }
       /* Content & SideNav fade */
       #content-wrapper {
@@ -318,9 +318,9 @@ const isLockedPage = isLocked;
           // theme swap) are back to normal.
           setTimeout(function () {
             root.classList.remove("reload-fade", "reload-fade-in");
-          }, 600);
+          }, 350);
         };
-        var later = function () { setTimeout(show, 150); };
+        var later = function () { setTimeout(show, 50); };
         if (document.readyState === "complete") later();
         else window.addEventListener("load", later);
         // Backstop, so a stalled load can never keep the page hidden.
