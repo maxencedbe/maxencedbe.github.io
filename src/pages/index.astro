@@ -46,8 +46,10 @@ const educationEn = [
     role: "Preparatory classes for engineering schools (CPGE), MPSI / MP*",
     // The school's own emblem, taken from the only version it publishes (its
     // site's 152px app icon), cut out of the icon's tile and upscaled. It has
-    // no brand colour, so it takes the site's pink on hover like a plain mask.
+    // no brand colour; on hover it swaps to Fabert-inverse.png, the same shield
+    // with its light and dark halves exchanged (see iconHover in ExperienceRow).
     icon: "/Fabert.png",
+    iconHover: "/Fabert-inverse.png",
     url: "https://www.lycee-fabert.com/",
   },
 ];
@@ -78,6 +80,7 @@ const educationFr = [
     date: "2020 – 2023",
     role: "Classes préparatoires aux grandes écoles (CPGE), MPSI / MP*",
     icon: "/Fabert.png",
+    iconHover: "/Fabert-inverse.png",
     url: "https://www.lycee-fabert.com/",
   },
 ];

@@ -218,7 +218,22 @@ const Logo = ({ item }) => {
     };
     const maskOf = (src) => ({ WebkitMaskImage: `url("${src}")`, maskImage: `url("${src}")` });
 
-    const mark = item.iconColour ? (
+    // A mark with no brand colour can instead name a second file to change
+    // into on hover (`iconHover`) — for the Lycée Fabert, the same shield with
+    // its light and dark halves swapped. The two cross over quickly, and the
+    // colour stays the theme's, since the change itself is the feedback.
+    const mark = item.iconHover ? (
+        <span ref={markRef} aria-hidden="true" className={`relative block w-full h-full ${item.logoClass || ""}`}>
+            <span
+                className="bg-current transition-opacity duration-200 group-data-[lit]:opacity-0"
+                style={{ ...fit, ...maskOf(item.icon) }}
+            />
+            <span
+                className="bg-current opacity-0 transition-opacity duration-200 group-data-[lit]:opacity-100"
+                style={{ ...fit, ...maskOf(item.iconHover) }}
+            />
+        </span>
+    ) : item.iconColour ? (
         <span ref={markRef} aria-hidden="true" className={`relative block w-full h-full ${item.logoClass || ""}`}>
             {item.iconNeutral && (
                 <span style={{ ...fit, ...maskOf(item.iconNeutral), backgroundColor: 'currentColor' }} />
@@ -250,7 +265,7 @@ const Logo = ({ item }) => {
 
     // With a colour file the neutral layer must keep following the theme on
     // hover, so the link may not go pink — the colour itself is the feedback.
-    const pinkOnHover = item.iconColour ? '' : 'hover:text-pink-400 dark:hover:text-pink-400';
+    const pinkOnHover = item.iconColour || item.iconHover ? '' : 'hover:text-pink-400 dark:hover:text-pink-400';
 
     // Lighting the colour up is not the same question as deciding what is
     // clickable, and tying them together was what made the logos flicker. The
