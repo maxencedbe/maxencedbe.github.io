@@ -329,18 +329,20 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 
   return (
     <div
       style={{ maxWidth: `${maxWidth}px` }}
-      // `divide-y` is gone from the stacked layout: it draws on the child's own
-      // border, so the rule always ran the full width of the column and there
-      // was no length to set. A short centred rule of its own instead. The
-      // side-by-side layout above sm keeps divide-x, where a full-height rule
-      // between columns is what you want.
+      // No `divide-*`: it draws on the children's own borders, so the rule can
+      // have neither a length of its own nor a fade. Stacked, a short centred
+      // rule of its own instead; side by side above sm, a full-height rule that
+      // fades out at both ends, like the separators between the projects.
       // --logo-side is the edge of the square whose area every logo matches.
-      className="mx-auto flex flex-col sm:flex-row sm:divide-x divide-black/20 dark:divide-white/20 [--logo-side:50px] sm:[--logo-side:60px]"
+      className="mx-auto flex flex-col sm:flex-row [--logo-side:50px] sm:[--logo-side:60px]"
     >
       {currentItems.map((item, index) => (
         <Fragment key={index}>
           {index > 0 && (
-            <div className="sm:hidden w-24 h-px mx-auto bg-black/20 dark:bg-white/20" aria-hidden="true" />
+            <>
+              <div className="sm:hidden w-24 h-px mx-auto bg-black/20 dark:bg-white/20" aria-hidden="true" />
+              <div className="hidden sm:block w-px self-stretch shrink-0 bg-linear-to-b from-transparent via-black/25 to-transparent dark:via-white/25" aria-hidden="true" />
+            </>
           )}
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
           <div className="flex items-end justify-center mb-7" style={{ height: slotHeight }}>
