@@ -29,6 +29,7 @@ const educationEn = [
     date: "2025 – 2026",
     role: "MSc in Data Science",
     honours: "with highest honours",
+    alignEnd: true,
     icon: "/X.png",
     iconColour: "/X.png",
     colour: "rgb(1, 66, 106)",
@@ -38,6 +39,14 @@ const educationEn = [
     title: "Télécom SudParis",
     date: "2023 – 2026",
     role: "Master's degree in Engineering",
+    // The IP Paris block spans the full width of both this mark and the X's,
+    // so it only comes out the same size in both if the two are drawn at the
+    // same width: sqrt(ratio of X / ratio of this file) = sqrt(0.539 / 0.639).
+    // With both bottom-aligned (alignEnd), the two blocks then line up.
+    scale: 0.9187,
+    alignEnd: true,
+    scale: 0.9187,
+    alignEnd: true,
     icon: "/TSP.png",
     iconColour: "/TSP.png",
     colour: "rgb(0, 56, 130)",
@@ -63,6 +72,7 @@ const educationFr = [
     date: "2025 – 2026",
     role: "Master Data Science",
     honours: "mention Très Bien",
+    alignEnd: true,
     icon: "/X.png",
     iconColour: "/X.png",
     colour: "rgb(1, 66, 106)",

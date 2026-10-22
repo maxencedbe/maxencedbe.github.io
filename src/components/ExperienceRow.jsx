@@ -334,7 +334,11 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
           <div className="flex items-center justify-center mb-7" style={{ height: slotHeight }}>
             {item.icon ? (
-              <div style={{ width: `calc(var(--logo-side) * ${sizeOf(item) * rootOf(item)})`, height: `calc(var(--logo-side) * ${sizeOf(item) / rootOf(item)})` }}>
+              // `alignEnd` drops a logo to the foot of the slot instead of its
+              // centre. Two marks that end in the same lockup (the X and Télécom
+              // SudParis both close on the IP Paris block) need it, so that
+              // block sits on one line rather than at two heights.
+              <div className={item.alignEnd ? 'self-end' : ''} style={{ width: `calc(var(--logo-side) * ${sizeOf(item) * rootOf(item)})`, height: `calc(var(--logo-side) * ${sizeOf(item) / rootOf(item)})` }}>
                 <Logo item={item} />
               </div>
             ) : (
