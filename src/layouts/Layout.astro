@@ -48,15 +48,23 @@ const isLockedPage = isLocked;
     <link id="favicon" rel="icon" href="/favicon.svg?v=7" type="image/svg+xml" />
     <script is:inline>
       (function () {
-        var link = document.getElementById("favicon");
+        if (window.__faviconWired) return;
+        window.__faviconWired = true;
         var mq = window.matchMedia("(prefers-color-scheme: dark)");
         var apply = function () {
-          link.href = (mq.matches ? "/favicon-dark.svg" : "/favicon.svg") + "?v=7";
+          // Looked up afresh every time: a client-side navigation replaces the
+          // head's link with the new page's copy, whose href is the charcoal
+          // fallback below, and this script is not run again for it — so a
+          // reference held from the first load would point at a detached node
+          // while the tab showed the dark mark on a dark bar.
+          var link = document.getElementById("favicon");
+          if (link) link.href = (mq.matches ? "/favicon-dark.svg" : "/favicon.svg") + "?v=7";
         };
         apply();
         // Follows a live theme switch, so the icon never sits at the wrong
         // polarity until the next reload.
         mq.addEventListener("change", apply);
+        document.addEventListener("astro:after-swap", apply);
       })();
     </script>
     <ClientRouter />
