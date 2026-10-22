@@ -13,6 +13,19 @@ const SideNav = () => {
   const [hoveredId, setHoveredId] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const activeSectionRef = useRef('home');
+  // While a click-driven scroll is travelling, the dot already shows where it
+  // is going and the scroll spy must not drag it back through every section the
+  // page passes on the way. `lock` holds that window open; `sync` is the spy's
+  // own update, run once the lock lifts so the dot settles on the real position.
+  const lockRef = useRef(null);
+  const syncRef = useRef(() => {});
+
+  const release = () => {
+    if (!lockRef.current) return;
+    clearTimeout(lockRef.current);
+    lockRef.current = null;
+    syncRef.current();
+  };
 
   const links = useMemo(() => [
     { id: 'home', label: locale === 'fr' ? 'Accueil' : 'Home' },
@@ -60,6 +73,7 @@ const SideNav = () => {
     let ticking = false;
     const update = () => {
       ticking = false;
+      if (lockRef.current) return;
       const scrollPosition = window.scrollY;
       const current = sections.find(section =>
         scrollPosition >= section.top - 200 && scrollPosition < section.bottom - 200
@@ -74,16 +88,27 @@ const SideNav = () => {
       if (!ticking) { ticking = true; requestAnimationFrame(update); }
     };
 
+    syncRef.current = update;
+    // The reader taking the scroll back — a wheel, a swipe, a key — ends the
+    // click's claim on the dot at once, so it follows them from there.
+    const takeBack = () => { if (lockRef.current) release(); };
+
     measure();
     update();
     window.addEventListener('scroll', handleScroll, { passive: true });
     window.addEventListener('resize', measure);
     // Re-measure once everything has loaded (fonts/images can shift offsets)
     window.addEventListener('load', measure);
+    window.addEventListener('wheel', takeBack, { passive: true });
+    window.addEventListener('touchstart', takeBack, { passive: true });
+    window.addEventListener('keydown', takeBack);
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', measure);
       window.removeEventListener('load', measure);
+      window.removeEventListener('wheel', takeBack);
+      window.removeEventListener('touchstart', takeBack);
+      window.removeEventListener('keydown', takeBack);
     };
   }, [links]);
 
@@ -91,15 +116,26 @@ const SideNav = () => {
 
   const handleClick = (e, id) => {
     e.preventDefault();
+    const element = id === 'home' ? null : document.getElementById(id);
+    if (id !== 'home' && !element) return;
+
+    // Light the target now rather than when the 1.5s scroll lands: the scroll
+    // spy only recognises a section once its top has nearly reached the top of
+    // the screen, which is the last stretch of the glide, so the dot used to
+    // turn pink well over a second after the click. The timer is a backstop
+    // for a glide whose completion callback never fires.
+    setActiveSection(id);
+    activeSectionRef.current = id;
+    clearTimeout(lockRef.current);
+    lockRef.current = setTimeout(release, 1700);
+
     if (id === 'home') {
-      if (window.lenis) window.lenis.scrollTo(0, { duration: 1.5 });
+      if (window.lenis) window.lenis.scrollTo(0, { duration: 1.5, onComplete: release });
       else window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
-    const element = document.getElementById(id);
-    if (!element) return;
     if (window.lenis) {
-      window.lenis.scrollTo(element, { offset: -NAVBAR_OFFSET, duration: 1.5 });
+      window.lenis.scrollTo(element, { offset: -NAVBAR_OFFSET, duration: 1.5, onComplete: release });
     } else {
       const top = element.getBoundingClientRect().top + window.scrollY - NAVBAR_OFFSET;
       window.scrollTo({ top, behavior: 'smooth' });
