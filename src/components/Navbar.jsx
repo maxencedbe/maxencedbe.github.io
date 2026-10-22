@@ -413,7 +413,15 @@ export default function Navbar() {
               not letter by letter. */}
           <button
             ref={brandRef}
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            // Through Lenis when it is running, as the side nav's Home dot does.
+            // A native smooth scroll is a second animation fighting Lenis's own:
+            // clicked while Lenis was still easing out a wheel scroll, Lenis put
+            // the page back on its target every frame and the click was simply
+            // lost — it took a second click, once Lenis had settled, to go up.
+            onClick={() => {
+              if (window.lenis) window.lenis.scrollTo(0, { duration: 1.5 });
+              else window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
             className="inline-flex items-baseline text-black dark:text-white font-bold text-lg md:text-xl tracking-tight cursor-pointer transition-colors duration-300 hover:text-pink-400 whitespace-nowrap"
             aria-label="Maxence Debes"
           >
