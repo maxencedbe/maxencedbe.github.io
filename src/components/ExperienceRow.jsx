@@ -311,7 +311,7 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900 }) => {
             <div className="sm:hidden w-24 h-px mx-auto bg-black/20 dark:bg-white/20" aria-hidden="true" />
           )}
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
-          <div className="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center mb-2">
+          <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center mb-2">
             {item.icon ? (
               <Logo item={item} />
             ) : (
