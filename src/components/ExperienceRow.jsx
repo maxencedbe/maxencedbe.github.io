@@ -335,9 +335,9 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 
           <div className="flex items-center justify-center mb-7" style={{ height: slotHeight }}>
             {item.icon ? (
               // `alignEnd` drops a logo to the foot of the slot instead of its
-              // centre. Two marks that end in the same lockup (the X and Télécom
-              // SudParis both close on the IP Paris block) need it, so that
-              // block sits on one line rather than at two heights.
+              // centre. The schools use it: the X and Télécom SudParis both close
+              // on the same IP Paris block, which only sits on one line if they
+              // share a bottom edge, and the Fabert shield joins them there.
               <div className={item.alignEnd ? 'self-end' : ''} style={{ width: `calc(var(--logo-side) * ${sizeOf(item) * rootOf(item)})`, height: `calc(var(--logo-side) * ${sizeOf(item) / rootOf(item)})` }}>
                 <Logo item={item} />
               </div>
