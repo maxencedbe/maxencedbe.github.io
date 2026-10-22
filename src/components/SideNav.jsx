@@ -12,6 +12,13 @@ const SideNav = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [hoveredId, setHoveredId] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  // A reload in a tab that has already seen the intro (see Layout) shows the
+  // nav as it ends up: no staggered arrival, and no glide from Home to the
+  // section the page was reloaded on. Every transition inside is cut for that
+  // first moment, until the scroll spy has caught up with the restored
+  // position. Set in an effect, not as initial state, so the server and the
+  // first client render still agree.
+  const [settling, setSettling] = useState(false);
   const activeSectionRef = useRef('home');
   // While a click-driven scroll is travelling, the dot already shows where it
   // is going and the scroll spy must not drag it back through every section the
@@ -42,8 +49,13 @@ const SideNav = () => {
 
   useEffect(() => {
     if (!document.body.classList.contains('is-loading')) {
+      let t;
+      if (window.__introSkipped === true) {
+        setSettling(true);
+        t = setTimeout(() => setSettling(false), 400);
+      }
       setIsVisible(true);
-      return;
+      return () => clearTimeout(t);
     }
     let t;
     const observer = new MutationObserver(() => {
@@ -148,7 +160,7 @@ const SideNav = () => {
   const hoverPreviewHeight = hoveredIndex >= 0 ? hoveredIndex * DOT_SPACING : progressHeight;
 
   return (
-    <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex">
+    <div className={`fixed right-6 top-1/2 -translate-y-1/2 z-50 hidden md:flex ${settling ? 'sidenav-settling' : ''}`}>
       <div className="relative flex flex-col items-center py-1 px-2">
         <div
           style={{

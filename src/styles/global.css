@@ -560,3 +560,10 @@ html {
     width: calc(var(--brand-eb) + var(--brand-feather));
   }
 }
+
+/* See `settling` in SideNav: a reload that skips the intro shows the side nav
+   already in place, so nothing inside it may animate while it catches up. */
+.sidenav-settling,
+.sidenav-settling * {
+  transition: none !important;
+}
