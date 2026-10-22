@@ -297,10 +297,11 @@ const Logo = ({ item }) => {
 // the edge of the square of that area and r = sqrt(width / height), a logo is
 // side × r wide and side / r tall. The files are cropped to their artwork, so
 // that box is the mark itself and the gap below it is the gap the eye sees.
-// The logos of a row are centred in a slot as tall as the tallest of them:
-// sharing a centre line is what makes marks of different heights read as one
-// row (bottom-aligned, the short Fabert shield sank below the two crests). The
-// slot is the same height in every column, so the titles beneath still line up.
+// The logos of a row stand on a common baseline at the foot of a slot as tall
+// as the tallest of them, so the titles beneath line up across the columns.
+// The baseline rather than a shared centre because two of the schools' lockups
+// close on the same IP Paris block, which only sits on one line if they share
+// a bottom edge; the companies follow the same rule so both rows match.
 // `logoScale` enlarges a whole row past that. Equal area is only a start: a
 // tall crest spends its area on height and on small print, and at the same
 // area as the wordmarks the school logos still read as the smaller ones.
@@ -332,13 +333,9 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 
             </>
           )}
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
-          <div className="flex items-center justify-center mb-7" style={{ height: slotHeight }}>
+          <div className="flex items-end justify-center mb-7" style={{ height: slotHeight }}>
             {item.icon ? (
-              // `alignEnd` drops a logo to the foot of the slot instead of its
-              // centre. The schools use it: the X and Télécom SudParis both close
-              // on the same IP Paris block, which only sits on one line if they
-              // share a bottom edge, and the Fabert shield joins them there.
-              <div className={item.alignEnd ? 'self-end' : ''} style={{ width: `calc(var(--logo-side) * ${sizeOf(item) * rootOf(item)})`, height: `calc(var(--logo-side) * ${sizeOf(item) / rootOf(item)})` }}>
+              <div style={{ width: `calc(var(--logo-side) * ${sizeOf(item) * rootOf(item)})`, height: `calc(var(--logo-side) * ${sizeOf(item) / rootOf(item)})` }}>
                 <Logo item={item} />
               </div>
             ) : (
