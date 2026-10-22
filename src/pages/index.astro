@@ -19,26 +19,28 @@ const workExperienceFr = [
   { title: "Atos", date: "Juil 2024 – Août 2024", role: "Stagiaire Ingénieur Logiciel", icon: "/Atos.png", iconColour: "/Atos-colour.png", colour: "rgb(0, 115, 230)", scale: 0.85, url: "https://atos.net/" },
 ];
 
+// Each school's whole mark takes one colour on hover, the same gesture as the
+// companies above, so iconColour is the full logo rather than a part of it.
+// The IP Paris block is included: split off into a neutral layer it made the
+// X and Télécom SudParis behave unlike each other and unlike everything else.
 const educationEn = [
   {
-    title: "École Polytechnique — Polytechnic Institute of Paris",
+    title: "École Polytechnique",
     date: "2025 – 2026",
     role: "MSc in Data Science",
     honours: "with highest honours",
     icon: "/X.png",
-    iconColour: "/X-colour.png",
-    iconNeutral: "/X-neutral.png",
+    iconColour: "/X.png",
     colour: "rgb(1, 66, 106)",
     url: "https://www.ip-paris.fr/education/masters/mention-mathematiques-appliquees-statistique/master-year-2-data-science",
   },
   {
-    title: "Télécom SudParis — Polytechnic Institute of Paris",
+    title: "Télécom SudParis",
     date: "2023 – 2026",
     role: "Master's degree in Engineering",
     icon: "/TSP.png",
-    iconColour: "/TSP-colour.png",
+    iconColour: "/TSP.png",
     colour: "rgb(0, 56, 130)",
-    iconNeutral: "/TSP-neutral.png",
     url: "https://www.telecom-sudparis.eu/formation/modelisations-statistiques-et-applications/",
   },
   {
@@ -46,35 +48,33 @@ const educationEn = [
     date: "2020 – 2023",
     role: "Preparatory classes for engineering schools (CPGE), MPSI / MP*",
     // The school's own emblem, taken from the only version it publishes (its
-    // site's 152px app icon), cut out of the icon's tile and upscaled. It has
-    // no brand colour; on hover it swaps to Fabert-inverse.png, the same shield
-    // with its light and dark halves exchanged (see iconHover in ExperienceRow).
+    // site's 152px app icon), cut out of the icon's tile and upscaled. The
+    // school has no brand colour, so it takes the red of its coat of arms.
     icon: "/Fabert.png",
-    iconHover: "/Fabert-inverse.png",
+    iconColour: "/Fabert.png",
+    colour: "rgb(215, 25, 32)",
     url: "https://www.lycee-fabert.com/",
   },
 ];
 
 const educationFr = [
   {
-    title: "École Polytechnique — Institut Polytechnique de Paris",
+    title: "École Polytechnique",
     date: "2025 – 2026",
     role: "Master Data Science",
     honours: "mention Très Bien",
     icon: "/X.png",
-    iconColour: "/X-colour.png",
-    iconNeutral: "/X-neutral.png",
+    iconColour: "/X.png",
     colour: "rgb(1, 66, 106)",
     url: "https://www.ip-paris.fr/education/masters/mention-mathematiques-appliquees-statistique/master-year-2-data-science",
   },
   {
-    title: "Télécom SudParis — Institut Polytechnique de Paris",
+    title: "Télécom SudParis",
     date: "2023 – 2026",
     role: "Diplôme d'ingénieur",
     icon: "/TSP.png",
-    iconColour: "/TSP-colour.png",
+    iconColour: "/TSP.png",
     colour: "rgb(0, 56, 130)",
-    iconNeutral: "/TSP-neutral.png",
     url: "https://www.telecom-sudparis.eu/formation/modelisations-statistiques-et-applications/",
   },
   {
@@ -82,7 +82,8 @@ const educationFr = [
     date: "2020 – 2023",
     role: "Classes préparatoires aux grandes écoles (CPGE), MPSI / MP*",
     icon: "/Fabert.png",
-    iconHover: "/Fabert-inverse.png",
+    iconColour: "/Fabert.png",
+    colour: "rgb(215, 25, 32)",
     url: "https://www.lycee-fabert.com/",
   },
 ];
