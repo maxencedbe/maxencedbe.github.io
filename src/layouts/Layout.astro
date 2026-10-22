@@ -239,6 +239,9 @@ const isLockedPage = isLocked;
       :global(html.intro-skip .section-bg-reveal) {
         transition: none !important;
       }
+      :global(html.intro-restoring body) {
+        visibility: hidden;
+      }
       /* Content & SideNav fade */
       #content-wrapper {
         transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
@@ -273,6 +276,22 @@ const isLockedPage = isLocked;
         if (!seen || !document.body.classList.contains("is-loading")) return;
         document.body.classList.remove("is-loading");
         document.documentElement.classList.add("intro-skip");
+        // On a reload further down, the page would otherwise paint at the top
+        // and only jump back once the head script's restore runs, after the
+        // module scripts — a flash of the hero. It stays hidden until the
+        // script after the content has put it back in place.
+        try {
+          var nav = performance.getEntriesByType("navigation")[0];
+          var y = parseInt(sessionStorage.getItem("scrollpos:" + location.pathname), 10);
+          if (nav && nav.type === "reload" && y > 0) {
+            window.__restoreY = y;
+            document.documentElement.classList.add("intro-restoring");
+            // Backstop, so the page can never stay hidden.
+            document.addEventListener("DOMContentLoaded", function () {
+              document.documentElement.classList.remove("intro-restoring");
+            });
+          }
+        } catch (e) {}
       })();
     </script>
 
@@ -315,6 +334,10 @@ const isLockedPage = isLocked;
         document.querySelectorAll('#home [class*="reveal-"]').forEach(function (el) {
           el.classList.add("is-visible");
         });
+        if (window.__restoreY) {
+          window.scrollTo(0, window.__restoreY);
+          root.classList.remove("intro-restoring");
+        }
         requestAnimationFrame(function () {
           requestAnimationFrame(function () { root.classList.remove("intro-skip"); });
         });
