@@ -299,11 +299,14 @@ const Logo = ({ item }) => {
 // that box is the mark itself and the gap below it is the gap the eye sees.
 // The logos of a row sit on a common baseline at the foot of a slot as tall as
 // the tallest of them, so the titles beneath line up across the columns.
-const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900 }) => {
+// `logoScale` enlarges a whole row past that. Equal area is only a start: a
+// tall crest spends its area on height and on small print, and at the same
+// area as the wordmarks the school logos still read as the smaller ones.
+const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 }) => {
   const locale = useLocale();
   const currentItems = itemsEn && itemsFr ? (locale === 'fr' ? itemsFr : itemsEn) : (items || []);
   const rootOf = (item) => Math.sqrt(item.icon && item.ratio ? item.ratio : 1);
-  const slotHeight = `calc(var(--logo-side) / ${Math.min(...currentItems.map(rootOf))})`;
+  const slotHeight = `calc(var(--logo-side) * ${logoScale / Math.min(...currentItems.map(rootOf))})`;
 
   return (
     <div
@@ -324,7 +327,7 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900 }) => {
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
           <div className="flex items-end justify-center mb-7" style={{ height: slotHeight }}>
             {item.icon ? (
-              <div style={{ width: `calc(var(--logo-side) * ${rootOf(item)})`, height: `calc(var(--logo-side) / ${rootOf(item)})` }}>
+              <div style={{ width: `calc(var(--logo-side) * ${logoScale * rootOf(item)})`, height: `calc(var(--logo-side) * ${logoScale / rootOf(item)})` }}>
                 <Logo item={item} />
               </div>
             ) : (
