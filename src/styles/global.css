@@ -458,12 +458,6 @@ html {
   color: white !important;
 }
 
-@media (min-width: 768px) {
-  *, *::before, *::after {
-    cursor: none !important;
-  }
-}
-
 /* ---------------------------------------------------------------------------
    Wordmark → MD monogram, driven by the scroll position itself.
 

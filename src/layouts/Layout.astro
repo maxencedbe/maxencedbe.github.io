@@ -5,7 +5,6 @@ import ScrollObserver from "../components/ScrollObserver.jsx";
 import { ClientRouter } from "astro:transitions";
 import ProgressBar from "../components/ProgressBar.jsx";
 import SideNav from "../components/SideNav.jsx";
-import CustomCursor from "../components/CustomCursor.jsx";
 import "../styles/global.css";
 
 const { title, showNavbar = true, isLocked = false, showBackground = true } = Astro.props;
@@ -206,12 +205,6 @@ const isLockedPage = isLocked;
            so it was guarding against nothing. */
       }
 
-      @media (min-width: 768px) {
-        body {
-          cursor: none;
-        }
-      }
-
       #footer-wrapper {
         width: 100%;
         pointer-events: auto;
@@ -321,7 +314,6 @@ const isLockedPage = isLocked;
       </div>
     )}
     <ScrollObserver client:only="react" />
-    <CustomCursor client:only="react" />
     {!isLocked && (
       <div id="progressbar-wrapper-el">
         <ProgressBar client:load />

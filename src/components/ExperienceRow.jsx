@@ -105,11 +105,10 @@ const Logo = ({ item }) => {
         return hoverRef.current;
     };
 
-    // One state drives both halves of the response. The custom cursor grows when
-    // `elementFromPoint` lands on the link, which only happens where the link is
-    // hittable — so anything that lights the colour on a different signal grows
-    // the cursor at one moment and colours the logo at another. They share this
-    // one now.
+    // One state drives both halves of the response. The pointer turns into a
+    // hand only where the link is hittable — so anything that lights the colour
+    // on a different signal shows the hand at one moment and colours the logo at
+    // another. They share this one.
     const commit = (live) => {
         if (live === liveRef.current || !linkRef.current) return;
         liveRef.current = live;
@@ -247,7 +246,7 @@ const Logo = ({ item }) => {
     );
 
     if (!item.url) {
-        return <span className="no-cursor-blend w-full h-full block text-black dark:text-white">{mark}</span>;
+        return <span className="w-full h-full block text-black dark:text-white">{mark}</span>;
     }
 
     // With a colour file the neutral layer must keep following the theme on
@@ -267,10 +266,7 @@ const Logo = ({ item }) => {
         // The box keeps its size — it is what lays the row out — but only listens.
         <span
             ref={boxRef}
-            // The difference blend must not invert a brand mark, so the
-            // cursor goes solid over this box. See no-cursor-blend in
-            // CustomCursor.
-            className="group no-cursor-blend w-full h-full block"
+            className="group w-full h-full block"
             onPointerMove={onMove}
             onPointerLeave={() => setLive(false, true)}
         >
