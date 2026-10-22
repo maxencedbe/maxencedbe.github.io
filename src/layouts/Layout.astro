@@ -231,6 +231,24 @@ const isLockedPage = isLocked;
         transform: translateY(-100px);
         pointer-events: none;
       }
+      /* Dot pattern fades in during the constellation build */
+      #background-pattern {
+        opacity: 0;
+        transition: opacity 3s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      #background-pattern.dots-visible {
+        opacity: 1;
+      }
+      /* Locked pages (404) skip the constellation intro entirely: content is
+         never hidden, and the dot pattern just fades in quickly. */
+      body.is-locked #background-pattern {
+        transition: opacity 0.3s ease;
+      }
+      /* A skipped intro shows the dots from the first paint. */
+      :global(html.intro-skipped) #background-pattern {
+        opacity: 1;
+        transition: none;
+      }
       /* A visit that has already seen the intro is shown as it ends: every
          element takes its revealed state with no transition. Lifted two frames
          later. :global because the elements live in the pages, not here. */
@@ -277,6 +295,10 @@ const isLockedPage = isLocked;
         if (!seen || !document.body.classList.contains("is-loading")) return;
         document.body.classList.remove("is-loading");
         document.documentElement.classList.add("intro-skip");
+        // Kept for the page's life, unlike intro-skip: the dot pattern and the
+        // constellation, which mounts later, read it to skip their own build.
+        document.documentElement.classList.add("intro-skipped");
+        window.__introSkipped = true;
         // On a reload further down, the page would otherwise paint at the top
         // and only jump back once the head script's restore runs, after the
         // module scripts — a flash of the hero. It stays hidden until the
@@ -307,7 +329,7 @@ const isLockedPage = isLocked;
     <div id="background-pattern" class="fixed inset-0 -z-50 pointer-events-none"></div>
 
     {showBackground && (
-      <AnimatedBackground client:only="react" transition:persist="background" />
+      <AnimatedBackground client:only="react" transition:persist="background" instant={isLocked} />
     )}
     {
       showNavbar && (
@@ -369,6 +391,17 @@ const isLockedPage = isLocked;
       document.addEventListener('astro:before-swap', () => {
         isAstroNavigation = true;
       });
+
+      // Fade in the dot pattern 500ms into the constellation build
+      if (document.body.classList.contains('is-loading')) {
+        setTimeout(() => {
+          const bg = document.getElementById('background-pattern');
+          if (bg) bg.classList.add('dots-visible');
+        }, 500);
+      } else {
+        const bg = document.getElementById('background-pattern');
+        if (bg) bg.classList.add('dots-visible');
+      }
 
       // Reveal content once constellation is ready (F5 path)
       document.addEventListener('constellation-ready', () => {
@@ -439,6 +472,10 @@ const isLockedPage = isLocked;
           document.body.classList.remove('is-loading');
           isAstroNavigation = false;
         }
+        // Dots always visible on internal nav
+        const bg = document.getElementById('background-pattern');
+        if (bg) bg.classList.add('dots-visible');
+
         const langScroll = sessionStorage.getItem('langScroll');
         if (langScroll !== null) {
           window.scrollTo({ top: parseInt(langScroll, 10), behavior: 'instant' });
