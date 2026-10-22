@@ -298,7 +298,7 @@ export default function ProjectGrid() {
               <button
                 data-locale-fade
                 onClick={() => changeFilter(key)}
-                className={`px-3 sm:px-4 py-2 rounded-full text-sm font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 cursor-pointer transform-gpu antialiased ${activeFilter === key ? "active" : ""}`}
+                className={`px-2 sm:px-2.5 py-2 rounded-full text-sm font-medium filter-btn inline-flex items-center justify-center transition-transform duration-300 cursor-pointer transform-gpu antialiased ${activeFilter === key ? "active" : ""}`}
               >
                 {labels[key]}
               </button>
