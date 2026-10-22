@@ -2,11 +2,10 @@ import { Fragment, useEffect, useRef } from 'react';
 import { useLocale } from './useLocale.js';
 
 // Alpha map per logo, decoded once and shared by every row that uses the file.
-// The logos are PNGs with a lot of nothing in them — Télécom SudParis fills 42%
-// of its file, ChemAI 59% — and on top of that `object-contain` letterboxes them
-// inside a square box, so Atos draws 22px tall in 80px of height. A link the
-// size of the box is therefore mostly empty space, which is what made the cursor
-// turn into a hand well away from the mark.
+// Even cropped to their artwork the logos are mostly holes and gaps between
+// letters — Télécom SudParis's ink covers 42% of its box. A link the size of
+// the box is therefore largely empty space, which is what made the cursor turn
+// into a hand well away from the mark.
 const alphaMaps = new Map();
 
 // Sampling grid. Small on purpose: this only decides whether a point is on the
@@ -124,7 +123,7 @@ const Logo = ({ item }) => {
         // only the initial arming was not enough: a tap emits a pointermove, and
         // then a pointerleave, so the first touch anywhere near a logo — or a
         // scroll passing over one — shut the link off and left it off. The mark
-        // is a small target inside a 64px box, so a finger lands off the artwork
+        // is a small target inside its box, so a finger lands off the artwork
         // more often than not.
         if (!hasHover()) return;
         if (offTimer.current) { clearTimeout(offTimer.current); offTimer.current = null; }
@@ -291,14 +290,20 @@ const Logo = ({ item }) => {
 // widths — Education's titles are long enough to wrap at the shared 900px.
 // It is applied inline, not as `max-w-[${maxWidth}px]`: Tailwind scans source
 // text statically, so a class built by interpolation is never generated.
-// `logoGap` is the space under the logo box, set per row for the same reason.
-// The box is square and the logos are fitted inside it, so what the eye reads
-// as the gap is this margin plus whatever the artwork leaves empty below
-// itself: the wide company marks leave ~32px, the tall school crests none.
-// Education therefore needs a far larger margin to look as airy as Work.
-const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoGap = 8 }) => {
+// Every logo is drawn at the same area rather than fitted into the same box.
+// A shared square let the wide wordmarks fill its width and the tall crests its
+// height, so Atos came out 26px tall beside a 96px Polytechnique. Equal area is
+// the usual way to make marks of different shapes weigh the same: with `side`
+// the edge of the square of that area and r = sqrt(width / height), a logo is
+// side × r wide and side / r tall. The files are cropped to their artwork, so
+// that box is the mark itself and the gap below it is the gap the eye sees.
+// The logos of a row sit on a common baseline at the foot of a slot as tall as
+// the tallest of them, so the titles beneath line up across the columns.
+const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900 }) => {
   const locale = useLocale();
   const currentItems = itemsEn && itemsFr ? (locale === 'fr' ? itemsFr : itemsEn) : (items || []);
+  const rootOf = (item) => Math.sqrt(item.icon && item.ratio ? item.ratio : 1);
+  const slotHeight = `calc(var(--logo-side) / ${Math.min(...currentItems.map(rootOf))})`;
 
   return (
     <div
@@ -308,7 +313,8 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoGap = 8 })
       // was no length to set. A short centred rule of its own instead. The
       // side-by-side layout above sm keeps divide-x, where a full-height rule
       // between columns is what you want.
-      className="mx-auto flex flex-col sm:flex-row sm:divide-x divide-black/20 dark:divide-white/20"
+      // --logo-side is the edge of the square whose area every logo matches.
+      className="mx-auto flex flex-col sm:flex-row sm:divide-x divide-black/20 dark:divide-white/20 [--logo-side:50px] sm:[--logo-side:60px]"
     >
       {currentItems.map((item, index) => (
         <Fragment key={index}>
@@ -316,11 +322,13 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoGap = 8 })
             <div className="sm:hidden w-24 h-px mx-auto bg-black/20 dark:bg-white/20" aria-hidden="true" />
           )}
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center" style={{ marginBottom: `${logoGap}px` }}>
+          <div className="flex items-end justify-center mb-7" style={{ height: slotHeight }}>
             {item.icon ? (
-              <Logo item={item} />
+              <div style={{ width: `calc(var(--logo-side) * ${rootOf(item)})`, height: `calc(var(--logo-side) / ${rootOf(item)})` }}>
+                <Logo item={item} />
+              </div>
             ) : (
-              <div className="w-full h-full rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center border border-black/5">
+              <div className="w-16 h-16 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center border border-black/5">
                 <span className="text-2xl font-bold text-neutral-400">{item.title.charAt(0)}</span>
               </div>
             )}
