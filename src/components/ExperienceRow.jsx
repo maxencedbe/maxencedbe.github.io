@@ -302,11 +302,14 @@ const Logo = ({ item }) => {
 // `logoScale` enlarges a whole row past that. Equal area is only a start: a
 // tall crest spends its area on height and on small print, and at the same
 // area as the wordmarks the school logos still read as the smaller ones.
+// An item's own `scale` corrects a single mark the same way — Atos is set in
+// heavy solid letters, so at the shared area it outweighs the outlined ones.
 const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 }) => {
   const locale = useLocale();
   const currentItems = itemsEn && itemsFr ? (locale === 'fr' ? itemsFr : itemsEn) : (items || []);
   const rootOf = (item) => Math.sqrt(item.icon && item.ratio ? item.ratio : 1);
-  const slotHeight = `calc(var(--logo-side) * ${logoScale / Math.min(...currentItems.map(rootOf))})`;
+  const sizeOf = (item) => logoScale * (item.scale || 1);
+  const slotHeight = `calc(var(--logo-side) * ${Math.max(...currentItems.map((item) => sizeOf(item) / rootOf(item)))})`;
 
   return (
     <div
@@ -327,7 +330,7 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
           <div className="flex items-end justify-center mb-7" style={{ height: slotHeight }}>
             {item.icon ? (
-              <div style={{ width: `calc(var(--logo-side) * ${logoScale * rootOf(item)})`, height: `calc(var(--logo-side) * ${logoScale / rootOf(item)})` }}>
+              <div style={{ width: `calc(var(--logo-side) * ${sizeOf(item) * rootOf(item)})`, height: `calc(var(--logo-side) * ${sizeOf(item) / rootOf(item)})` }}>
                 <Logo item={item} />
               </div>
             ) : (
