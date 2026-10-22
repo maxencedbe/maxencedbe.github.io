@@ -324,9 +324,10 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900 }) => {
           <p data-locale-fade className="text-xs text-black dark:text-white font-medium mt-0.5">{item.date}</p>
           <p data-locale-fade className="text-sm text-neutral-700 dark:text-neutral-300 font-medium mt-2">
             {item.role}
-            {/* A distinction belongs on the degree it qualifies, set apart by weight
-                and full-strength ink rather than on a line of its own. */}
-            {item.honours && <>, <span className="font-bold text-black dark:text-white">{item.honours}</span></>}
+            {/* A distinction belongs on the degree it qualifies, set apart in
+                italics — the usual setting for one — rather than on a line of its
+                own. Bold made it outweigh the school's name above it. */}
+            {item.honours && <>, <span className="italic">{item.honours}</span></>}
           </p>
         </div>
         </Fragment>
