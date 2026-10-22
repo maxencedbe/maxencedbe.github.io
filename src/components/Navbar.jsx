@@ -249,6 +249,9 @@ export default function Navbar() {
       } else {
         paint(progressRef.current);
       }
+      // Measured and in place: a reload further down the page can show the bar
+      // now (see `brand-pending` in Layout).
+      document.documentElement.classList.remove('brand-pending');
     };
 
     // Measuring before Inter has loaded would size the segments from the
@@ -456,7 +459,10 @@ export default function Navbar() {
             <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
             <span className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              Paris - {time}
+              {/* Until the clock has ticked once, an invisible 00:00 holds the
+                  time's width, so the links after it do not shift when it fills
+                  in. Tabular figures keep every time that same width. */}
+              Paris - <span className="tabular-nums">{time || <span className="invisible">00:00</span>}</span>
             </span>
             <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
             <a data-locale-fade href={resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300">
@@ -501,22 +507,19 @@ export default function Navbar() {
             {/* The icon names what the click will do, not what the page
                 currently is: at night you are offered the sun. It used to show
                 the state instead, so dark mode displayed a moon — a label for
-                something you were already looking at. */}
+                something you were already looking at.
+                Which one shows is read from the `dark` class, not from the
+                `theme` state: that state only learns the theme once the Navbar
+                hydrates, so in dark mode the page used to paint the moon and
+                then spin it into the sun on every load. The class is set in the
+                head, before anything is painted. */}
             <span
-              className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
-              style={{
-                opacity: theme === 'dark' ? 1 : 0,
-                transform: theme === 'dark' ? 'rotate(0deg) scale(1)' : 'rotate(90deg) scale(0.5)',
-              }}
+              className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] opacity-0 rotate-90 scale-50 dark:opacity-100 dark:rotate-0 dark:scale-100"
             >
               <SunIcon />
             </span>
             <span
-              className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)]"
-              style={{
-                opacity: theme === 'dark' ? 0 : 1,
-                transform: theme === 'dark' ? 'rotate(-90deg) scale(0.5)' : 'rotate(0deg) scale(1)',
-              }}
+              className="absolute inset-0 flex items-center justify-center transition-all duration-500 ease-[cubic-bezier(0.23,1,0.32,1)] opacity-100 rotate-0 scale-100 dark:opacity-0 dark:-rotate-90 dark:scale-50"
             >
               <MoonIcon />
             </span>

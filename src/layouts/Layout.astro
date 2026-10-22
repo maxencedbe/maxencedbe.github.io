@@ -239,7 +239,8 @@ const isLockedPage = isLocked;
       :global(html.intro-skip .section-bg-reveal) {
         transition: none !important;
       }
-      :global(html.intro-restoring body) {
+      :global(html.intro-restoring body),
+      :global(html.brand-pending #navbar-wrapper-el) {
         visibility: hidden;
       }
       /* Content & SideNav fade */
@@ -286,6 +287,14 @@ const isLockedPage = isLocked;
           if (nav && nav.type === "reload" && y > 0) {
             window.__restoreY = y;
             document.documentElement.classList.add("intro-restoring");
+            // The navbar's wordmark only folds into the MD monogram once the
+            // Navbar has measured it, so further down the page it would show
+            // in full and then snap shut, dragging the links after it. The bar
+            // waits for that measurement instead.
+            document.documentElement.classList.add("brand-pending");
+            setTimeout(function () {
+              document.documentElement.classList.remove("brand-pending");
+            }, 1500);
             // Backstop, so the page can never stay hidden.
             document.addEventListener("DOMContentLoaded", function () {
               document.documentElement.classList.remove("intro-restoring");

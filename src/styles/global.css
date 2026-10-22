@@ -91,8 +91,9 @@ html[data-theme-swap] nav *::after {
      also froze the sun/moon icon, which rotates and cross-fades on
      `transition-all`. Narrowing the property list leaves each element's own
      duration and easing intact, so the icon still turns while every colour in
-     the bar lands in one step. */
-  transition-property: opacity, transform !important;
+     the bar lands in one step. rotate and scale are listed apart from
+     transform because the icon's Tailwind classes set those properties. */
+  transition-property: opacity, transform, rotate, scale !important;
 }
 
 /* Set only while a theme swap runs without a view transition. Longer than the
