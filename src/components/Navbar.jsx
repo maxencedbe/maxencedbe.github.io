@@ -249,9 +249,6 @@ export default function Navbar() {
       } else {
         paint(progressRef.current);
       }
-      // Measured and in place: a reload further down the page can show the bar
-      // now (see `brand-pending` in Layout).
-      document.documentElement.classList.remove('brand-pending');
     };
 
     // Measuring before Inter has loaded would size the segments from the

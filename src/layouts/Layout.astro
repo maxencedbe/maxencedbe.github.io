@@ -257,9 +257,12 @@ const isLockedPage = isLocked;
       :global(html.intro-skip .section-bg-reveal) {
         transition: none !important;
       }
-      :global(html.intro-restoring body),
-      :global(html.brand-pending #navbar-wrapper-el) {
-        visibility: hidden;
+      :global(html.reload-fade body) {
+        opacity: 0;
+      }
+      :global(html.reload-fade.reload-fade-in body) {
+        opacity: 1;
+        transition: opacity 0.5s ease;
       }
       /* Content & SideNav fade */
       #content-wrapper {
@@ -299,29 +302,33 @@ const isLockedPage = isLocked;
         // constellation, which mounts later, read it to skip their own build.
         document.documentElement.classList.add("intro-skipped");
         window.__introSkipped = true;
-        // On a reload further down, the page would otherwise paint at the top
-        // and only jump back once the head script's restore runs, after the
-        // module scripts — a flash of the hero. It stays hidden until the
-        // script after the content has put it back in place.
+        // The page is held invisible while it puts itself back together —
+        // islands hydrating, the scroll position restored, the navbar's
+        // wordmark folding to its monogram — and then fades in once, as a
+        // whole, a moment after load. Ironing out each of those settling
+        // movements one by one never left the reload fully still.
+        var root = document.documentElement;
+        root.classList.add("reload-fade");
+        var shown = false;
+        var show = function () {
+          if (shown) return;
+          shown = true;
+          root.classList.add("reload-fade-in");
+          // Dropped once the fade is over, so the body's own transitions (the
+          // theme swap) are back to normal.
+          setTimeout(function () {
+            root.classList.remove("reload-fade", "reload-fade-in");
+          }, 600);
+        };
+        var later = function () { setTimeout(show, 150); };
+        if (document.readyState === "complete") later();
+        else window.addEventListener("load", later);
+        // Backstop, so a stalled load can never keep the page hidden.
+        setTimeout(show, 2500);
         try {
           var nav = performance.getEntriesByType("navigation")[0];
           var y = parseInt(sessionStorage.getItem("scrollpos:" + location.pathname), 10);
-          if (nav && nav.type === "reload" && y > 0) {
-            window.__restoreY = y;
-            document.documentElement.classList.add("intro-restoring");
-            // The navbar's wordmark only folds into the MD monogram once the
-            // Navbar has measured it, so further down the page it would show
-            // in full and then snap shut, dragging the links after it. The bar
-            // waits for that measurement instead.
-            document.documentElement.classList.add("brand-pending");
-            setTimeout(function () {
-              document.documentElement.classList.remove("brand-pending");
-            }, 1500);
-            // Backstop, so the page can never stay hidden.
-            document.addEventListener("DOMContentLoaded", function () {
-              document.documentElement.classList.remove("intro-restoring");
-            });
-          }
+          if (nav && nav.type === "reload" && y > 0) window.__restoreY = y;
         } catch (e) {}
       })();
     </script>
@@ -365,10 +372,7 @@ const isLockedPage = isLocked;
         document.querySelectorAll('#home [class*="reveal-"]').forEach(function (el) {
           el.classList.add("is-visible");
         });
-        if (window.__restoreY) {
-          window.scrollTo(0, window.__restoreY);
-          root.classList.remove("intro-restoring");
-        }
+        if (window.__restoreY) window.scrollTo(0, window.__restoreY);
         requestAnimationFrame(function () {
           requestAnimationFrame(function () { root.classList.remove("intro-skip"); });
         });
