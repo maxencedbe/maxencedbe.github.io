@@ -322,7 +322,12 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900 }) => {
           </div>
           <h3 data-locale-fade className="text-lg font-bold text-black dark:text-white leading-snug">{item.title}</h3>
           <p data-locale-fade className="text-xs text-black dark:text-white font-medium mt-0.5">{item.date}</p>
-          <p data-locale-fade className="text-sm text-neutral-700 dark:text-neutral-300 font-medium mt-2">{item.role}</p>
+          <p data-locale-fade className="text-sm text-neutral-700 dark:text-neutral-300 font-medium mt-2">
+            {item.role}
+            {/* A distinction belongs on the degree it qualifies, set apart by weight
+                and full-strength ink rather than on a line of its own. */}
+            {item.honours && <>, <span className="font-bold text-black dark:text-white">{item.honours}</span></>}
+          </p>
         </div>
         </Fragment>
       ))}
