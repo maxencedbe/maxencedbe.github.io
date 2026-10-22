@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-const STROKE = 3.5;
+const STROKE = 2.5;
 const SNAKE = 500;
 // Match the site's pink per mode: the deeper rose on the ivory light palette,
 // the same rose lifted in lightness on dark. Read from the `.dark` class rather
