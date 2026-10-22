@@ -231,18 +231,13 @@ const isLockedPage = isLocked;
         transform: translateY(-100px);
         pointer-events: none;
       }
-      /* Dot pattern fades in during the constellation build */
-      #background-pattern {
-        opacity: 0;
-        transition: opacity 3s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-      #background-pattern.dots-visible {
-        opacity: 1;
-      }
-      /* Locked pages (404) skip the constellation intro entirely: content is
-         never hidden, and the dot pattern just fades in quickly. */
-      body.is-locked #background-pattern {
-        transition: opacity 0.3s ease;
+      /* A visit that has already seen the intro is shown as it ends: every
+         element takes its revealed state with no transition. Lifted two frames
+         later. :global because the elements live in the pages, not here. */
+      :global(html.intro-skip [class*="reveal-"]),
+      :global(html.intro-skip [class*="reveal-"] *),
+      :global(html.intro-skip .section-bg-reveal) {
+        transition: none !important;
       }
       /* Content & SideNav fade */
       #content-wrapper {
@@ -266,11 +261,25 @@ const isLockedPage = isLocked;
   <body
     class={`flex flex-col min-h-screen ${isLocked ? "is-locked" : "is-loading"}`}
   >
+    <script is:inline>
+      /* The arrival sequence plays once per tab. A reload, or coming back to
+         the tab, drops straight to the finished page: run here, before anything
+         below has been painted, so the navbar never shows above the screen nor
+         the content at opacity 0. sessionStorage rather than localStorage, so a
+         new visit on another day still gets the intro. */
+      (function () {
+        var seen = false;
+        try { seen = sessionStorage.getItem("intro-played") === "1"; } catch (e) {}
+        if (!seen || !document.body.classList.contains("is-loading")) return;
+        document.body.classList.remove("is-loading");
+        document.documentElement.classList.add("intro-skip");
+      })();
+    </script>
 
     <div id="background-pattern" class="fixed inset-0 -z-50 pointer-events-none"></div>
 
     {showBackground && (
-      <AnimatedBackground client:only="react" transition:persist="background" instant={isLocked} />
+      <AnimatedBackground client:only="react" transition:persist="background" />
     )}
     {
       showNavbar && (
@@ -293,6 +302,24 @@ const isLockedPage = isLocked;
       <slot />
     </main>
     </div>
+    <script is:inline>
+      /* For a skipped intro, reveal the hero at once, as the intro leaves it,
+         whether or not it is on screen — from a reload taken further down it
+         would otherwise play its entrance on the way back up. The hero only:
+         everywhere else the reveal classes are already at their end state, and
+         most of those elements belong to React islands, which treat a class
+         added before hydration as a mismatch. */
+      (function () {
+        var root = document.documentElement;
+        if (!root.classList.contains("intro-skip")) return;
+        document.querySelectorAll('#home [class*="reveal-"]').forEach(function (el) {
+          el.classList.add("is-visible");
+        });
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { root.classList.remove("intro-skip"); });
+        });
+      })();
+    </script>
     {!isLocked && (
       <div id="sidenav-wrapper-el">
         <SideNav client:load />
@@ -311,19 +338,11 @@ const isLockedPage = isLocked;
         isAstroNavigation = true;
       });
 
-      // Fade in the dot pattern 500ms into the constellation build
-      if (document.body.classList.contains('is-loading')) {
-        setTimeout(() => {
-          const bg = document.getElementById('background-pattern');
-          if (bg) bg.classList.add('dots-visible');
-        }, 500);
-      } else {
-        const bg = document.getElementById('background-pattern');
-        if (bg) bg.classList.add('dots-visible');
-      }
-
       // Reveal content once constellation is ready (F5 path)
       document.addEventListener('constellation-ready', () => {
+        // Already finished — a skipped intro, or a page that never had one.
+        if (!document.body.classList.contains('is-loading')) return;
+        try { sessionStorage.setItem('intro-played', '1'); } catch (e) {}
         // If user refreshed while scrolled down, skip the intro animation
         if (window.scrollY > 200) {
           document.body.classList.remove('is-loading');
@@ -388,10 +407,6 @@ const isLockedPage = isLocked;
           document.body.classList.remove('is-loading');
           isAstroNavigation = false;
         }
-        // Dots always visible on internal nav
-        const bg = document.getElementById('background-pattern');
-        if (bg) bg.classList.add('dots-visible');
-
         const langScroll = sessionStorage.getItem('langScroll');
         if (langScroll !== null) {
           window.scrollTo({ top: parseInt(langScroll, 10), behavior: 'instant' });

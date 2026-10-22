@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import "../styles/animatedBackground.css";
 
-export default function AnimatedBackground({ instant = false }) {
+export default function AnimatedBackground() {
   const canvasRef = useRef(null);
   const headerRef = useRef(null);
 
@@ -28,11 +28,11 @@ export default function AnimatedBackground({ instant = false }) {
     let animateHeader = true;
     let animationFrameId;
     let isDark = document.documentElement.classList.contains("dark");
-    // `instant` (locked pages such as 404) skips the staggered constellation
-    // build-up so the page just fades in quickly instead of playing the intro.
-    const skipBuild = instant;
-    const revealSpread = skipBuild ? 0 : 2500;
-    const pointFadeDuration = skipBuild ? 200 : 400;
+    // No build-up: every point is born at once and fades in over 200ms. It
+    // used to assemble over two and a half seconds, with the page held back
+    // until it had; the arrival is now carried by the content alone.
+    const revealSpread = 0;
+    const pointFadeDuration = 200;
     const revealStart = performance.now();
 
     setTimeout(() => {

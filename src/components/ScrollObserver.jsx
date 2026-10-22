@@ -26,9 +26,12 @@ export default function ScrollObserver() {
             const observerEarly = new IntersectionObserver(revealOnce,
                 { root: null, rootMargin: "0px 0px 0px 0px", threshold: 0.1 });
 
-            const animatedElements = document.querySelectorAll("[class*='reveal-']");
+            // Anything already revealed stays so: a skipped intro (see Layout)
+            // shows what is on screen before this mounts, and taking it away
+            // here would blank it for the frame before the observer fires.
+            const animatedElements = [...document.querySelectorAll("[class*='reveal-']")]
+                .filter((el) => !el.classList.contains("is-visible"));
             animatedElements.forEach((el) => {
-                el.classList.remove("is-visible");
                 if (el.classList.contains("reveal-early")) {
                     observerEarly.observe(el);
                 } else {
@@ -39,7 +42,7 @@ export default function ScrollObserver() {
             // Also observe section background reveals (trigger early)
             const sectionBgElements = document.querySelectorAll(".section-bg-reveal");
             sectionBgElements.forEach((el) => {
-                el.classList.remove("is-visible");
+                if (el.classList.contains("is-visible")) return;
                 observerEarly.observe(el);
             });
 
