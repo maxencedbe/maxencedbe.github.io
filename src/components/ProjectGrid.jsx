@@ -318,7 +318,7 @@ export default function ProjectGrid() {
             if (isHiddenByDefault) return null;
             return (
               <div key={index + '-' + activeFilter} className="flex flex-col items-center w-full">
-                {index > 0 && <div className="w-full h-px bg-black/20 dark:bg-white/20 my-3.5 md:my-3" aria-hidden="true"></div>}
+                {index > 0 && <div className="w-1/2 h-px bg-black/20 dark:bg-white/20 my-3.5 md:my-3" aria-hidden="true"></div>}
                 <ProjectCard
                   title={project.title}
                   description={project.description}
@@ -346,7 +346,7 @@ export default function ProjectGrid() {
                     key={project.title}
                     className="flex flex-col items-center w-full"
                   >
-                    <div className="w-full h-px bg-black/20 dark:bg-white/20 my-3.5 md:my-3" aria-hidden="true"></div>
+                    <div className="w-1/2 h-px bg-black/20 dark:bg-white/20 my-3.5 md:my-3" aria-hidden="true"></div>
                     <ProjectCard
                       title={project.title}
                       description={project.description}
