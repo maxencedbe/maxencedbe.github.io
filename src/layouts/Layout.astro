@@ -40,7 +40,9 @@ const isLockedPage = isLocked;
         see favicon.svg for why the old light/dark pair could not. ?v= busts the
         favicon cache: browsers hold on to favicons far longer than other assets
         and often ignore a hard reload for them. Bump it whenever the file
-        changes. */}
+        changes. public/favicon.ico is the same tile rendered to 16/32/48 px,
+        for tabs that never read this head: Chrome's PDF viewer, which opens the
+        CVs, only asks the site root for /favicon.ico. Re-render it with the SVG. */}
     <link rel="icon" href="/favicon.svg?v=8" type="image/svg+xml" />
     <ClientRouter />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
