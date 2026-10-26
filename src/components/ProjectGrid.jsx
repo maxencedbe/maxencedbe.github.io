@@ -22,7 +22,7 @@ const projectsData = {
     },
     {
       title: "Streaming Safety Classifier for LLMs — Capstone Project with DragonLLM (now OVHai LLM)",
-      description: "Reproduced the toxicity classifier from the Qwen3Guard technical report: synthesized diverse toxic and safe conversations with Qwen3-30B, labeled them using Qwen3Guard's safety classifier, then trained a lightweight per-token safety head on top of a frozen Qwen backbone for real-time, streaming unsafe-content detection.",
+      description: "Reproduced the toxicity classifier from the Qwen3Guard technical report: built a dataset of 24K toxic and safe conversations synthesized with Qwen3-30B from RealToxicityPrompts, with the position of the first toxic token annotated by Qwen3-30B-Instruct, then trained a lightweight per-token safety head on top of a frozen Qwen backbone for real-time, streaming unsafe-content detection.",
       imageUrl: "/DragonLLM.png",
       githubUrl: "https://github.com/maxencedbe/capstone_dragonllm",
       category: ["Machine Learning"]
@@ -80,7 +80,7 @@ const projectsData = {
     },
     {
       title: "Classifieur de sécurité en streaming pour LLM — Capstone avec DragonLLM (maintenant OVHai LLM)",
-      description: "Reproduction du classifieur de toxicité du rapport technique Qwen3Guard : synthèse de conversations toxiques et sûres avec Qwen3-30B, labellisation via le classifieur de sécurité de Qwen3Guard, puis entraînement d'une safety head légère au-dessus d'un backbone Qwen gelé pour une détection de contenu nuisible en temps réel, token par token.",
+      description: "Reproduction du classifieur de toxicité du rapport technique Qwen3Guard : construction d'un jeu de 24K conversations toxiques et sûres, synthétisées avec Qwen3-30B à partir de RealToxicityPrompts, avec la position du premier token toxique annotée par Qwen3-30B-Instruct, puis entraînement d'une safety head légère au-dessus d'un backbone Qwen gelé pour une détection de contenu nuisible en temps réel, token par token.",
       imageUrl: "/DragonLLM.png",
       githubUrl: "https://github.com/maxencedbe/capstone_dragonllm",
       category: ["Machine Learning"]
