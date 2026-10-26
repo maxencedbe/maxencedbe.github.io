@@ -220,14 +220,10 @@ Master's degree in Engineering\\[1pt]
     \item Trained a lightweight per-token safety head on a frozen Qwen backbone to interrupt harmful generations in real time.
 \end{project}\vspace{-6pt}
 
-\begin{project}{Data Privacy \& Anonymization --- Project Cassiopée}
-{\href{https://github.com/maxencedbe/Cassiopee}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Assessed privacy and re-identification risks in anonymized datasets through OSINT case studies, and proposed data-protection strategies. Conducted at Télécom SudParis.
-\end{project}\vspace{-6pt}
-
-\begin{project}{Automated Parking Optimization}
-{\href{https://github.com/maxencedbe/parking-optimization}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Developed a Python optimization model for vehicle placement in multi-level automated parking, combining A* and simulated annealing to minimize retrieval costs.
+\begin{project}{Post-Training Pipeline for a Small LLM (SFT → DPO → GRPO)}
+{\href{https://github.com/maxencedbe/small-llm-post-training}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
+    \item Post-trained Qwen3.5-0.8B end to end with TRL in full fine-tuning: SFT on 100K conversations, DPO on 54K preference pairs, then GRPO with a verifiable reward on GSM8K, on cloud GPUs (Modal).
+    \item Evaluated every stage with a fixed lm-eval-harness/vLLM protocol (GSM8K, IFEval, MMLU): SFT added 15 pts on IFEval; GRPO raised GSM8K accuracy from 50.1\% to 62.7\% (3 seeds), confirmed by a format-only reward control.
 \end{project} \\[-16pt]
 
 %----------------------------------------------------------------------------------------
