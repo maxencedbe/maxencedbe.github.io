@@ -29,7 +29,7 @@ const projectsData = {
     },
     {
       title: "Post-Training Pipeline for a Small LLM (SFT → DPO → GRPO)",
-      description: "Post-trained Qwen3.5-0.8B end to end with TRL in full fine-tuning: SFT on 100K conversations, DPO on 54K preference pairs, then GRPO with a verifiable reward on GSM8K, on cloud GPUs (Modal). Evaluated every stage with a fixed lm-eval-harness/vLLM protocol (GSM8K, IFEval, MMLU): SFT added 15 points on IFEval, and GRPO raised GSM8K accuracy from 50.1% to 62.7% (3 seeds), confirmed by a format-only reward control.",
+      description: "Post-trained Qwen3.5-0.8B-Base end to end with TRL in full fine-tuning: SFT on 100K conversations, DPO on 54K preference pairs, then GRPO with a verifiable reward on GSM8K, on cloud GPUs (Modal). Evaluated every stage with a fixed lm-eval-harness/vLLM protocol (GSM8K, IFEval, MMLU): SFT added 15 points on IFEval, and GRPO raised GSM8K accuracy from 50.1% to 62.7% (3 seeds), confirmed by a format-only reward control.",
       imageUrl: "/PostTraining.png",
       githubUrl: "https://github.com/maxencedbe/small-llm-post-training",
       category: ["Machine Learning"]
@@ -87,7 +87,7 @@ const projectsData = {
     },
     {
       title: "Pipeline de post-entraînement d'un petit LLM (SFT → DPO → GRPO)",
-      description: "Post-entraînement complet de Qwen3.5-0.8B avec TRL en full fine-tuning : SFT sur 100K conversations, DPO sur 54K paires de préférences, puis GRPO avec une récompense vérifiable sur GSM8K, sur GPU cloud (Modal). Évaluation de chaque étape avec un protocole fixe lm-eval-harness/vLLM (GSM8K, IFEval, MMLU) : la SFT a apporté 15 points sur IFEval, et le GRPO a fait passer la précision sur GSM8K de 50,1 % à 62,7 % (3 seeds), confirmé par un contrôle avec une récompense portant uniquement sur le format.",
+      description: "Post-entraînement complet de Qwen3.5-0.8B-Base avec TRL en full fine-tuning : SFT sur 100K conversations, DPO sur 54K paires de préférences, puis GRPO avec une récompense vérifiable sur GSM8K, sur GPU cloud (Modal). Évaluation de chaque étape avec un protocole fixe lm-eval-harness/vLLM (GSM8K, IFEval, MMLU) : la SFT a apporté 15 points sur IFEval, et le GRPO a fait passer la précision sur GSM8K de 50,1 % à 62,7 % (3 seeds), confirmé par un contrôle avec une récompense portant uniquement sur le format.",
       imageUrl: "/PostTraining.png",
       githubUrl: "https://github.com/maxencedbe/small-llm-post-training",
       category: ["Machine Learning"]

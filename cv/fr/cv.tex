@@ -230,7 +230,7 @@ Diplôme d'ingénieur\\[1pt]
 
 \begin{project}{Pipeline de post-entraînement d'un petit LLM (SFT → DPO → GRPO)}
 {\href{https://github.com/maxencedbe/small-llm-post-training}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
-    \item Post-entraînement complet de Qwen3.5-0.8B avec TRL en full fine-tuning : SFT sur 100K conversations, DPO sur 54K paires de préférences, puis GRPO avec une récompense vérifiable sur GSM8K, sur GPU cloud (Modal).
+    \item Post-entraînement complet de Qwen3.5-0.8B-Base avec TRL en full fine-tuning : SFT sur 100K conversations, DPO sur 54K paires de préférences, puis GRPO avec une récompense vérifiable sur GSM8K, sur GPU cloud (Modal).
     \item Évaluation de chaque étape avec un protocole fixe lm-eval-harness/vLLM (GSM8K, IFEval, MMLU) : la SFT a apporté 15 pts sur IFEval ; le GRPO a fait passer la précision sur GSM8K de 50,1~\% à 62,7~\% (3 seeds), confirmé par un contrôle avec une récompense portant uniquement sur le format.
 \end{project} \\[-16pt]
 
