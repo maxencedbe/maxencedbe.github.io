@@ -17,11 +17,11 @@ all: en fr
 
 en:
 	cd en && $(LATEXMK) cv.tex
-	cp en/cv.pdf $(PUBLIC)/Maxence_Debes_Resume_Ang.pdf
+	cp en/cv.pdf $(PUBLIC)/Maxence_Debes_CV_EN.pdf
 
 fr:
 	cd fr && $(LATEXMK) cv.tex
-	cp fr/cv.pdf $(PUBLIC)/Maxence_Debes_Resume_Fra.pdf
+	cp fr/cv.pdf $(PUBLIC)/Maxence_Debes_CV_FR.pdf
 
 clean:
 	cd en && latexmk -C

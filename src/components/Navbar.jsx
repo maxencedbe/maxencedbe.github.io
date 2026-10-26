@@ -373,7 +373,7 @@ export default function Navbar() {
     }
   };
 
-  const resumeUrl = activeLocale === 'fr' ? '/Maxence_Debes_Resume_Fra.pdf' : '/Maxence_Debes_Resume_Ang.pdf';
+  const resumeUrl = activeLocale === 'fr' ? '/Maxence_Debes_CV_FR.pdf' : '/Maxence_Debes_CV_EN.pdf';
   const resumeViewLabel = activeLocale === 'fr' ? 'Voir le CV' : 'View resume';
   const resumeDownloadLabel = activeLocale === 'fr' ? 'Télécharger le CV' : 'Download resume';
 

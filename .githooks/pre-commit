@@ -24,6 +24,6 @@ if ! make -C cv all; then
 fi
 
 # Include the freshly built PDFs in this commit.
-git add public/Maxence_Debes_Resume_Ang.pdf public/Maxence_Debes_Resume_Fra.pdf
+git add public/Maxence_Debes_CV_EN.pdf public/Maxence_Debes_CV_FR.pdf
 echo "✓ CV PDFs regenerated and staged."
 exit 0
