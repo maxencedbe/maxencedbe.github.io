@@ -307,7 +307,9 @@ const Logo = ({ item }) => {
 // area as the wordmarks the school logos still read as the smaller ones.
 // An item's own `scale` corrects a single mark the same way — Atos is set in
 // heavy solid letters, so at the shared area it outweighs the outlined ones.
-const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 }) => {
+// `logoGap` is the space between the logos and the titles, in px. Set per row:
+// the schools' taller lockups read better a little closer to their names.
+const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1, logoGap = 28 }) => {
   const locale = useLocale();
   const currentItems = itemsEn && itemsFr ? (locale === 'fr' ? itemsFr : itemsEn) : (items || []);
   const rootOf = (item) => Math.sqrt(item.icon && item.ratio ? item.ratio : 1);
@@ -333,7 +335,7 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1 
             </>
           )}
         <div className="flex-1 flex flex-col items-center text-center py-6 sm:py-0 sm:px-8">
-          <div className="flex items-end justify-center mb-7" style={{ height: slotHeight }}>
+          <div className="flex items-end justify-center" style={{ height: slotHeight, marginBottom: `${logoGap}px` }}>
             {item.icon ? (
               <div style={{ width: `calc(var(--logo-side) * ${sizeOf(item) * rootOf(item)})`, height: `calc(var(--logo-side) * ${sizeOf(item) / rootOf(item)})` }}>
                 <Logo item={item} />
