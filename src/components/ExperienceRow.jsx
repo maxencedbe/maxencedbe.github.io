@@ -320,9 +320,9 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1,
     <div
       style={{ maxWidth: `${maxWidth}px` }}
       // No `divide-*`: it draws on the children's own borders, so the rule can
-      // have neither a length of its own nor a fade. Stacked, a short centred
-      // rule of its own instead; side by side above sm, a full-height rule that
-      // fades out at both ends, like the separators between the projects.
+      // have neither a length of its own nor a fade. Rules of their own instead,
+      // the same as the separators between the projects: full length, fading
+      // out at both ends — horizontal when stacked, vertical side by side.
       // --logo-side is the edge of the square whose area every logo matches.
       className="mx-auto flex flex-col sm:flex-row [--logo-side:50px] sm:[--logo-side:60px]"
     >
@@ -330,7 +330,7 @@ const ExperienceRow = ({ itemsEn, itemsFr, items, maxWidth = 900, logoScale = 1,
         <Fragment key={index}>
           {index > 0 && (
             <>
-              <div className="sm:hidden w-24 h-px mx-auto bg-black/20 dark:bg-white/20" aria-hidden="true" />
+              <div className="sm:hidden w-full h-px bg-linear-to-r from-transparent via-black/25 to-transparent dark:via-white/25" aria-hidden="true" />
               <div className="hidden sm:block w-px self-stretch shrink-0 bg-linear-to-b from-transparent via-black/25 to-transparent dark:via-white/25" aria-hidden="true" />
             </>
           )}
