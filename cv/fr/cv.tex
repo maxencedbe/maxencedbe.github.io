@@ -213,13 +213,13 @@ Diplôme d'ingénieur\\[1pt]
 \begin{project}{Hi! PARIS Hi!ckathon 2025 (2e place)}
 {\href{https://github.com/maxencedbe/hi_paris_2025}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
     \item Classé 2e sur plus de 80 équipes lors de l'édition 2025 du hackathon de Data Science Hi! PARIS. Objectif : prédire les scores PISA d'élèves à partir de contextes socio-économiques complexes.
-    \item Conception d'un modèle gated dirigeant chaque échantillon vers l'un de deux régresseurs XGBoost selon un seuil sur une feature, atteignant un R\textsuperscript{2} de 0,79 sur le leaderboard public.
+    \item Conception d'un modèle XGBoost « gated » : un premier régresseur estime la probabilité d'un score non nul, un second, entraîné sur les seuls scores positifs, prédit sa valeur ; leur produit atteint un R\textsuperscript{2} de 0,79 sur le jeu de test.
 \end{project}\vspace{-6pt}
 
 \begin{project}{Molecular Graph Captioning (compétition Kaggle)}
 {\href{https://github.com/maxencedbe/molecular_graph_captioning}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
     \item Développement d'une architecture de retrieval par apprentissage contrastif pour aligner les embeddings de graphes moléculaires avec des descriptions en langage naturel dans un espace latent commun.
-    \item Implémentation d'un encodeur de réseau de neurones de graphes dédié avec PyTorch Geometric, optimisé pour l'alignement sémantique via les métriques BERTScore et BLEU-4.
+    \item Implémentation d'un encodeur de réseau de neurones de graphes dédié avec PyTorch Geometric, entraîné avec un objectif contrastif (triplet loss avec négatifs difficiles) et évalué avec BLEU-4 et BERTScore.
 \end{project}\vspace{-6pt}
 
 \begin{project}{Classifieur de sécurité en streaming pour LLM --- Capstone avec DragonLLM (maintenant OVHai LLM)}

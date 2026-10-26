@@ -212,13 +212,13 @@ Master's degree in Engineering\\[1pt]
 \begin{project}{Hi! PARIS Hi!ckathon 2025 (2nd place)}
 {\href{https://github.com/maxencedbe/hi_paris_2025}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
     \item Ranked 2nd out of 80+ teams in the 2025 edition of the Hi! PARIS Data Science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds.
-    \item Engineered a gated model routing each sample to one of two XGBoost regressors based on a feature threshold, achieving an R\textsuperscript{2} of 0.79 on the public leaderboard.
+    \item Built a gated XGBoost model: one regressor estimates the probability of a non-zero score, a second one, trained on positive scores only, predicts its value; their product reaches an R\textsuperscript{2} of 0.79 on the test set.
 \end{project}\vspace{-6pt}
 
 \begin{project}{Molecular Graph Captioning (Kaggle competition)}
 {\href{https://github.com/maxencedbe/molecular_graph_captioning}{\textcolor{black}{\raisebox{-0.05\height}{\large \faGithub}}}}
     \item Built a retrieval-based architecture using contrastive learning to align molecular graph embeddings with natural language descriptions in a joint latent space.
-    \item Implemented a dedicated graph neural network encoder using PyTorch Geometric, optimized for semantic alignment through BERTScore and BLEU-4 metrics.
+    \item Implemented a dedicated graph neural network encoder with PyTorch Geometric, trained with a contrastive objective (triplet loss with hard negatives) and evaluated with BLEU-4 and BERTScore.
 \end{project}\vspace{-6pt}
 
 \begin{project}{Streaming Safety Classifier for LLMs --- Capstone Project with DragonLLM (now OVHai LLM)}

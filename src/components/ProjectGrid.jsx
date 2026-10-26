@@ -8,14 +8,14 @@ const projectsData = {
   en: [
     {
       title: "Hi! PARIS Hi!ckathon 2025 (2nd place)",
-      description: "Ranked 2nd out of 80+ teams in the 2025 edition of the Hi!Paris Data Science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds. Engineered a Gated Model (router composed of two XGBoost regressors), achieving an R² score of 0.79 on the final test set.",
+      description: "Ranked 2nd out of 80+ teams in the 2025 edition of the Hi!Paris Data Science hackathon. Task: Predicting student PISA scores from complex socio-economic backgrounds. Engineered a gated XGBoost model: one regressor estimates the probability of a non-zero score, a second one, trained on positive scores only, predicts its value, and their product reaches an R² of 0.79 on the test set.",
       imageUrl: "/HiParis.png",
       githubUrl: "https://github.com/maxencedbe/hi_paris_2025",
       category: ["Machine Learning"]
     },
     {
       title: "Molecular Graph Captioning (Kaggle competition)",
-      description: "Development of a retrieval-based architecture using contrastive learning to align molecular graph embeddings with natural language descriptions in a joint latent space. Implementation of a dedicated Graph Neural Network encoder using PyTorch Geometric, optimized for semantic alignment through BERTScore and BLEU-4 metrics.",
+      description: "Development of a retrieval-based architecture using contrastive learning to align molecular graph embeddings with natural language descriptions in a joint latent space. Implementation of a dedicated Graph Neural Network encoder using PyTorch Geometric, trained with a contrastive objective and evaluated with BERTScore and BLEU-4.",
       imageUrl: "/GraphMolecular.png",
       githubUrl: "https://github.com/maxencedbe/molecular_graph_captioning",
       category: ["Machine Learning"]
@@ -66,14 +66,14 @@ const projectsData = {
   fr: [
     {
       title: "Hi! PARIS Hi!ckathon 2025 (2e place)",
-      description: "Classé 2e sur plus de 80 équipes lors de l'édition 2025 du hackathon de Data Science Hi!Paris. Tâche : prédire les scores PISA des étudiants à partir de contextes socio-économiques complexes. Conception d'un modèle « Gated » (routeur composé de deux régresseurs XGBoost), atteignant un score R² de 0,79 sur le jeu de test final.",
+      description: "Classé 2e sur plus de 80 équipes lors de l'édition 2025 du hackathon de Data Science Hi!Paris. Tâche : prédire les scores PISA des étudiants à partir de contextes socio-économiques complexes. Conception d'un modèle XGBoost « gated » : un premier régresseur estime la probabilité d'un score non nul, un second, entraîné sur les seuls scores positifs, prédit sa valeur, et leur produit atteint un R² de 0,79 sur le jeu de test.",
       imageUrl: "/HiParis.png",
       githubUrl: "https://github.com/maxencedbe/hi_paris_2025",
       category: ["Machine Learning"]
     },
     {
       title: "Molecular Graph Captioning (compétition Kaggle)",
-      description: "Développement d'une architecture basée sur la recherche d'information utilisant l'apprentissage contrastif pour aligner les embeddings de graphes moléculaires avec des descriptions en langage naturel dans un espace latent commun. Implémentation d'un encodeur Graph Neural Network dédié utilisant PyTorch Geometric, optimisé pour l'alignement sémantique via les métriques BERTScore et BLEU-4.",
+      description: "Développement d'une architecture basée sur la recherche d'information utilisant l'apprentissage contrastif pour aligner les embeddings de graphes moléculaires avec des descriptions en langage naturel dans un espace latent commun. Implémentation d'un encodeur Graph Neural Network dédié utilisant PyTorch Geometric, entraîné avec un objectif contrastif et évalué avec BERTScore et BLEU-4.",
       imageUrl: "/GraphMolecular.png",
       githubUrl: "https://github.com/maxencedbe/molecular_graph_captioning",
       category: ["Machine Learning"]
