@@ -24,7 +24,7 @@ logger.warnOnce = (msg, opts) => { if (!shouldSuppress(msg)) baseWarnOnce(msg, o
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://maxencedbe.github.io',
+  site: 'https://maxencedebes.com',
 
   build: {
     format: 'directory',
