@@ -4,13 +4,6 @@ import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 // layout effects do not apply (and React warns about them).
 const useIsomorphicLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-const parisFormatter = new Intl.DateTimeFormat("en-US", {
-  timeZone: "Europe/Paris",
-  hour: "2-digit",
-  minute: "2-digit",
-  hour12: false,
-});
-
 const SunIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="12" cy="12" r="5"></circle>
@@ -72,10 +65,9 @@ export default function Navbar() {
   // layout effect below, which lands before the browser paints — so no mismatch
   // and no flash of the wrong icon either.
   const [theme, setTheme] = useState("light");
-  const [time, setTime] = useState("");
   // The wordmark→monogram transition is written straight to the DOM rather than
   // held in React state. Driving it through state re-rendered this whole
-  // component on every scroll frame — reconciling the menu, the clock, every
+  // component on every scroll frame — reconciling the menu, every
   // icon — just to end up setting a few style properties. On a phone, where
   // Lenis is off and native scroll events come thick and fast, that reconciliation
   // was the bottleneck. Refs cost one property write per frame instead.
@@ -137,13 +129,6 @@ export default function Navbar() {
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  useEffect(() => {
-    const updateTime = () => setTime(parisFormatter.format(new Date()));
-    updateTime();
-    const interval = setInterval(updateTime, 10000);
-    return () => clearInterval(interval);
   }, []);
 
   // Measures what the assembly needs, in px, from the type itself rather than
@@ -453,14 +438,6 @@ export default function Navbar() {
           </button>
 
           <div className="hidden lg:flex items-center gap-4">
-            <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
-            <span className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white">
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-70"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-              {/* Until the clock has ticked once, an invisible 00:00 holds the
-                  time's width, so the links after it do not shift when it fills
-                  in. Tabular figures keep every time that same width. */}
-              Paris - <span className="tabular-nums">{time || <span className="invisible">00:00</span>}</span>
-            </span>
             <div className="w-[1px] h-4 bg-black/30 dark:bg-white/30"></div>
             <a data-locale-fade href={resumeUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-sm font-semibold tracking-wide text-black dark:text-white hover:text-pink-400 dark:hover:text-pink-400 transition-colors duration-300">
               <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>

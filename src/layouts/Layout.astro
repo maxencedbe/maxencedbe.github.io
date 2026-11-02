@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar.jsx";
 import AnimatedBackground from "../components/AnimatedBackground.jsx";
 import ScrollObserver from "../components/ScrollObserver.jsx";
 import { ClientRouter } from "astro:transitions";
-import ProgressBar from "../components/ProgressBar.jsx";
 import SideNav from "../components/SideNav.jsx";
 import "../styles/global.css";
 
@@ -222,8 +221,7 @@ const isLockedPage = isLocked;
     <style>
       /* Hide content during constellation intro */
       body.is-loading #content-wrapper,
-      body.is-loading #sidenav-wrapper-el,
-      body.is-loading #progressbar-wrapper-el {
+      body.is-loading #sidenav-wrapper-el {
         opacity: 0;
         pointer-events: none;
       }
@@ -274,12 +272,6 @@ const isLockedPage = isLocked;
       /* Navbar slides down from above the viewport */
       #navbar-wrapper-el {
         transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-      }
-      /* Explicit stacking context so opacity transition never puts ProgressBar behind navbar */
-      #progressbar-wrapper-el {
-        position: relative;
-        z-index: 9999;
-        transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1);
       }
     </style>
   </head>
@@ -384,11 +376,6 @@ const isLockedPage = isLocked;
       </div>
     )}
     <ScrollObserver client:only="react" />
-    {!isLocked && (
-      <div id="progressbar-wrapper-el">
-        <ProgressBar client:load />
-      </div>
-    )}
     <script>
       // Track real Astro client-side navigations vs F5 reloads
       let isAstroNavigation = false;
