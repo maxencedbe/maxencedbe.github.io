@@ -20,6 +20,13 @@ export default function AnimatedBackground({ instant = false }) {
     // originally tuned against, so desktop is unchanged.
     const clusterScale = () => Math.pow(Math.min(width, height) / 800, 2);
     let reach = clusterScale();
+    // The visible patch was a circle, so on a wide screen it sat as a narrow
+    // column in the middle. Horizontal distance is divided by this before the
+    // thresholds below, which stretches the circle into an ellipse following
+    // the screen's shape: as wide as the aspect ratio allows, capped so an
+    // ultrawide still keeps some empty margin. Portrait phones get 1, unchanged.
+    const stretchFor = () => Math.min(Math.max(width / height, 1), 2);
+    let stretch = stretchFor();
     let largeHeader = headerRef.current;
     let canvas = canvasRef.current;
     let ctx = canvas.getContext("2d");
@@ -32,10 +39,25 @@ export default function AnimatedBackground({ instant = false }) {
     // build-up so the page just fades in quickly instead of playing the intro.
     // So does a page whose intro was skipped because this tab has already seen
     // it (see the first script in Layout's body).
-    const skipBuild = instant || window.__introSkipped === true;
-    const revealSpread = skipBuild ? 0 : 2500;
-    const pointFadeDuration = skipBuild ? 200 : 400;
+    // Someone who has asked their system to reduce motion gets the
+    // constellation drawn at once and then held still: no build-up and
+    // no drift.
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const skipBuild = instant || window.__introSkipped === true || reduceMotion;
+    // The build-up: points appear as a wave spreading out from the centre,
+    // each one easing in and swelling to size, and a line only starts tracing
+    // towards a neighbour once both of its ends are there. The spread and fade
+    // still add up to the 2.9s the 'constellation-ready' event was tuned to;
+    // the last lines finish tracing a little after it.
+    const revealSpread = skipBuild ? 0 : 2300;
+    const pointFadeDuration = skipBuild ? 200 : 600;
+    const lineDrawDuration = skipBuild ? 0 : 500;
     const revealStart = performance.now();
+
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
+    // Overshoots by a few percent before settling, so a dot pops into place
+    // rather than just growing.
+    const easeOutBack = (t) => 1 + 2.2 * Math.pow(t - 1, 3) + 1.2 * Math.pow(t - 1, 2);
 
     setTimeout(() => {
       document.dispatchEvent(new CustomEvent('constellation-ready'));
@@ -80,10 +102,21 @@ export default function AnimatedBackground({ instant = false }) {
       p.toY = p.originY - 50 + Math.random() * 100;
     };
 
+    // Birth time grows with distance from the centre, measured in the same
+    // stretched space as the visibility falloff and relative to its outer edge,
+    // so the wave crosses exactly the visible patch over the reveal. A little
+    // jitter keeps the front ragged instead of a perfect expanding ring; points
+    // beyond the edge are invisible anyway and are born at the end.
+    const birthTimeFor = (px, py) => {
+      const edge = Math.sqrt(40000 * reach);
+      const d = Math.sqrt(Math.pow((px - width / 2) / stretch, 2) + Math.pow(py - height / 2, 2));
+      return (Math.min(d / edge, 1) * 0.8 + Math.random() * 0.2) * revealSpread;
+    };
+
     const makePoint = (px, py) => ({
       x: px, originX: px,
       y: py, originY: py,
-      birthTime: Math.random() * revealSpread, // staggered birth
+      birthTime: birthTimeFor(px, py),
       // Zero duration, so the first update rolls a leg rather than special-casing it.
       legStart: 0, legDuration: 0,
       fromX: px, fromY: py, toX: px, toY: py,
@@ -101,15 +134,17 @@ export default function AnimatedBackground({ instant = false }) {
     const spacingFor = (w) => (w < 768 ? 55 : w < 1200 ? 90 : 80);
 
     const scaleCanvas = () => {
-      // Capped at 2: phones commonly report 3, which makes the backing store
-      // nine times the CSS area and leaves the whole thing to be cleared and
-      // repainted every frame — pure fill-rate cost, and the dominant one on
-      // mobile. At 2 that drops by more than half, and for a constellation of
-      // faint hairlines the difference is not visible.
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // Drawn at the screen's real pixel density, up to 3. It used to be capped
+      // at 2 to save fill rate on phones, which commonly report 3, but the
+      // canvas was then upscaled by half again and the hairlines came out
+      // visibly soft next to the crisp text around them. The loop already stops
+      // drawing once the canvas has faded out on scroll, so the extra cost is
+      // only paid while the hero is on screen.
+      const dpr = Math.min(window.devicePixelRatio || 1, 3);
       width = window.innerWidth;
       height = window.innerHeight;
       reach = clusterScale();
+      stretch = stretchFor();
       largeHeader.style.height = height + "px";
       canvas.width = width * dpr;
       canvas.height = height * dpr;
@@ -259,6 +294,32 @@ export default function AnimatedBackground({ instant = false }) {
       onScroll();
     }
 
+    // Line and dot opacity against distance, where 1 is the outer edge of the
+    // visible patch. It used to be four flat bands (0.3 / 0.1 / 0.02 / 0 for
+    // lines), so a drifting point crossing a band edge switched all its lines
+    // to the next level in a single frame, which read as a line suddenly
+    // changing colour. Now it interpolates between the same levels, placed at
+    // the same distances (the bands' edges were at 0.32, 0.71 and 1), so the
+    // overall shape is unchanged but nothing ever jumps.
+    const falloffStops = [
+      [0, 0.3, 0.6],
+      [0.32, 0.3, 0.6],
+      [0.71, 0.1, 0.3],
+      [1, 0.02, 0.1],
+      [1.15, 0, 0],
+    ];
+    function falloff(u) {
+      for (let i = 1; i < falloffStops.length; i++) {
+        const [u1, l1, d1] = falloffStops[i];
+        if (u <= u1) {
+          const [u0, l0, d0] = falloffStops[i - 1];
+          const k = (u - u0) / (u1 - u0);
+          return [l0 + (l1 - l0) * k, d0 + (d1 - d0) * k];
+        }
+      }
+      return [0, 0];
+    }
+
     function animate() {
       if (animateHeader && isVisible) {
         ctx.clearRect(0, 0, width, height);
@@ -279,46 +340,41 @@ export default function AnimatedBackground({ instant = false }) {
         const now = performance.now();
 
         points.forEach((p) => {
-          // Written so the first frame (0/0) and a leg that ran out while the
-          // canvas was hidden both fall through to a fresh one.
-          let t = (now - p.legStart) / p.legDuration;
-          if (!(t < 1)) {
-            newLeg(p, now);
-            t = 0;
+          if (!reduceMotion) {
+            // Written so the first frame (0/0) and a leg that ran out while the
+            // canvas was hidden both fall through to a fresh one.
+            let t = (now - p.legStart) / p.legDuration;
+            if (!(t < 1)) {
+              newLeg(p, now);
+              t = 0;
+            }
+            const e = circInOut(t);
+            p.x = p.fromX + (p.toX - p.fromX) * e;
+            p.y = p.fromY + (p.toY - p.fromY) * e;
           }
-          const e = circInOut(t);
-          p.x = p.fromX + (p.toX - p.fromX) * e;
-          p.y = p.fromY + (p.toY - p.fromY) * e;
 
           // How long since this point was born (0 if not yet born)
           const age = Math.max(0, elapsed - p.birthTime);
-          // Fade-in multiplier for this individual point (0 → 1 over pointFadeDuration)
-          const pointAlpha = Math.min(1, age / pointFadeDuration);
+          // Fade-in progress for this individual point (0 → 1 over
+          // pointFadeDuration), eased so it arrives fast and settles, and
+          // driving the dot's size as well as its opacity.
+          const grow = pointFadeDuration ? Math.min(1, age / pointFadeDuration) : 1;
+          const pointAlpha = easeOutCubic(grow);
+          p.circle.scale = Math.max(0, easeOutBack(grow));
 
           if (pointAlpha <= 0) {
             p.active = 0;
             p.circle.active = 0;
           } else {
-            // Normal mouse-based opacity, multiplied by individual point alpha
-            let baseActive, baseCircleActive;
-            if (Math.abs(getDistance(target, p)) < 4000 * reach) {
-              baseActive = 0.3;
-              baseCircleActive = 0.6;
-            } else if (Math.abs(getDistance(target, p)) < 20000 * reach) {
-              baseActive = 0.1;
-              baseCircleActive = 0.3;
-            } else if (Math.abs(getDistance(target, p)) < 40000 * reach) {
-              baseActive = 0.02;
-              baseCircleActive = 0.1;
-            } else {
-              baseActive = 0;
-              baseCircleActive = 0;
-            }
-            p.active = baseActive * pointAlpha;
-            p.circle.active = baseCircleActive * pointAlpha;
+            // Opacity by distance from the centre, multiplied by the point's
+            // own fade-in.
+            const d = Math.pow((p.x - target.x) / stretch, 2) + Math.pow(p.y - target.y, 2);
+            const [lineLevel, dotLevel] = falloff(Math.sqrt(d / (40000 * reach)));
+            p.active = lineLevel * pointAlpha;
+            p.circle.active = dotLevel * pointAlpha;
           }
 
-          drawLines(p, r, g, b);
+          drawLines(p, r, g, b, elapsed);
           p.circle.draw();
         });
       }
@@ -327,14 +383,23 @@ export default function AnimatedBackground({ instant = false }) {
 
     animate();
 
-    function drawLines(p, r, g, b) {
+    // A line traces out from p towards its neighbour, starting once both
+    // points are halfway through fading in. Before that it isn't drawn at all,
+    // so nothing ever points at an empty spot.
+    function drawLines(p, r, g, b, elapsed) {
       if (!p.active) return;
-
 
       ctx.beginPath();
       p.closest.forEach((c) => {
+        let k = 1;
+        if (lineDrawDuration) {
+          const start = Math.max(p.birthTime, c.birthTime) + pointFadeDuration / 2;
+          const t = (elapsed - start) / lineDrawDuration;
+          if (t <= 0) return;
+          if (t < 1) k = easeOutCubic(t);
+        }
         ctx.moveTo(p.x, p.y);
-        ctx.lineTo(c.x, c.y);
+        ctx.lineTo(p.x + (c.x - p.x) * k, p.y + (c.y - p.y) * k);
       });
       ctx.strokeStyle = `rgba(${r},${g},${b},${p.active})`;
       ctx.stroke();
@@ -343,11 +408,12 @@ export default function AnimatedBackground({ instant = false }) {
     function circle(pos, rad) {
       this.pos = pos;
       this.radius = rad;
+      this.scale = 1;
       this.active = 0;
       this.draw = function () {
         if (!this.active) return;
         ctx.beginPath();
-        ctx.arc(this.pos.x, this.pos.y, this.radius, 0, 2 * Math.PI, false);
+        ctx.arc(this.pos.x, this.pos.y, this.radius * this.scale, 0, 2 * Math.PI, false);
 
         if (isDark) {
           ctx.fillStyle = "rgba(255,255,255," + this.active + ")";
