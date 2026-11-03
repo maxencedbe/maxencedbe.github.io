@@ -1,6 +1,6 @@
 # 🌐 Portfolio - maxencedbe
 
-This repository contains the source code for my personal website: [maxencedbe.github.io](https://maxencedbe.github.io).  
+This repository contains the source code for my personal website: [maxencedebes.com](https://maxencedebes.com).  
 The website is built with **Astro**, **TailwindCSS**, and **JavaScript**, and deployed via **GitHub Pages**.
 
 ## 🚀 About
@@ -26,7 +26,7 @@ This portfolio showcases:
 
 The website is automatically deployed through **GitHub Pages** whenever updates are pushed to the repository.  
 Public URL:  
-👉 [https://maxencedbe.github.io](https://maxencedbe.github.io)
+👉 [https://maxencedebes.com](https://maxencedebes.com)
 
 ## 🧑‍💻 Author
 
