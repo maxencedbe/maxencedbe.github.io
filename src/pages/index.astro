@@ -161,7 +161,7 @@ const withRatio = (items) => items.map((item) => {
        fold, inside that margin; at pt-32 it sits 128px down, clear of it.
        Everything from md up keeps the original rhythm. -->
   <section id="about" class="px-6 md:px-12 text-black dark:text-white pt-32 md:pt-20 pb-8 md:pb-14">
-    <div class="max-w-[1100px] mx-auto">
+    <div class="max-w-[1100px] md:max-w-[min(1100px,80vw)] mx-auto">
       <div class="mb-1 text-center reveal-up">
         <span data-i18n="about.label" class="text-xs font-bold tracking-widest text-pink-400 uppercase">About me</span>
       </div>
@@ -173,7 +173,7 @@ const withRatio = (items) => items.map((item) => {
       </p>
     </div>
 
-    <div class="max-w-[1100px] mx-auto">
+    <div class="max-w-[1100px] md:max-w-[min(1100px,80vw)] mx-auto">
       <h2 data-i18n="about.work" class="text-2xl font-semibold mb-8 section-title mobile-narrow text-black dark:text-white reveal-up reveal-delay-100">
         Work experience
       </h2>
@@ -282,7 +282,7 @@ const withRatio = (items) => items.map((item) => {
        desktop gap reads as dead space on a narrow screen. -->
   <section id="projects" class="pt-10 md:pt-20 pb-8 md:pb-14">
     <main class="flex flex-col items-center px-4 w-full mx-auto">
-      <div class="max-w-[1280px] lg:max-w-[1162px] mx-auto pb-6 px-4 sm:px-6 md:px-8">
+      <div class="max-w-[1280px] md:max-w-[min(1162px,calc(80vw+4rem))] mx-auto pb-6 px-4 sm:px-6 md:px-8">
         <div class="mb-1 text-center reveal-up">
           <span data-i18n="projects.label" class="text-xs font-bold tracking-widest text-pink-400 uppercase">My projects</span>
         </div>
@@ -293,7 +293,7 @@ const withRatio = (items) => items.map((item) => {
           A mix of academic research, personal builds, and professional work, all centered around AI, data, and software engineering. Some explore ideas I was simply curious about, others solve problems I ran into along the way. Most link to a repository if you want to dig into the code, and a few are still evolving as I keep iterating on them.
         </p>
       </div>
-      <div class="max-w-[1280px] lg:max-w-[1162px] mx-auto px-4 sm:px-6 md:px-8 w-full">
+      <div class="max-w-[1280px] md:max-w-[min(1162px,calc(80vw+4rem))] mx-auto px-4 sm:px-6 md:px-8 w-full">
         <ProjectGrid client:load />
       </div>
     </main>
